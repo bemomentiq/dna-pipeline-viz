@@ -1,4 +1,11 @@
-<div class="int-map">
+      <section id="integration" class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">17 · Ecosystem integration</div>
+          <h2 class="section-title">One <span class="grad-learn">shared learning ledger</span> across DNA, APO, BEAST, PA, SID</h2>
+          <p class="section-sub">DNA does not live alone. Seven MomentIQ systems exchange contracts via a versioned event bus — Kalodata, ScriptSage, SID, BEAST, PA pipeline, APO, Partner Center — and all of them write to a single <code>learning_ledger</code> table partitioned by month. DNA's slow-compounding fine-tunes and APO's fast-loop TSS-200 experiments read and write the same schema. Every integration is additive, contract-versioned, and has a failure-mode plan.</p>
+        </div>
+
+        <div class="int-map">
           <div class="int-col int-col-in">
             <h4>Inbound to DNA</h4>
             <div class="int-node">Kalodata<span>top-sellers · daily 04:00 UTC · Neon CDC</span></div>
@@ -56,3 +63,7 @@
           <div class="int-rule"><strong>Partner Center backfill:</strong> OPE window extends proportionally, no blind promotions.</div>
           <div class="int-rule"><strong>Schema breaking change:</strong> CI (`buf breaking`) blocks PR; v2 side-by-side for 90d before deprecation.</div>
         </div>
+      </section>
+
+
+
