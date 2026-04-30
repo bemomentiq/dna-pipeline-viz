@@ -1,4 +1,12 @@
-<ol class="ramp">
+      <section id="rollout" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">15 &middot; Rollout &amp; Migration</p>
+            <h2>From 0% canary to steady-state &mdash; the 5 promotion ramps</h2>
+            <p class="section-sub">DNA configs never replace standards. They ramp alongside, carrying their own traffic share until they prove out against GMV baselines.</p>
+          </div>
+
+          <ol class="ramp">
             <li class="ramp-step">
               <div class="ramp-head"><span class="ramp-pct">0%</span><h3>Shadow-only</h3></div>
               <p class="ramp-desc">DNA configs generate variants but nothing ships. Scores are logged for calibration. Duration: 1&ndash;2 weeks.</p>
@@ -38,3 +46,7 @@ FF dna_bandit_writes = false
 # Drain in-flight DNA jobs (they complete normally; no new ones)
 FF dna_accept_new = false</code></pre>
           </div>
+        </div>
+      </section>
+
+      <!-- GLOSSARY -->

@@ -34,7 +34,14 @@
 <span class="kicker">Operations</span>
 <h1>Cost &amp; ROI</h1>
 <p>Pipeline economics.</p>
-<div class="cost-grid">
+      <section id="costroi" class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">15 · Unit economics & ROI</div>
+          <h2 class="section-title">Cost per decision, payback by tier, <span class="grad-source">marginal ROI</span> by phase</h2>
+          <p class="section-sub">Every autonomous decision has a unit cost. Variants cost ~$4 to generate, judge ensembles cost ~$0.08 per scoring, DPO rounds cost ~$180 in H100 hours, OPE estimations cost pennies. Plot those against expected GMV lift and every roadmap phase has a defensible payback window before it is enabled for each brand tier.</p>
+        </div>
+
+        <div class="cost-grid">
           <div class="cost-card">
             <div class="cost-head"><h4>Cost per variant generated</h4><span class="cost-badge">~$4.00</span></div>
             <ul>
@@ -147,6 +154,8 @@
           <div class="lever-card"><span class="lever-rank">5</span><h5>Prompt caching</h5><p>Cache brand-context prefix across variants. Vertex prompt-cache 50–75% hit.</p><span class="lever-save">-$3K/mo</span></div>
           <div class="lever-card"><span class="lever-rank">6</span><h5>GCS lifecycle policy</h5><p>30-day nearline → 90-day coldline → 365-day archive for training corpus.</p><span class="lever-save">-$2K/mo</span></div>
         </div>
+      </section>
+
 
 
 </main>

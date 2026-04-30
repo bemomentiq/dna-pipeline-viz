@@ -1,4 +1,16 @@
-<div class="roas-hierarchy">
+      <section id="roas" class="section section-quiet">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">19 · Multi-level ROAS optimizer</p>
+            <h2>Portfolio intelligence across brand → L3 → L2 → L1 → ecosystem</h2>
+            <p class="section-sub">
+              Today: 50+ brands with isolated Beta-TS bandits, wasting O(200) impressions per cold-start brand. Target:
+              hierarchical Bayesian partial pooling so a new brand inherits category priors instantly, plus a UCB
+              portfolio allocator with global ROAS-floor constraints over all brand budgets.
+            </p>
+          </div>
+
+          <div class="roas-hierarchy">
             <div class="hier-level hier-l0"><span class="hier-badge">L0</span><strong>Ecosystem / platform</strong><em>&mu;<sub>global</sub> · captures platform-wide creative norms across all MomentIQ brands</em></div>
             <div class="hier-arrow" aria-hidden="true">&darr;</div>
             <div class="hier-level hier-l1"><span class="hier-badge">L1</span><strong>L1 category (Beauty / Home / Fitness / Food / ...)</strong><em>&mu;<sub>L1</sub> ~ N(&mu;<sub>global</sub>, &sigma;&sup2;<sub>L1</sub>) · partial pooling across L2s</em></div>
@@ -122,3 +134,7 @@ for obs in new_brand_stream:
               <div class="rfs">6 &middot; Log propensities for OPE · β*-IPS evaluates alternates offline</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- AUTONOMOUS CONVERGENCE LOOP -->

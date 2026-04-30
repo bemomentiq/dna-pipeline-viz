@@ -34,7 +34,14 @@
 <span class="kicker">Reference</span>
 <h1>Implementation</h1>
 <p>How phases land in code.</p>
-<div class="impl-grid">
+      <section id="impl" class="section section-quiet">
+        <div class="section-head">
+          <div class="section-eyebrow">14 · Implementation & observability</div>
+          <h2 class="section-title">Ten <span class="grad-config">dna-* services</span>, fifteen SLOs, one distributed trace</h2>
+          <p class="section-sub">The SOTA methods are nothing without the plumbing. Ten new services on GKE, a unified event bus with versioned protobuf contracts, and OpenTelemetry traces that stitch one training cycle from Kalodata ingest through judge → OPE → bandit → rollout → DPO → ledger. Everything runs in dedicated <code>dna-compute / dna-inference / dna-data</code> namespaces — the baseline ScriptSage / queue-app / vidgen-engine deployment is untouched.</p>
+        </div>
+
+        <div class="impl-grid">
           <div class="impl-card" data-service="ingest">
             <div class="impl-head"><span class="impl-pill">Go</span><h4>dna-ingest</h4></div>
             <div class="impl-meta">GKE <code>dna-data</code> · KEDA on Kafka lag</div>
@@ -137,6 +144,8 @@
             <p class="impl-trace-note">Baggage tags propagate <code>brand_id</code>, <code>category_l1/l2/l3</code>, <code>experiment_id</code> across every hop. Prom + Loki + Tempo stack on GKE. Grafana dashboards reference these tags for every panel.</p>
           </div>
         </div>
+      </section>
+
 
 
 </main>
