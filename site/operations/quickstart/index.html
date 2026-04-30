@@ -34,7 +34,92 @@
 <span class="kicker">Operations</span>
 <h1>Quickstart</h1>
 <p>If something breaks — this card first.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="quickstart" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">17 &middot; Quick start</p>
+            <h2>If something breaks &mdash; this card first</h2>
+            <p class="section-sub">One-page operator guide. The five most common incidents, the three most common diagnostic queries, and the emergency pause.</p>
+          </div>
+
+          <div class="qs-grid">
+            <div class="qs-card qs-emergency">
+              <div class="qs-head">Emergency &middot; pause writes</div>
+              <pre class="code"><code>FF dna_bandit_writes = false
+FF dna_accept_new   = false
+SELECT * FROM dna_performance_feedback
+ WHERE bandit_updated = false;</code></pre>
+              <div class="qs-note">Stops any further learning; in-flight jobs drain normally.</div>
+            </div>
+            <div class="qs-card">
+              <div class="qs-head">Symptom &middot; Drift alert fired</div>
+              <ol>
+                <li>Check <code>#dna-alerts</code> for attribute + divergence.</li>
+                <li>Query <code>dna_profiles</code> for last 4 weeks vs baseline.</li>
+                <li>If 3 consecutive weeks &rarr; auto-reset fires.</li>
+                <li>Manual reset: Learning owner approval only.</li>
+              </ol>
+            </div>
+            <div class="qs-card">
+              <div class="qs-head">Symptom &middot; Compliance &lt; 0.70</div>
+              <ol>
+                <li>Inspect failing dimension in <code>dna_compliance</code>.</li>
+                <li>Most common: caption burn-in + hook mismatch.</li>
+                <li>Check if Gemini prompt version changed.</li>
+                <li>Rerun scorer with <code>--verbose</code>.</li>
+              </ol>
+            </div>
+            <div class="qs-card">
+              <div class="qs-head">Symptom &middot; Feedback lag &gt; 12h</div>
+              <ol>
+                <li>Check TikTok Business API token (rotates every 24h).</li>
+                <li>Retry last 3 ingest windows idempotently.</li>
+                <li>If still failing &rarr; page Partners DRI.</li>
+              </ol>
+            </div>
+            <div class="qs-card">
+              <div class="qs-head">Symptom &middot; yt-dlp 403</div>
+              <ol>
+                <li>Rotate cookies via <code>scripts/refresh-cookies.sh</code>.</li>
+                <li>Fallback to Kalodata preview URLs.</li>
+                <li>Replay the failed video IDs from today's run.</li>
+              </ol>
+            </div>
+            <div class="qs-card">
+              <div class="qs-head">Symptom &middot; GMV lift &lt; 0% for 2 weeks</div>
+              <ol>
+                <li>Inspect per-category lift; identify the loser.</li>
+                <li>Check if a new DNA config over-indexed on one arm.</li>
+                <li>Ramp back to previous step (see Rollout).</li>
+                <li>Freeze bandit writes while investigating.</li>
+              </ol>
+            </div>
+            <div class="qs-card qs-tips">
+              <div class="qs-head">Three queries to know</div>
+              <pre class="code"><code>-- Which arm is winning for a category?
+SELECT attribute, arm_value, alpha, beta,
+       alpha::float / (alpha + beta) AS mean
+FROM dna_bandits
+WHERE category = 'vacuums'
+ORDER BY mean DESC;
+
+-- Which feedback rows still unprocessed?
+SELECT tiktok_video_id, window_end, views
+FROM dna_performance_feedback
+WHERE bandit_updated = false
+ORDER BY window_end DESC;
+
+-- 7-day compliance trend
+SELECT DATE_TRUNC('day', analyzed_at) d, AVG(composite) c
+FROM dna_compliance
+GROUP BY 1 ORDER BY 1 DESC LIMIT 7;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCHEMA -->
+
 
 </main>
 <footer class="site-footer">

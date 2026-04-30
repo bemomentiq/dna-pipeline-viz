@@ -34,7 +34,147 @@
 <span class="kicker">Operations</span>
 <h1>Portfolio ROAS</h1>
 <p>Brand → L3 → L2 → L1 → ecosystem.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="roas" class="section section-quiet">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">19 · Multi-level ROAS optimizer</p>
+            <h2>Portfolio intelligence across brand → L3 → L2 → L1 → ecosystem</h2>
+            <p class="section-sub">
+              Today: 50+ brands with isolated Beta-TS bandits, wasting O(200) impressions per cold-start brand. Target:
+              hierarchical Bayesian partial pooling so a new brand inherits category priors instantly, plus a UCB
+              portfolio allocator with global ROAS-floor constraints over all brand budgets.
+            </p>
+          </div>
+
+          <div class="roas-hierarchy">
+            <div class="hier-level hier-l0"><span class="hier-badge">L0</span><strong>Ecosystem / platform</strong><em>&mu;<sub>global</sub> · captures platform-wide creative norms across all MomentIQ brands</em></div>
+            <div class="hier-arrow" aria-hidden="true">&darr;</div>
+            <div class="hier-level hier-l1"><span class="hier-badge">L1</span><strong>L1 category (Beauty / Home / Fitness / Food / ...)</strong><em>&mu;<sub>L1</sub> ~ N(&mu;<sub>global</sub>, &sigma;&sup2;<sub>L1</sub>) · partial pooling across L2s</em></div>
+            <div class="hier-arrow" aria-hidden="true">&darr;</div>
+            <div class="hier-level hier-l2"><span class="hier-badge">L2</span><strong>L2 category (Skincare / Haircare / Makeup / ...)</strong><em>&mu;<sub>L2</sub> ~ N(&mu;<sub>L1</sub>, &sigma;&sup2;<sub>L2</sub>)</em></div>
+            <div class="hier-arrow" aria-hidden="true">&darr;</div>
+            <div class="hier-level hier-l3"><span class="hier-badge">L3</span><strong>L3 micro-category (Serums / Masks / Sunscreens / ...)</strong><em>&mu;<sub>L3</sub> ~ N(&mu;<sub>L2</sub>, &sigma;&sup2;<sub>L3</sub>)</em></div>
+            <div class="hier-arrow" aria-hidden="true">&darr;</div>
+            <div class="hier-level hier-brand"><span class="hier-badge">B</span><strong>Brand (Niacin Glow / Pure Derma / ...)</strong><em>&mu;<sub>brand</sub> ~ N(&mu;<sub>L3</sub>, &sigma;&sup2;<sub>brand</sub>) · cold start in 10 imps vs 200</em></div>
+          </div>
+
+          <div class="roas-mech-grid">
+            <article class="roas-mech">
+              <header>
+                <span class="rm-num">6.1</span>
+                <h3>ebmTS &mdash; empirical-Bayes multi-bandit</h3>
+              </header>
+              <p>
+                MLE-estimate the hyperprior covariance &Sigma;<sub>prior</sub> from existing brand posteriors. Each new
+                brand inherits the category-specific prior and shrinks toward the hyperprior as data accumulates.
+                NeurIPS 2024 HierBayesUCB proves <strong>O(m log n &middot; log n)</strong> regret vs O(m&radic;n) for
+                isolated bandits &mdash; a 5&ndash;10&times; cold-start speedup.
+              </p>
+              <pre class="rm-code">
+# Empirical-Bayes hyperprior
+means  = stack(brand_posteriors.values())
+Sigma  = cov(means.T)
+mu_pri = mean(means, axis=0)
+
+# Hier-TS sample
+mu_post, Sig_post = brand_posterior(
+  brand_id, mu_pri, Sigma, obs[brand_id]
+)
+theta = mvn_sample(mu_post, Sig_post)
+arm   = argmax(theta)</pre>
+              <p class="rm-src"><a href="https://arxiv.org/abs/2510.26284">ebmTS (Oct 2025)</a> · <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/859358cace308ff7bae91ed477e9ed35-Paper-Conference.pdf">HierBayesUCB (NeurIPS 2024)</a></p>
+            </article>
+
+            <article class="roas-mech">
+              <header>
+                <span class="rm-num">6.2</span>
+                <h3>UCB portfolio allocator · ROAS floor</h3>
+              </header>
+              <p>
+                Global constraint: <code>sum(spend) &le; B_total</code> and <code>portfolio_ROAS &ge; 2.0</code>.
+                UCB score per brand = &mu;̂<sub>roas</sub> + &radic;(2 log t / n). Sorted-greedy allocation to brands with
+                highest UCB until budget exhausted. Brands below the ROAS floor are automatically budget-starved.
+              </p>
+              <pre class="rm-code">
+for t in weeks:
+  ucb = {b: mu[b] + sqrt(2*log(t)/n[b])
+         for b in brands}
+  # sorted greedy
+  for b in sorted(ucb, key=ucb.get, reverse=True):
+    alloc[b] = min(rem, rem * ucb[b]/sum(ucb.values()))
+    rem -= alloc[b]
+  # PID pacing trim
+  alloc = pid_pace(alloc, target_roas=2.0)</pre>
+              <p class="rm-src"><a href="https://www.ifaamas.org/Proceedings/aamas2025/pdfs/p2532.pdf">AAMAS 2025 budget optim</a></p>
+            </article>
+
+            <article class="roas-mech">
+              <header>
+                <span class="rm-num">6.3</span>
+                <h3>Contextual LinUCB · 136-d policy</h3>
+              </header>
+              <p>
+                Features: brand_embed(64) + L1(10) + L2(50) + hour(2) + dow(7) + price(1) + rating(1) + follower_log(1).
+                A skincare brand targeting 25&ndash;34F on Tuesday at 2pm has a different optimal creative DNA than a
+                fitness brand targeting 18&ndash;24M on weekend evenings &mdash; contextual bandits condition on these
+                features rather than maintaining one global best-arm.
+              </p>
+              <pre class="rm-code">
+# NeuralUCB on encoder features
+phi = encoder(context)           # last hidden
+for i in arms:
+  A_inv = inv(A[i])
+  theta = A_inv @ b[i]
+  ucb[i] = theta@phi + alpha * sqrt(phi@A_inv@phi)
+return argmax(ucb)</pre>
+              <p class="rm-src"><a href="http://www.wanghao.in/paper/ICLR25_DABand.pdf">DABand (ICLR 2025)</a></p>
+            </article>
+
+            <article class="roas-mech">
+              <header>
+                <span class="rm-num">6.4</span>
+                <h3>Meta-bandits · cluster priors</h3>
+              </header>
+              <p>
+                K-means cluster brands in embedding space (category × price × creator-type). Each cluster carries a
+                shared prior (&mu;<sub>cluster</sub>, &Sigma;<sub>cluster</sub>). A <em>brand-new brand</em>
+                initializes from the nearest cluster prior &mdash; O(10) impressions to statistical confidence
+                instead of O(200).
+              </p>
+              <pre class="rm-code">
+# Cold start
+cluster   = nearest_cluster(brand_embed)
+mu_0, Sig = cluster.prior
+theta_0   = mvn_sample(mu_0, Sig)
+
+# Online Bayesian update
+for obs in new_brand_stream:
+  mu_0, Sig = conjugate_update(mu_0, Sig, obs)</pre>
+              <p class="rm-src"><a href="https://arxiv.org/abs/2510.26284">Bayesian meta-bandits</a></p>
+            </article>
+          </div>
+
+          <div class="roas-flow">
+            <h3>End-to-end allocation flow</h3>
+            <div class="roas-flow-steps">
+              <div class="rfs">1 &middot; Ingest weekly per-brand GMV + spend + variance from TikTok GMV Max</div>
+              <div class="rfs-arrow">&rarr;</div>
+              <div class="rfs">2 &middot; Update hierarchical posteriors (ebmTS) &mdash; brand → L3 → L2 → L1</div>
+              <div class="rfs-arrow">&rarr;</div>
+              <div class="rfs">3 &middot; Compute contextual LinUCB scores per (brand × arm × context)</div>
+              <div class="rfs-arrow">&rarr;</div>
+              <div class="rfs">4 &middot; Portfolio allocation · ROAS-floor constrained UCB greedy</div>
+              <div class="rfs-arrow">&rarr;</div>
+              <div class="rfs">5 &middot; PID pacing trim · auto-increment GMV-Max budget &plusmn; 50%</div>
+              <div class="rfs-arrow">&rarr;</div>
+              <div class="rfs">6 &middot; Log propensities for OPE · β*-IPS evaluates alternates offline</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUTONOMOUS CONVERGENCE LOOP -->
+
 
 </main>
 <footer class="site-footer">

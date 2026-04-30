@@ -1,0 +1,79 @@
+      <section id="governance" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">13 &middot; Governance</p>
+            <h2>Who owns what &mdash; roles, on-call, and change control</h2>
+            <p class="section-sub">The DNA pipeline is a multi-team surface. Clear ownership prevents silent drift and ensures every config change is reviewed by the right domain expert.</p>
+          </div>
+
+          <div class="gov-grid">
+            <div class="gov-card">
+              <div class="gov-role">DRI &middot; DNA Pipeline</div>
+              <div class="gov-person">Content Platform lead</div>
+              <ul>
+                <li>Owns the closed-loop architecture end-to-end</li>
+                <li>Signs off on every new DNA config</li>
+                <li>Reviews weekly drift report + convergence deltas</li>
+              </ul>
+            </div>
+            <div class="gov-card">
+              <div class="gov-role">Data owner &middot; Kalodata source</div>
+              <div class="gov-person">Data intelligence lead</div>
+              <ul>
+                <li>Owns export scripts + yt-dlp cookie rotation</li>
+                <li>Guarantees <code>n &ge; 20</code> per category per run</li>
+                <li>On-call for Phase 1 cron failures</li>
+              </ul>
+            </div>
+            <div class="gov-card">
+              <div class="gov-role">Model owner &middot; Gemini extractor</div>
+              <div class="gov-person">AI infra lead</div>
+              <ul>
+                <li>Owns prompt + 42-attribute JSON schema</li>
+                <li>Version-pins extractor model, cuts releases</li>
+                <li>Maintains label golden set (50 human-labeled videos)</li>
+              </ul>
+            </div>
+            <div class="gov-card">
+              <div class="gov-role">Generation owner &middot; ScriptSage + vidgen</div>
+              <div class="gov-person">Generation lead</div>
+              <ul>
+                <li>Owns <code>hook_selector.ts</code>, <code>cta_builder.ts</code>, and siblings</li>
+                <li>Guarantees <code>dna_vertex / dna_pollo / dna_seedance</code> configs remain additive</li>
+                <li>On-call for Phase 3&ndash;4 generation drift</li>
+              </ul>
+            </div>
+            <div class="gov-card">
+              <div class="gov-role">Feedback owner &middot; TikTok ingest</div>
+              <div class="gov-person">Partner center lead</div>
+              <ul>
+                <li>Owns TikTok Business API client + 6h cron</li>
+                <li>Guarantees feedback idempotency</li>
+                <li>First responder for feedback gaps &gt; 12h</li>
+              </ul>
+            </div>
+            <div class="gov-card">
+              <div class="gov-role">Learning owner &middot; Bandits + drift</div>
+              <div class="gov-person">ML engineering lead</div>
+              <ul>
+                <li>Owns Thompson posterior code + JS-divergence detector</li>
+                <li>Signs off on every bandit reset</li>
+                <li>Maintains the learning ledger (append-only)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="change-control">
+            <h3>Change-control rules</h3>
+            <ul class="change-rules">
+              <li><strong>DNA config edits</strong> require DRI + Generation owner approval. A CI check blocks any PR that touches the <code>vertex_standard</code>, <code>pollo_standard</code>, or <code>seedance_standard</code> files.</li>
+              <li><strong>Rubric threshold changes</strong> (composite &ge; 0.70, voice &ge; 0.88) require DRI approval and a shadow-evaluation report attached to the PR.</li>
+              <li><strong>Bandit reset</strong> (manual) requires Learning owner approval and Slack announcement to <code>#dna-alerts</code>. Automatic resets (3-week drift rule) post to Slack automatically.</li>
+              <li><strong>New category onboarding</strong> is automatic above <code>n = 50</code>; below that floor, Learning owner manually blesses blended-prior sources.</li>
+              <li><strong>API surface</strong> &mdash; any new <code>/api/v1/dna/*</code> endpoint requires DRI review, OpenAPI spec, and a companion entry in <code>docs/dna-api-reference.md</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- MONITORING & ALERTING -->

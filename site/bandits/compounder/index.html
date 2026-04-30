@@ -34,7 +34,154 @@
 <span class="kicker">Bandits &amp; Reward</span>
 <h1>Compounder</h1>
 <p>The generator gets better every week, not just the bandits.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="compounder" class="section">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">18 · Self-learning compounder</p>
+            <h2>The generator itself gets better every week, not just the bandits</h2>
+            <p class="section-sub">
+              A bandit can only pick from what the generator produces. For continuous improvement to <em>compound</em>,
+              the generator must absorb the bandit&rsquo;s winning distribution and re-emit improved variants.
+              Five complementary mechanisms — VideoDPO, RLAIF, ORPO, GAD, and a 3-phase curriculum — turn MomentIQ&rsquo;s
+              pipeline from template-configured to self-aligning.
+            </p>
+          </div>
+
+          <div class="compounder-grid">
+            <article class="compounder-card">
+              <header>
+                <span class="cc-num">5.1</span>
+                <h3>VideoDPO / Flow-DPO</h3>
+                <span class="cc-tag">weekly · TRL</span>
+              </header>
+              <p class="cc-what">
+                Every week, winning generations become <code>chosen</code> and their nearest rejected siblings become
+                <code>rejected</code>. The video diffusion model is fine-tuned directly on this preference dataset using
+                the DPO loss with KL anchoring against a frozen reference.
+              </p>
+              <pre class="cc-code">
+config = DPOConfig(beta=0.1, loss_type="sigmoid", lr=1e-5)
+trainer = DPOTrainer(
+  model=video_gen,
+  ref_model=frozen_ref,      # KL anchor prevents over-opt
+  train_dataset=pref_pairs,  # (prompt, chosen, rejected)
+)
+trainer.train()  # weekly cadence</pre>
+              <p class="cc-src"><a href="https://arxiv.org/html/2412.14167v1">VideoDPO (CVPR 2025)</a> · <a href="https://huggingface.co/docs/trl/index">TRL lib</a></p>
+            </article>
+
+            <article class="compounder-card">
+              <header>
+                <span class="cc-num">5.2</span>
+                <h3>GAD · indistinguishability</h3>
+                <span class="cc-tag">quarterly · Nash game</span>
+              </header>
+              <p class="cc-what">
+                A discriminator learns to tell MomentIQ output from top-creator output. The generator learns to fool it.
+                Unlike static reward models, the discriminator <em>co-evolves</em> — preventing reward hacking. Global
+                optimum = discriminator accuracy approaches 0.5 (chance) = indistinguishable by construction.
+              </p>
+              <pre class="cc-code">
+# Adversarial phase
+for batch in loop:
+  gen = G.generate(batch.prompts)
+  # generator reward = how well it fools D
+  G_loss = -mean(D(gen))
+  G_opt.step(G_loss)
+  # update D on fresh G output
+  D_loss = BCE(D(real),1) + BCE(D(gen),0)
+  D_opt.step(D_loss)</pre>
+              <p class="cc-src"><a href="https://arxiv.org/html/2511.10643v1">GAD (Ye et al., Nov 2025)</a> · <a href="https://www.baseten.co/research/distillation-without-the-dark/">Baseten replication</a></p>
+            </article>
+
+            <article class="compounder-card">
+              <header>
+                <span class="cc-num">5.3</span>
+                <h3>RLAIF · constitutional</h3>
+                <span class="cc-tag">nightly · annotation-free</span>
+              </header>
+              <p class="cc-what">
+                Replace human annotation with a written <em>content constitution</em> (hook-in-3s, product-visible-in-8s,
+                social-proof, CTA-clarity, trust-signal). A frontier VLM (Gemini 2.5 Pro) auto-generates preference pairs
+                using the constitution as rubric. Preference data scales as fast as compute.
+              </p>
+              <pre class="cc-code">
+judge_prompt = f"""
+Constitution: {CONSTITUTION}
+Video A: {describe(A)}
+Video B: {describe(B)}
+Which better adheres? Explain, then WINNER: A|B
+"""
+winner = gemini_25_pro(judge_prompt)</pre>
+              <p class="cc-src"><a href="https://github.com/mengdi-li/awesome-RLAIF">awesome-RLAIF</a> · Anthropic Constitutional AI</p>
+            </article>
+
+            <article class="compounder-card">
+              <header>
+                <span class="cc-num">5.4</span>
+                <h3>ORPO · anti-hacking</h3>
+                <span class="cc-tag">always-on · &chi;&sup2; reg</span>
+              </header>
+              <p class="cc-what">
+                Occupancy-regularized policy optimization: add a &chi;&sup2; divergence penalty between the current
+                policy&rsquo;s state-occupancy measure and the reference policy&rsquo;s. Provides a
+                <strong>provable lower bound</strong> on true-reward improvement — the generator cannot
+                drift into high-proxy-reward but low-GMV regions.
+              </p>
+              <pre class="cc-code">
+# Loss with occupancy regularization
+loss = -reward(pi_out) + beta * chi2_div(
+  d_policy(s),    # occupancy measure
+  d_ref(s)
+)
+# + ensemble-disagreement monitor
+if RM_ens.disagreement() > thresh:
+  alert("potential reward hack")</pre>
+              <p class="cc-src"><a href="https://arxiv.org/html/2604.12086v1">Robust optim (2026)</a> · <a href="https://arxiv.org/html/2604.13602v1">Reward hacking survey</a></p>
+            </article>
+
+            <article class="compounder-card compounder-span">
+              <header>
+                <span class="cc-num">5.5</span>
+                <h3>Three-phase curriculum</h3>
+                <span class="cc-tag">progression · months 1&ndash;6</span>
+              </header>
+              <div class="curr-grid">
+                <div class="curr-phase">
+                  <div class="curr-phase-head"><strong>Phase 1 · Extract</strong><span>SFT on DPP corpus</span></div>
+                  <p>Imitate top-creator distribution. Trigger to phase 2: SFT validation loss plateaus for 3 consecutive epochs.</p>
+                </div>
+                <div class="curr-phase">
+                  <div class="curr-phase-head"><strong>Phase 2 · Synthesize</strong><span>RLAIF + VideoDPO</span></div>
+                  <p>Auto-generate preference pairs, fine-tune policy. Trigger to phase 3: VisionReward score above 80<sup>th</sup> percentile of human top-creators.</p>
+                </div>
+                <div class="curr-phase">
+                  <div class="curr-phase-head"><strong>Phase 3 · Adversarial</strong><span>GAD minimax</span></div>
+                  <p>Generator vs. co-evolving discriminator. Convergence: discriminator accuracy &lt; 0.55 sustained over 2 rounds.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="compounder-ledger">
+            <h3>Compounding ledger · what the system carries forward</h3>
+            <table class="ledger-table">
+              <thead><tr><th>Signal</th><th>Source</th><th>Consumed by</th><th>Compounding mechanism</th></tr></thead>
+              <tbody>
+                <tr><td>Winning generation pairs</td><td>Live TikTok GMV · CUPED-adjusted</td><td>VideoDPO weekly fine-tune</td><td>Generator prior drifts toward winners</td></tr>
+                <tr><td>VisionReward 9-dim scores</td><td>VLM judge panel (pre-publish)</td><td>PRIME implicit PRM</td><td>Per-step reward training signal</td></tr>
+                <tr><td>Constitution adherence</td><td>Gemini 2.5 constitutional judge</td><td>RLAIF preference dataset</td><td>Annotation-free scale</td></tr>
+                <tr><td>Discriminator features</td><td>GAD minimax rounds</td><td>Next-round generator + judge</td><td>Co-evolution (no static target)</td></tr>
+                <tr><td>Proxy-true gap</td><td>VLM reward vs actual GMV (7-day)</td><td>ORPO &beta; coefficient auto-tune</td><td>Anti-Goodhart guard</td></tr>
+                <tr><td>Hierarchical brand priors</td><td>ebmTS posterior updates</td><td>Cold-start bandits for new brands</td><td>Portfolio intelligence · transferable</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- MULTI-LEVEL ROAS -->
+
 
 </main>
 <footer class="site-footer">

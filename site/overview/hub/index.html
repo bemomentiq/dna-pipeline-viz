@@ -34,7 +34,134 @@
 <span class="kicker">Overview</span>
 <h1>Pipeline hub</h1>
 <p>Where to start. Top-level navigation across the engine.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="hub" class="section section-hero">
+        <div class="section-head">
+          <div class="section-eyebrow">Hub · Deterministic loop · Fleet build</div>
+          <h2 class="section-title">Deterministic <span class="grad-gen">closed-loop pipeline</span>, autonomously built by the <span class="grad-dist">Mac Mini fleet</span></h2>
+          <p class="section-sub">The answer to both questions is <strong>yes</strong>. A Perplexity cron feeds top-seller public URLs from Kalodata → Cloudinary → DNA extraction → scored 5-dim → OPE-gated → canary-rolled → autonomously promoted into ScriptSage defaults, with zero human in the data/train/score loop. And the build itself runs autonomously: GitHub Issues as source of truth + CC queue for fleet dispatch + PR Guardian for auto-merge healing.</p>
+        </div>
+
+        <div class="hub-grid">
+
+          <div class="hub-card hub-card-primary">
+            <div class="hub-card-eyebrow">LIVE PIPELINE STATUS</div>
+            <h3>Kalodata → Cloudinary → DNA → Promote</h3>
+            <div class="hub-pipeline">
+              <div class="hub-stage">
+                <div class="hub-stage-dot src"></div>
+                <div class="hub-stage-name">Perplexity cron</div>
+                <div class="hub-stage-meta">every 6h · <code>schedule_cron</code></div>
+              </div>
+              <div class="hub-arrow">→</div>
+              <div class="hub-stage">
+                <div class="hub-stage-dot src"></div>
+                <div class="hub-stage-name">Kalodata harvester</div>
+                <div class="hub-stage-meta">top-N public URLs by L3 category</div>
+              </div>
+              <div class="hub-arrow">→</div>
+              <div class="hub-stage">
+                <div class="hub-stage-dot proc"></div>
+                <div class="hub-stage-name">Cloudinary upload</div>
+                <div class="hub-stage-meta">folder <code>momentiq-dna/…</code></div>
+              </div>
+              <div class="hub-arrow">→</div>
+              <div class="hub-stage">
+                <div class="hub-stage-dot proc"></div>
+                <div class="hub-stage-name">dna_training_corpus</div>
+                <div class="hub-stage-meta">provenance-hash dedup</div>
+              </div>
+              <div class="hub-arrow">→</div>
+              <div class="hub-stage">
+                <div class="hub-stage-dot gen"></div>
+                <div class="hub-stage-name">5-dim judge ensemble</div>
+                <div class="hub-stage-meta">fidelity · naturalness · commerce · diversity · safety</div>
+              </div>
+              <div class="hub-arrow">→</div>
+              <div class="hub-stage">
+                <div class="hub-stage-dot gate"></div>
+                <div class="hub-stage-name">OPE gate (DR-IPS)</div>
+                <div class="hub-stage-meta">V<sub>cand</sub> &gt; V<sub>prod</sub> · 1.02</div>
+              </div>
+              <div class="hub-arrow">→</div>
+              <div class="hub-stage">
+                <div class="hub-stage-dot dist"></div>
+                <div class="hub-stage-name">Canary rollout</div>
+                <div class="hub-stage-meta">1% → 5% → 25% → 50% → 100%</div>
+              </div>
+              <div class="hub-arrow">→</div>
+              <div class="hub-stage">
+                <div class="hub-stage-dot learn"></div>
+                <div class="hub-stage-name">Config promoted</div>
+                <div class="hub-stage-meta">additive via <code>dna_active_config_view</code></div>
+              </div>
+            </div>
+            <p class="hub-note"><strong>ADDITIVE-ONLY</strong>: existing <code>scriptsage_configs</code> rows never mutated. All DNA writes go to new <code>dna_*</code> tables/endpoints and are read via a <code>UNION</code> view. Rollback = <code>UPDATE dna_config_rollouts SET auto_reverted_at = NOW()</code>.</p>
+          </div>
+
+          <div class="hub-card">
+            <div class="hub-card-eyebrow">PERPLEXITY CRON REGISTRY</div>
+            <h3>6 crons drive the loop</h3>
+            <table class="hub-table">
+              <thead><tr><th>Cron</th><th>Schedule</th><th>Endpoint</th></tr></thead>
+              <tbody>
+                <tr><td>dna-kalodata-harvest</td><td><code>0 */6 * * *</code></td><td>/api/v1/dna/ingest/kalodata</td></tr>
+                <tr><td>dna-judge-sweep</td><td><code>15 */2 * * *</code></td><td>/api/v1/dna/judge/sweep</td></tr>
+                <tr><td>dna-nightly-distill</td><td><code>0 2 * * *</code></td><td>/api/v1/dna/train/nightly</td></tr>
+                <tr><td>dna-canary-advance</td><td><code>30 * * * *</code></td><td>/api/v1/dna/rollout/advance</td></tr>
+                <tr><td>dna-guard-sweep</td><td><code>*/5 * * * *</code></td><td>/api/v1/dna/rollout/guard-check</td></tr>
+                <tr><td>dna-lineage-audit</td><td><code>0 12 * * 1</code></td><td>/api/v1/dna/audit/lineage</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="hub-card">
+            <div class="hub-card-eyebrow">FLEET LANES — 10 SLOTS TODAY / 36 AFTER PARALLEL ROLLOUT</div>
+            <h3>5 Mac Minis × 2 lanes each</h3>
+            <div class="hub-fleet">
+              <div class="hub-mini"><span class="hub-mini-name">mini-1</span><span class="hub-lane codex">codex · GPT-5.4 high</span><span class="hub-lane claude">claude · Opus 4.7 thinking</span></div>
+              <div class="hub-mini"><span class="hub-mini-name">mini-2</span><span class="hub-lane codex">codex · GPT-5.4 high</span><span class="hub-lane claude">claude · Opus 4.7 thinking</span></div>
+              <div class="hub-mini"><span class="hub-mini-name">mini-3</span><span class="hub-lane codex">codex · GPT-5.4 high</span><span class="hub-lane claude">claude · Opus 4.7 thinking</span></div>
+              <div class="hub-mini"><span class="hub-mini-name">mini-4</span><span class="hub-lane codex">codex · GPT-5.4 high</span><span class="hub-lane claude">claude · Opus 4.7 thinking</span></div>
+              <div class="hub-mini"><span class="hub-mini-name">mini-5</span><span class="hub-lane codex">codex · GPT-5.4 high</span><span class="hub-lane claude">claude · Opus 4.7 thinking</span></div>
+            </div>
+            <p class="hub-note">Dispatch via CC <code>POST /api/remote/exec-sync</code>. LRU credential rotation. Self-heal auto-rotates on rate-limit or auth failure. DNA consumes ~14% of fleet capacity average.</p>
+          </div>
+
+          <div class="hub-card">
+            <div class="hub-card-eyebrow">3-LAYER BUILD ARCHITECTURE</div>
+            <h3>Issues + CC Queue + PR Guardian</h3>
+            <div class="hub-layer">
+              <div class="hub-layer-num">L1</div>
+              <div class="hub-layer-body"><strong>GitHub Issues</strong> — <code>bemomentiq/momentiq-dna</code>. Milestones M10–M13. Labels <code>dna:*</code>, <code>fleet:*</code>. Human review surface + audit trail.</div>
+            </div>
+            <div class="hub-layer">
+              <div class="hub-layer-num">L2</div>
+              <div class="hub-layer-body"><strong>CC Queue</strong> — Railway. <code>dna-issue-sync</code> cron (every 10m) transforms issues → <code>cc_tasks</code> with <code>agentBriefing</code>. Auto-dispatch to healthy Mini lane. Retry + rebalance autonomous.</div>
+            </div>
+            <div class="hub-layer">
+              <div class="hub-layer-num">L3</div>
+              <div class="hub-layer-body"><strong>PR Guardian</strong> — forked for DNA repo. Scans open PRs every 15m. Classifies stuck (fix-ci, rebase, resolve-conflicts, nudge). Auto-merges on green.</div>
+            </div>
+          </div>
+
+          <div class="hub-card hub-card-wide">
+            <div class="hub-card-eyebrow">WHY THIS BEATS PURE DIRECT DISPATCH OR PURE CC</div>
+            <h3>Trade-off matrix</h3>
+            <table class="hub-matrix">
+              <thead><tr><th>Approach</th><th>Audit</th><th>Human review</th><th>Auto-retry</th><th>Auto-merge</th><th>Scales to 50+</th><th>Survives session</th></tr></thead>
+              <tbody>
+                <tr><td>Direct <code>run_subagent</code> (1–8)</td><td class="bad">weak</td><td class="bad">none</td><td class="bad">manual</td><td class="bad">none</td><td class="bad">no</td><td class="bad">no</td></tr>
+                <tr><td>CC queue only</td><td class="mid">Neon rows</td><td class="bad">none</td><td class="good">auto</td><td class="mid">manual</td><td class="good">yes</td><td class="good">yes</td></tr>
+                <tr><td>GH Actions only</td><td class="good">full</td><td class="good">yes</td><td class="mid">GH retry</td><td class="mid">GH gate</td><td class="bad">no fleet</td><td class="good">yes</td></tr>
+                <tr class="row-winner"><td><strong>Issues + CC + Guardian</strong></td><td class="good">full</td><td class="good">yes</td><td class="good">multi-layer</td><td class="good">auto</td><td class="good">100+</td><td class="good">yes</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+
 
 </main>
 <footer class="site-footer">

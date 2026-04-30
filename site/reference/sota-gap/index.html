@@ -34,7 +34,95 @@
 <span class="kicker">Reference</span>
 <h1>SOTA gap</h1>
 <p>27-capability delta vs 2024–2026 state-of-the-art.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="sotagap" class="section section-quiet">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">17 · SOTA gap matrix</p>
+            <h2>27-capability delta vs. 2024&ndash;2026 state-of-the-art</h2>
+            <p class="section-sub">
+              Each row is a single capability on the autonomous content-optimization stack. We score the delta between
+              what ships today and what a <em>SOTA-optimal</em> implementation looks like, grounded in ICML / NeurIPS /
+              CVPR 2024&ndash;2025 + 2026 arXiv work. Severity 5 = catastrophic miss. Effort S/M/L/XL = weeks 1&ndash;2 /
+              2&ndash;6 / 6&ndash;12 / 12+.
+            </p>
+          </div>
+
+          <div class="sota-legend">
+            <span class="sota-chip sota-pipe-1">P1 · training data</span>
+            <span class="sota-chip sota-pipe-2">P2 · eval &amp; synthesis</span>
+            <span class="sota-chip sota-pipe-3">P3 · A/B testing</span>
+            <span class="sota-chip sota-pipe-4">P4 · promotion</span>
+            <span class="sota-chip sota-pipe-5">P5 · self-training loop</span>
+            <span class="sota-chip sota-pipe-6">P6 · multi-level ROAS</span>
+          </div>
+
+          <div class="sota-table-wrap">
+            <table class="sota-table">
+              <thead>
+                <tr>
+                  <th class="sota-col-pipe">Pipe</th>
+                  <th class="sota-col-cap">Capability</th>
+                  <th class="sota-col-cur">Current (April 2026)</th>
+                  <th class="sota-col-sota">SOTA target</th>
+                  <th class="sota-col-sev">Sev</th>
+                  <th class="sota-col-eff">Eff</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="pp pp-1">1</span></td><td>Training-set selection</td><td>Top-200 by GMV, static weekly, popularity-biased</td><td>DPP diversity + curriculum + uncertainty-based active learning</td><td><span class="sev sev-5">5</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-1">1</span></td><td>Synthetic augmentation</td><td>None</td><td>LLM counterfactuals per-attribute (hold-one-vary-one)</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-1">1</span></td><td>Label efficiency</td><td>Binary Gemini compliance</td><td>3-model VLM panel (Gemini 2.5 + GPT-4o + Qwen2.5-VL-72B) + Elo ratings</td><td><span class="sev sev-5">5</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-1">1</span></td><td>Data versioning</td><td>Unknown / ad-hoc</td><td>DVC + lakeFS branching · Delta Lake ACID</td><td><span class="sev sev-3">3</span></td><td>S</td></tr>
+                <tr><td><span class="pp pp-1">1</span></td><td>Hard-negative mining</td><td>None</td><td>Near-miss propensity-top-k with co-DPP</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-2">2</span></td><td>Reward model</td><td>1-D compliance (binary)</td><td>VideoReward (3-dim) + VisionReward (9-dim, 64Q)</td><td><span class="sev sev-5">5</span></td><td>S</td></tr>
+                <tr><td><span class="pp pp-2">2</span></td><td>Process-level rewards</td><td>None (ORM only)</td><td>PRIME implicit PRM (no step labels required)</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-2">2</span></td><td>Causal GMV attribution</td><td>Correlation only</td><td>DoubleML partial-linear w/ cross-fit (CATE)</td><td><span class="sev sev-5">5</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-2">2</span></td><td>Meta / cross-brand transfer</td><td>Isolated per brand</td><td>MAML or hierarchical-Bayes hyperpriors</td><td><span class="sev sev-5">5</span></td><td>L</td></tr>
+                <tr><td><span class="pp pp-2">2</span></td><td>Judge distillation</td><td>None</td><td>7B VLM distilled via SFT + GRPO (100&times; throughput)</td><td><span class="sev sev-3">3</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-3">3</span></td><td>Bandit structure</td><td>Flat independent Beta-TS per attribute</td><td>CMAB-MT combinatorial super-arm · semi-bandit feedback</td><td><span class="sev sev-5">5</span></td><td>L</td></tr>
+                <tr><td><span class="pp pp-3">3</span></td><td>Multi-objective optimization</td><td>Single GMV reward</td><td>MOL-TS Pareto front · GMV × safety × completion × new-customer</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-3">3</span></td><td>Contextual bandits</td><td>Context-free TS</td><td>NeuralUCB / DeepLinUCB on 136-d brand × category × time × product × creator</td><td><span class="sev sev-4">4</span></td><td>L</td></tr>
+                <tr><td><span class="pp pp-3">3</span></td><td>Off-policy evaluation</td><td>None (all on-policy)</td><td>OBP with &beta;*-IPS + DR · evaluate 100+ policies / week offline</td><td><span class="sev sev-5">5</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-3">3</span></td><td>Always-valid inference</td><td>Fixed-horizon / ad-hoc peek</td><td>mSPRT with e-processes + CUPED (&minus;50% variance)</td><td><span class="sev sev-4">4</span></td><td>S</td></tr>
+                <tr><td><span class="pp pp-4">4</span></td><td>Champion-challenger</td><td>Manual promotion</td><td>MLflow @champion/@challenger aliases · McNemar gate · guardrails</td><td><span class="sev sev-3">3</span></td><td>S</td></tr>
+                <tr><td><span class="pp pp-4">4</span></td><td>Ramped rollout</td><td>Binary cutover</td><td>1% → 5% → 20% → 100% · SPRT at each stage</td><td><span class="sev sev-3">3</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-4">4</span></td><td>Continuous training</td><td>Manual batch</td><td>Event-driven CT (drift + perf triggers) via Prefect</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-4">4</span></td><td>Auto-rollback</td><td>Manual</td><td>SPRT sequential guardrail · revert on &Lambda;<sub>t</sub> &gt; 1/&alpha;</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-5">5</span></td><td>Preference alignment loop</td><td>None · generator static</td><td>VideoDPO / Flow-DPO weekly fine-tune · chosen vs rejected OmniScore pairs</td><td><span class="sev sev-5">5</span></td><td>L</td></tr>
+                <tr><td><span class="pp pp-5">5</span></td><td>Indistinguishability target</td><td>Not operationalized</td><td>GAD · generator vs. co-evolving discriminator (Nash at chance-level)</td><td><span class="sev sev-5">5</span></td><td>XL</td></tr>
+                <tr><td><span class="pp pp-5">5</span></td><td>Autonomous RLAIF</td><td>Manual compliance rules</td><td>Constitutional-AI VLM judge · auto-generate preference pairs</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-5">5</span></td><td>Reward-hacking defense</td><td>None (Goodhart-vulnerable)</td><td>ORPO occupancy reg · proxy-true gap monitor · RM ensemble disagreement</td><td><span class="sev sev-5">5</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-5">5</span></td><td>Curriculum self-play</td><td>None</td><td>3 phases: SFT → RLAIF+VideoDPO → GAD</td><td><span class="sev sev-5">5</span></td><td>XL</td></tr>
+                <tr><td><span class="pp pp-6">6</span></td><td>Hierarchical bandits</td><td>Isolated per brand</td><td>ebmTS / HierBayesUCB · L1→L2→brand partial pooling</td><td><span class="sev sev-5">5</span></td><td>L</td></tr>
+                <tr><td><span class="pp pp-6">6</span></td><td>Budget allocation</td><td>Per-brand, flat</td><td>UCB portfolio allocator · PID pacing · global ROAS floor</td><td><span class="sev sev-4">4</span></td><td>M</td></tr>
+                <tr><td><span class="pp pp-6">6</span></td><td>Meta-bandits / cold start</td><td>None</td><td>Cluster priors + Bayesian warm-start (O(10) imps vs O(200))</td><td><span class="sev sev-5">5</span></td><td>M</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="sota-callouts">
+            <div class="callout">
+              <h4>10 catastrophic-gap rows (sev 5)</h4>
+              <p>
+                Five belong to <strong>P5 self-training loop</strong> (no loop exists). Three belong to <strong>P6 ROAS</strong>
+                (isolated bandits). Two belong to <strong>P2 eval</strong> (correlation + 1-D reward). Every sev-5 gap has
+                a peer-reviewed 2024&ndash;2026 SOTA solution with a public reference implementation.
+              </p>
+            </div>
+            <div class="callout">
+              <h4>Why this matters</h4>
+              <p>
+                Independently addressed, each gap yields a 10&ndash;30% local lift. <strong>Compounded via the
+                convergence loop</strong>, the stack moves from &quot;bandit-tuned template generator&quot; to
+                &quot;autonomous content system that self-converges on indistinguishability from top sellers.&quot;
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELF-LEARNING COMPOUNDER -->
+
 
 </main>
 <footer class="site-footer">

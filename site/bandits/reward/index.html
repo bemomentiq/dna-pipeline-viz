@@ -34,7 +34,130 @@
 <span class="kicker">Bandits &amp; Reward</span>
 <h1>Reward shape</h1>
 <p>How live performance rewires the bandits.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="reward" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">09 · Reward Loop</p>
+            <h2>How live performance rewires the bandits</h2>
+            <p class="section-sub">Every generated video that hits the <code>&ge;1,000 views</code> floor feeds back into a Beta posterior update. This section is the math.</p>
+          </div>
+
+          <div class="reward-grid">
+            <div class="reward-pipeline">
+              <div class="reward-step">
+                <div class="reward-step-num">1</div>
+                <div class="reward-step-body">
+                  <div class="reward-step-title">Select arms</div>
+                  <div class="reward-step-desc">At job create, each of 8 primary attributes samples from its Beta posterior.</div>
+                  <div class="reward-formula">
+                    <code>θ<sub>v</sub> ~ Beta(α<sub>v</sub>, β<sub>v</sub>)</code><br />
+                    <code>arm = argmax<sub>v</sub> θ<sub>v</sub></code>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reward-step">
+                <div class="reward-step-num">2</div>
+                <div class="reward-step-body">
+                  <div class="reward-step-title">Record generation</div>
+                  <div class="reward-step-desc">Selected arm values written to <code>dna_generation_configs</code> alongside <code>profile_date</code> snapshot.</div>
+                  <div class="reward-formula">
+                    <code>INSERT INTO dna_generation_configs</code><br />
+                    <code>(job_id, hook_type_selected, …, profile_date)</code>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reward-step">
+                <div class="reward-step-num">3</div>
+                <div class="reward-step-body">
+                  <div class="reward-step-title">Ingest feedback</div>
+                  <div class="reward-step-desc">Every 6h the TikTok Business API sync writes live GMV/views into <code>dna_performance_feedback</code>.</div>
+                  <div class="reward-formula">
+                    <code>views &ge; 1000</code> &middot; signal floor<br />
+                    <code>bandit_updated = FALSE</code> &middot; work queue
+                  </div>
+                </div>
+              </div>
+
+              <div class="reward-step">
+                <div class="reward-step-num">4</div>
+                <div class="reward-step-body">
+                  <div class="reward-step-title">Map GPM &rarr; reward</div>
+                  <div class="reward-step-desc">Binary reward vs. category baseline GPM at the time of generation (not now &mdash; avoids drift bias).</div>
+                  <div class="reward-formula">
+                    <code>r = 1</code> if <code>gpm &ge; P50<sub>category, profile_date</sub></code><br />
+                    <code>r = 0</code> otherwise
+                  </div>
+                </div>
+              </div>
+
+              <div class="reward-step">
+                <div class="reward-step-num">5</div>
+                <div class="reward-step-body">
+                  <div class="reward-step-title">Update posterior</div>
+                  <div class="reward-step-desc">Conjugate update: one success bumps α, one failure bumps β. Cheap, exact, online.</div>
+                  <div class="reward-formula">
+                    <code>α<sub>v</sub>&prime; = α<sub>v</sub> + r</code><br />
+                    <code>β<sub>v</sub>&prime; = β<sub>v</sub> + (1 &minus; r)</code>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reward-step">
+                <div class="reward-step-num">6</div>
+                <div class="reward-step-body">
+                  <div class="reward-step-title">Persist &amp; close loop</div>
+                  <div class="reward-step-desc">Upsert α/β into <code>dna_bandits</code>, mark row processed, next sample uses new posterior.</div>
+                  <div class="reward-formula">
+                    <code>UPSERT dna_bandits (attribute, category, arm, α, β)</code><br />
+                    <code>UPDATE dna_performance_feedback SET bandit_updated=TRUE</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="reward-example">
+              <div class="reward-example-head">
+                <div class="reward-example-label">WORKED EXAMPLE</div>
+                <div class="reward-example-title"><code>hook_type = problem_pain</code> &middot; Vacuums</div>
+              </div>
+              <table class="reward-example-table">
+                <thead><tr><th>Event</th><th>α</th><th>β</th><th>Mean</th><th>P(best)</th></tr></thead>
+                <tbody>
+                  <tr><td>seeded from DNA (freq 0.78)</td><td>4.12</td><td>1.88</td><td>0.687</td><td>0.62</td></tr>
+                  <tr><td>+22 generations &middot; 15 above P50</td><td>19.12</td><td>8.88</td><td>0.683</td><td>0.71</td></tr>
+                  <tr><td>drift week: only 4/12 beat P50</td><td>23.12</td><td>16.88</td><td>0.578</td><td>0.58</td></tr>
+                  <tr><td>auto-reset: new seed from April baseline</td><td>4.44</td><td>1.56</td><td>0.740</td><td>0.66</td></tr>
+                </tbody>
+              </table>
+              <div class="reward-example-note">Reset at week 27 fired because JS-divergence vs. baseline exceeded <code>0.12</code> for 3 consecutive weeks. Prior scaled to <code>1 + freq × 4</code>.</div>
+            </aside>
+          </div>
+
+          <div class="reward-guards">
+            <div class="reward-guard">
+              <div class="reward-guard-title">Signal floor</div>
+              <div class="reward-guard-body"><code>views &ge; 1,000</code> before any row counts. Sub-threshold rows stay unprocessed indefinitely.</div>
+            </div>
+            <div class="reward-guard">
+              <div class="reward-guard-title">Category floor</div>
+              <div class="reward-guard-body"><code>n &lt; 50</code> videos &rarr; blended Bayesian prior from related verticals before any update.</div>
+            </div>
+            <div class="reward-guard">
+              <div class="reward-guard-title">Temporal baseline</div>
+              <div class="reward-guard-body">Reward uses <em>P50 at profile_date of the job</em>, not today's P50. Drift can't retroactively reclassify a win as a loss.</div>
+            </div>
+            <div class="reward-guard">
+              <div class="reward-guard-title">Drift auto-reset</div>
+              <div class="reward-guard-body">3 consecutive weekly JS-divergence breaches &rarr; bandits reinitialized from latest frequencies.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUALITY GATES -->
+
 
 </main>
 <footer class="site-footer">

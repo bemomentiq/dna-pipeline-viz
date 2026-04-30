@@ -34,7 +34,186 @@
 <span class="kicker">Bandits &amp; Reward</span>
 <h1>Convergence loop</h1>
 <p>Closed loop that converges on indistinguishability.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="convergence" class="section">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">20 · Autonomous convergence loop</p>
+            <h2>End-to-end &mdash; the closed loop that converges on indistinguishability</h2>
+            <p class="section-sub">
+              All six SOTA pipelines wired into one autonomous loop. No human-in-the-loop is required to execute a full
+              cycle &mdash; humans only set constraints (constitution, ROAS floor, guardrails) and observe convergence
+              via the discriminator and the proxy-true gap.
+            </p>
+          </div>
+
+          <div class="conv-loop">
+            <div class="conv-node conv-source">
+              <span class="conv-num">1</span>
+              <h3>Kalodata top-N</h3>
+              <p>Weekly top-seller corpus · L1/L2/L3 stratified</p>
+              <code>kalodata_top_n_YYYY-MM-DD.csv</code>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p1">
+              <span class="conv-num">2</span>
+              <h3>DPP + hard-negatives</h3>
+              <p>Diversity-sampled training set · popularity-debiased</p>
+              <code>dna_corpus_v{N}</code> · lakeFS branch</p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p2">
+              <span class="conv-num">3</span>
+              <h3>VLM judge ensemble</h3>
+              <p>Gemini 2.5 Pro + GPT-4o + Qwen2.5-VL-72B · Elo / Bradley-Terry</p>
+              <code>VideoReward + VisionReward</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p3">
+              <span class="conv-num">4</span>
+              <h3>CMAB-MT + NeuralUCB</h3>
+              <p>Combinatorial super-arm · context-conditioned · hier ebmTS priors</p>
+              <code>apo_variants · dna_category_weights</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p3">
+              <span class="conv-num">5</span>
+              <h3>Generate variants</h3>
+              <p>ScriptSage → queue-app → Veo / Pollo / Seedance</p>
+              <code>dna_generation_configs</code></p>
+            </div>
+            <div class="conv-arrow conv-arrow-down">&darr;</div>
+
+            <div class="conv-node conv-p4">
+              <span class="conv-num">6</span>
+              <h3>mSPRT + CUPED A/B</h3>
+              <p>Always-valid monitoring · CUPED variance reduction · anytime-stop</p>
+              <code>dna_experiments</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p4">
+              <span class="conv-num">7</span>
+              <h3>&beta;*-IPS OPE</h3>
+              <p>Offline counterfactual eval · 100+ policies / week · DR bias protection</p>
+              <code>Open Bandit Pipeline</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p4">
+              <span class="conv-num">8</span>
+              <h3>MLflow champion/challenger</h3>
+              <p>McNemar test + guardrail checks · @champion / @challenger aliases</p>
+              <code>MLflow Model Registry</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p4">
+              <span class="conv-num">9</span>
+              <h3>Ramped rollout</h3>
+              <p>1% → 5% → 20% → 100% · SPRT gate each stage · auto-rollback</p>
+              <code>canary_1pct → canary_5pct → staging → champion</code></p>
+            </div>
+            <div class="conv-arrow conv-arrow-down">&darr;</div>
+
+            <div class="conv-node conv-p5">
+              <span class="conv-num">10</span>
+              <h3>Causal attribution</h3>
+              <p>DoubleML CATE · isolates creative DNA effect from product/price/virality</p>
+              <code>dna_causal_effects</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p5">
+              <span class="conv-num">11</span>
+              <h3>VideoDPO fine-tune</h3>
+              <p>Winners → chosen, near-miss → rejected · TRL · KL-anchored</p>
+              <code>generator_v{N+1}</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p5">
+              <span class="conv-num">12</span>
+              <h3>ORPO regularization</h3>
+              <p>&chi;&sup2; occupancy penalty · proxy-true gap monitor · anti-Goodhart</p>
+              <code>ORPO &beta; auto-tune</code></p>
+            </div>
+            <div class="conv-arrow">&rarr;</div>
+
+            <div class="conv-node conv-p5">
+              <span class="conv-num">13</span>
+              <h3>GAD minimax</h3>
+              <p>Discriminator vs generator · Nash at chance-level · indistinguishable</p>
+              <code>generator_v{N+1} + discriminator_v{N+1}</code></p>
+            </div>
+            <div class="conv-arrow conv-arrow-back">&crarr;</div>
+
+            <div class="conv-node conv-feedback">
+              <span class="conv-num">14</span>
+              <h3>Feedback to Kalodata</h3>
+              <p>Generator outputs that win in-market become next-round top-N · loop closes</p>
+              <code>performance_feedback &rarr; corpus v{N+2}</code></p>
+            </div>
+          </div>
+
+          <div class="conv-metrics">
+            <h3>Convergence criteria</h3>
+            <div class="conv-metric-grid">
+              <div class="conv-metric">
+                <div class="cm-head">Indistinguishability</div>
+                <div class="cm-val">&le; 0.55</div>
+                <div class="cm-sub">GAD discriminator accuracy sustained over 2 rounds</div>
+              </div>
+              <div class="conv-metric">
+                <div class="cm-head">Proxy-true gap</div>
+                <div class="cm-val">&le; 0.10</div>
+                <div class="cm-sub">|VLM score &minus; realized GMV-percentile| &mdash; rolling 4-week</div>
+              </div>
+              <div class="conv-metric">
+                <div class="cm-head">Cross-brand regret</div>
+                <div class="cm-val">O(m log n)</div>
+                <div class="cm-sub">HierBayesUCB bound · vs O(m&radic;n) isolated</div>
+              </div>
+              <div class="conv-metric">
+                <div class="cm-head">Portfolio ROAS</div>
+                <div class="cm-val">&ge; 4.0&times;</div>
+                <div class="cm-sub">With per-brand floor enforced · UCB-allocated</div>
+              </div>
+              <div class="conv-metric">
+                <div class="cm-head">OPE coverage</div>
+                <div class="cm-val">&ge; 100/wk</div>
+                <div class="cm-sub">Counterfactual policies evaluated offline per week</div>
+              </div>
+              <div class="conv-metric">
+                <div class="cm-head">Autonomous uptime</div>
+                <div class="cm-val">&ge; 99%</div>
+                <div class="cm-sub">Full loop cycles without human intervention</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conv-principles">
+            <h3>Why this loop compounds</h3>
+            <ol>
+              <li><strong>Every stage produces a durable artifact</strong> &mdash; corpus version, judge annotations,
+                bandit posteriors, MLflow model, DPO fine-tune, GAD discriminator. Nothing is thrown away.</li>
+              <li><strong>Three independent anti-overfit safeguards</strong>: ORPO occupancy regularization + RM-ensemble
+                disagreement monitor + GAD co-evolving discriminator. Reward hacking requires defeating all three.</li>
+              <li><strong>OPE decouples policy eval from traffic</strong> &mdash; 100+ policy variants evaluated per week
+                without spending a single impression.</li>
+              <li><strong>Hierarchical Bayes transfers every brand&rsquo;s learnings to every other brand</strong> via
+                shared L1/L2/L3 priors. Each new brand launches with portfolio-level intelligence baked in.</li>
+              <li><strong>The generator itself improves weekly</strong> via VideoDPO &mdash; the winning distribution
+                becomes the next-round prior. Templates converge toward high-GMV content without human curation.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+
 
 </main>
 <footer class="site-footer">

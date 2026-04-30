@@ -34,7 +34,37 @@
 <span class="kicker">Reference</span>
 <h1>Glossary</h1>
 <p>Every term you&#x27;ll see in the ledger.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="glossary" class="section section-quiet">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">16 &middot; Glossary</p>
+            <h2>Every term you'll see in the ledger</h2>
+            <p class="section-sub">Short, operator-grade definitions for the acronyms and domain-specific words used across the pipeline.</p>
+          </div>
+
+          <dl class="glossary">
+            <div class="gloss"><dt>DNA</dt><dd>The <strong>synthesized profile</strong> of what makes top-seller videos work in a category &mdash; frequencies, winning arms, and GPM correlations. Not a model. A versioned config object.</dd></div>
+            <div class="gloss"><dt>GPM</dt><dd>Gross merchandise per mille. Revenue (USD) divided by impressions &times; 1,000. Core reward signal.</dd></div>
+            <div class="gloss"><dt>Thompson Sampling</dt><dd>A Bayesian bandit algorithm that samples from each arm's posterior to choose the next draw. Naturally balances explore vs exploit.</dd></div>
+            <div class="gloss"><dt>Beta posterior</dt><dd>The distribution over success-rate for a single arm. Parameters <code>&alpha;</code> (successes) and <code>&beta;</code> (failures). Mean = <code>&alpha;/(&alpha;+&beta;)</code>.</dd></div>
+            <div class="gloss"><dt>IDS</dt><dd>Indistinguishability Score. How close a generated video is to Kalodata top-sellers across 6 judge ensembles. 0.80+ is ship-ready.</dd></div>
+            <div class="gloss"><dt>JS divergence</dt><dd>Jensen&ndash;Shannon divergence. Symmetric distance between two probability distributions (e.g. last-week profile vs this-week). Drift alert at &ge; 0.10.</dd></div>
+            <div class="gloss"><dt>Composite rubric</dt><dd>Weighted average across 7 dimensions (hook, duration, caption, music, CTA, demo, B-roll). Ship gate at 0.70.</dd></div>
+            <div class="gloss"><dt>Voice composite</dt><dd>6-dim voice-lock score: F0 drift, RMS, first-chunk silence, langdetect, embed cosine, crossfade. Gate at 0.88 &mdash; strictest gate in the pipeline.</dd></div>
+            <div class="gloss"><dt>Additive-only</dt><dd>Core invariant: the DNA pipeline may add new tables, configs, endpoints, or columns, but may never modify an existing one. Enforced by CI.</dd></div>
+            <div class="gloss"><dt>Canary</dt><dd>Low-traffic slice (10%) of live jobs that receive a new policy. Side-by-side with a matched control. First real-world gate after shadow-only.</dd></div>
+            <div class="gloss"><dt>Shadow run</dt><dd>Generation with scoring but no distribution. Used to calibrate new policies against historic logs before risking real traffic.</dd></div>
+            <div class="gloss"><dt>Prior blending</dt><dd>When a category has <code>n &lt; 50</code>, its bandit is initialized from a weighted mix of related categories' posteriors. Prevents cold-start thrash.</dd></div>
+            <div class="gloss"><dt>Drift auto-reset</dt><dd>Bandits reinitialize to profile frequencies after 3 consecutive same-direction JS-divergence weeks. Prevents stale posteriors.</dd></div>
+            <div class="gloss"><dt>Signal floor</dt><dd>1,000 views minimum before a video's GPM can update any bandit. Keeps low-impression noise out of the learning loop.</dd></div>
+            <div class="gloss"><dt>Category floor</dt><dd>20 videos minimum before a category has its own profile. Below this, it inherits blended priors.</dd></div>
+            <div class="gloss"><dt>Champion / Shadow</dt><dd>Champion is the live policy; shadow is the proposed replacement. Shadow runs off-policy until it beats champion statistically.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- QUICK-START OPERATOR CARD -->
+
 
 </main>
 <footer class="site-footer">

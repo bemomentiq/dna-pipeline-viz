@@ -34,7 +34,129 @@
 <span class="kicker">Operations</span>
 <h1>Cost &amp; ROI</h1>
 <p>Pipeline economics.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="costroi" class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">15 · Unit economics & ROI</div>
+          <h2 class="section-title">Cost per decision, payback by tier, <span class="grad-source">marginal ROI</span> by phase</h2>
+          <p class="section-sub">Every autonomous decision has a unit cost. Variants cost ~$4 to generate, judge ensembles cost ~$0.08 per scoring, DPO rounds cost ~$180 in H100 hours, OPE estimations cost pennies. Plot those against expected GMV lift and every roadmap phase has a defensible payback window before it is enabled for each brand tier.</p>
+        </div>
+
+        <div class="cost-grid">
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per variant generated</h4><span class="cost-badge">~$4.00</span></div>
+            <ul>
+              <li><span>Veo 3.1 Fast (15s)</span><strong>$3.60</strong></li>
+              <li><span>Prompt + orchestration</span><strong>$0.12</strong></li>
+              <li><span>GCS write + signed URL</span><strong>$0.01</strong></li>
+              <li><span>Queue + routing overhead</span><strong>$0.03</strong></li>
+              <li><span>Trace + telemetry</span><strong>$0.004</strong></li>
+            </ul>
+            <p class="cost-note">Bottleneck: model inference (Veo seconds). Lever: batching across chunks.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per judge scoring</h4><span class="cost-badge">~$0.08</span></div>
+            <ul>
+              <li><span>VideoReward (Kling)</span><strong>$0.04</strong></li>
+              <li><span>VisionReward</span><strong>$0.025</strong></li>
+              <li><span>7B distilled judge (after W38)</span><strong>$0.004</strong></li>
+              <li><span>Storage + write</span><strong>$0.005</strong></li>
+              <li><span>Ensemble combiner</span><strong>$0.002</strong></li>
+            </ul>
+            <p class="cost-note">10× reduction when distillation lands in Phase 11.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per OPE estimation</h4><span class="cost-badge">~$0.35</span></div>
+            <ul>
+              <li><span>β*-IPS compute (10K impr.)</span><strong>$0.18</strong></li>
+              <li><span>DoubleML orthogonalization</span><strong>$0.08</strong></li>
+              <li><span>CI bootstrap (1K reps)</span><strong>$0.06</strong></li>
+              <li><span>Logged-data read</span><strong>$0.02</strong></li>
+              <li><span>Registry write</span><strong>$0.01</strong></li>
+            </ul>
+            <p class="cost-note">Runs every 6h per active policy. Scales with logged volume not brand count.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per DPO round</h4><span class="cost-badge">~$180</span></div>
+            <ul>
+              <li><span>H100 × 20 hours</span><strong>$160</strong></li>
+              <li><span>Preference-pair mining</span><strong>$8</strong></li>
+              <li><span>MLflow artifact store</span><strong>$4</strong></li>
+              <li><span>Canary deploy</span><strong>$6</strong></li>
+              <li><span>Telemetry + audit</span><strong>$2</strong></li>
+            </ul>
+            <p class="cost-note">Weekly per tier-1 brand. LoRA-only variant drops cost 4×.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per GAD round</h4><span class="cost-badge">~$520</span></div>
+            <ul>
+              <li><span>Discriminator training</span><strong>$140</strong></li>
+              <li><span>Generator adversarial step</span><strong>$320</strong></li>
+              <li><span>Hard-negative mining</span><strong>$40</strong></li>
+              <li><span>Convergence check + report</span><strong>$15</strong></li>
+              <li><span>Checkpoint store</span><strong>$5</strong></li>
+            </ul>
+            <p class="cost-note">Phase 13 only, reserved for Enterprise brands until 7B judge distillation lands.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per training datum</h4><span class="cost-badge">~$0.022</span></div>
+            <ul>
+              <li><span>Active-learning scorer</span><strong>$0.008</strong></li>
+              <li><span>DPP diversity filter</span><strong>$0.004</strong></li>
+              <li><span>Dedup + hash</span><strong>$0.002</strong></li>
+              <li><span>DVC/lakeFS write</span><strong>$0.005</strong></li>
+              <li><span>Provenance index</span><strong>$0.003</strong></li>
+            </ul>
+            <p class="cost-note">Cheapest unit. Volume dominates (~1.2M data points/mo at W40).</p>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Marginal ROI by roadmap phase</h3>
+        <div class="table-scroll">
+          <table class="sota-table roi-table">
+            <thead><tr><th>Phase</th><th>Window</th><th>Investment</th><th>Expected GMV lift</th><th>Payback</th><th>Confidence</th><th>Blocks?</th></tr></thead>
+            <tbody>
+              <tr><td>Phase 7</td><td>W21–25</td><td>$60K</td><td>+3-5%</td><td>1 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td>Phase 8</td><td>W26–28</td><td>$40K</td><td>+2-4%</td><td>1 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td>Phase 9</td><td>W29–30</td><td>$35K</td><td>+1-3%</td><td>1 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td class="row-sota"><strong>Phase 10</strong></td><td>W31–34</td><td>$95K</td><td>+4-7%</td><td>1.3 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td class="row-sota"><strong>Phase 11</strong></td><td>W35–40</td><td>$260K</td><td>+8-14%</td><td>2.1 mo</td><td class="conf-med">Med</td><td>Phase 10</td></tr>
+              <tr><td class="row-sota"><strong>Phase 12</strong></td><td>W41–50</td><td>$640K</td><td>+12-22%</td><td>3.8 mo</td><td class="conf-med">Med</td><td>Phase 11 + GPU capacity</td></tr>
+              <tr><td class="row-sota"><strong>Phase 13</strong></td><td>W51+</td><td>$780K</td><td>+15-30%</td><td>5.2 mo</td><td class="conf-low">Lower</td><td>Phase 12 + 7B judge distill</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="sub-h">Brand-tier payback rules</h3>
+        <div class="tier-grid">
+          <div class="tier-card tier-ent">
+            <h4>Enterprise · $50K+/mo</h4>
+            <p class="tier-rule">Enable all phases as they land. ROAS floor 4×. GAD allowed.</p>
+            <p class="tier-pay">Phase 13 payback: 3.2 mo</p>
+          </div>
+          <div class="tier-card tier-growth">
+            <h4>Growth · $10–50K/mo</h4>
+            <p class="tier-rule">Phases 10–12 at rollout. Phase 13 gated on top-decile GMV.</p>
+            <p class="tier-pay">Phase 12 payback: 4.0 mo</p>
+          </div>
+          <div class="tier-card tier-starter">
+            <h4>Starter · $2–10K/mo</h4>
+            <p class="tier-rule">Phases 10–11 only until Q3'26. Borrow learnings from hierarchical priors.</p>
+            <p class="tier-pay">Phase 11 payback: 4.5 mo</p>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Cost-optimization levers (ranked by $ impact)</h3>
+        <div class="lever-grid">
+          <div class="lever-card"><span class="lever-rank">1</span><h5>7B judge distillation</h5><p>Distill VideoReward/VisionReward into in-house 7B. ~10× judge cost reduction.</p><span class="lever-save">-$14K/mo @ W40</span></div>
+          <div class="lever-card"><span class="lever-rank">2</span><h5>LoRA over full fine-tune</h5><p>DPO/ORPO as LoRA adapters instead of full H100 fine-tune. 4× cheaper, ~95% of quality.</p><span class="lever-save">-$9K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">3</span><h5>Spot GPU for DPO/GAD</h5><p>Non-real-time training jobs run on preemptible pools with checkpoint-every-5min.</p><span class="lever-save">-$6K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">4</span><h5>Request batching (Veo)</h5><p>Batch chunk generations across the queue. 3× throughput, same quality.</p><span class="lever-save">-$5K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">5</span><h5>Prompt caching</h5><p>Cache brand-context prefix across variants. Vertex prompt-cache 50–75% hit.</p><span class="lever-save">-$3K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">6</span><h5>GCS lifecycle policy</h5><p>30-day nearline → 90-day coldline → 365-day archive for training corpus.</p><span class="lever-save">-$2K/mo</span></div>
+        </div>
+      </section>
+
+
 
 </main>
 <footer class="site-footer">
