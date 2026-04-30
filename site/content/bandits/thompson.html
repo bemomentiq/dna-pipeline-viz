@@ -1,4 +1,15 @@
-<div class="bandit-grid">
+      <section id="bandits" class="section">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">07 · Bandit state</p>
+            <h2>Thompson Sampling, per attribute × category</h2>
+            <p class="section-sub">
+              12 attributes total &mdash; 8 primary (routed on every job) and 4 secondary (sampled when data permits).
+              Arms below are the 8 primary attributes with posterior mean and 95% credible interval.
+            </p>
+          </div>
+
+          <div class="bandit-grid">
             <div class="bandit-card">
               <div class="bandit-head"><h4>hook_type</h4><span>8 arms</span></div>
               <div class="bandit-rows">
@@ -101,3 +112,7 @@
               <code>presenter_age</code>, <code>presenter_gender</code>, <code>setting_type</code>, <code>broll_bucket</code>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ROADMAP -->

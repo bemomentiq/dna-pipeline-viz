@@ -34,7 +34,18 @@
 <span class="kicker">Architecture</span>
 <h1>Stack placement</h1>
 <p>Where DNA lives across services and stores.</p>
-<div class="arch-diagram">
+      <section id="architecture" class="section section-quiet">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">04 · Architecture</p>
+            <h2>Where DNA lives in the stack</h2>
+            <p class="section-sub">
+              DNA is a sidecar on top of the existing three-surface content platform: ScriptSage monolith,
+              queue-app dispatcher, and generation engines. Every arrow below is a real HTTP or queue hop.
+            </p>
+          </div>
+
+          <div class="arch-diagram">
             <!-- Row 1 — Source -->
             <div class="arch-row arch-row-source">
               <div class="arch-lane-label">Source</div>
@@ -226,6 +237,10 @@
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- CONFIGS — FULL MATRIX -->
 
 
 </main>
