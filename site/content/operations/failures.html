@@ -1,4 +1,11 @@
-<div class="failure-grid">
+      <section id="failures" class="section section-quiet">
+        <div class="section-head">
+          <div class="section-eyebrow">16 · Failure modes & safety rails</div>
+          <h2 class="section-title">Seven failure classes, twelve <span class="grad-gate">circuit breakers</span>, three kill switches</h2>
+          <p class="section-sub">An autonomous pipeline that can spend a brand's budget without human approval must assume every component will fail in an adversarial direction. Goodhart's law, reward hacking, mode collapse, data gaming, drift, compliance drift, cascade failures — we catalog 30 failure modes across 7 classes, define formulas for each detection signal, and wire autonomous recoveries. Humans only at severity S1 or repeated S2.</p>
+        </div>
+
+        <div class="failure-grid">
           <div class="fclass fclass-f1">
             <div class="fclass-head"><span class="fclass-tag">F1</span><h4>Reward hacking</h4></div>
             <p class="fclass-sub">Goodhart's law: the judge becomes the objective.</p>
@@ -99,3 +106,5 @@
           <div class="ks-card ks-red"><h4>RED · rollback since T</h4><p>Owner: CTO · Approval: Eng Lead + CTO · MTTR &lt; 15 min · Rolls every promotion post-timestamp back to prior MLflow champion.</p></div>
           <div class="ks-card ks-black"><h4>BLACK · DNA fully off</h4><p>Owner: CEO · Approval: CEO · MTTR &lt; 5 min · Baseline-only serving resumes. DNA layer dark until root cause signed off.</p></div>
         </div>
+      </section>
+

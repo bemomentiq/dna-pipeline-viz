@@ -34,7 +34,14 @@
 <span class="kicker">Quality &amp; Gates</span>
 <h1>Invariants</h1>
 <p>Non-negotiable rules the pipeline enforces.</p>
-<ol class="rules">
+      <section class="section section-quiet">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">20 · Invariants</p>
+            <h2>Non-negotiable rules the pipeline enforces</h2>
+          </div>
+
+          <ol class="rules">
             <li><strong>Additive only.</strong> No modifications to <code>vertex_standard</code>, <code>pollo_standard</code>, <code>seedance_standard</code>, or existing DB tables.</li>
             <li><strong>A/B gated rollout.</strong> DNA configs prove themselves via compliance scoring + performance before becoming defaults.</li>
             <li><strong>Top-200 bias disclosed.</strong> Kalodata top-revenue sampling is biased — stratified sampling is used whenever ecosystem-level inference is required.</li>
@@ -43,6 +50,24 @@
             <li><strong>Compliance threshold = 0.70 composite</strong> across the 7-dimension rubric before a variant leaves the gate.</li>
             <li><strong>Drift auto-reset</strong> only fires after 3 consecutive weekly observations of same-direction shift.</li>
           </ol>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="container footer-inner">
+          <div>
+            <div class="footer-brand">MomentIQ DNA Pipeline</div>
+            <div class="footer-meta">Kalodata → AI content platform training loop · v2026-04</div>
+          </div>
+          <div class="footer-refs">
+            <span>Source skills:</span>
+            <code>kalodata-intelligence</code>
+            <code>content-platform</code>
+            <code>agent-ops</code>
+          </div>
+        </div>
+      </footer>
+          <!-- SOTA GAP MATRIX -->
 
 
 </main>
