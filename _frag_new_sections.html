@@ -1,0 +1,410 @@
+      <section id="impl" class="section section-quiet">
+        <div class="section-head">
+          <div class="section-eyebrow">14 · Implementation & observability</div>
+          <h2 class="section-title">Ten <span class="grad-config">dna-* services</span>, fifteen SLOs, one distributed trace</h2>
+          <p class="section-sub">The SOTA methods are nothing without the plumbing. Ten new services on GKE, a unified event bus with versioned protobuf contracts, and OpenTelemetry traces that stitch one training cycle from Kalodata ingest through judge → OPE → bandit → rollout → DPO → ledger. Everything runs in dedicated <code>dna-compute / dna-inference / dna-data</code> namespaces — the baseline ScriptSage / queue-app / vidgen-engine deployment is untouched.</p>
+        </div>
+
+        <div class="impl-grid">
+          <div class="impl-card" data-service="ingest">
+            <div class="impl-head"><span class="impl-pill">Go</span><h4>dna-ingest</h4></div>
+            <div class="impl-meta">GKE <code>dna-data</code> · KEDA on Kafka lag</div>
+            <p>Pulls Kalodata top-seller feed, validates schema, writes to <code>dna_training_corpus</code>, emits <code>dna.variant.ingested</code> events. Owns P1.</p>
+          </div>
+          <div class="impl-card" data-service="judge">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-judge-ensemble</h4></div>
+            <div class="impl-meta">GKE <code>dna-compute</code> · GPU A100 · HPA on queue depth</div>
+            <p>VideoReward + VisionReward + 7B distilled judge. Returns 5-dim reward vector. Owns P2 scoring.</p>
+          </div>
+          <div class="impl-card" data-service="ope">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-ope</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · CPU-heavy · batch every 6h</div>
+            <p>Runs β*-IPS + DoubleML over logged bandit data. Gates every promotion candidate before any impressions are spent.</p>
+          </div>
+          <div class="impl-card" data-service="bandit">
+            <div class="impl-head"><span class="impl-pill">Go</span><h4>dna-bandit-router</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · low-latency · p99 &lt;100ms</div>
+            <p>CMAB-MT + MOL-TS arm selection. Serves the live A/B traffic split. Reads hierarchical posteriors from ebmTS.</p>
+          </div>
+          <div class="impl-card" data-service="dpo">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-dpo-trainer</h4></div>
+            <div class="impl-meta">GKE <code>dna-compute</code> · H100 · weekly jobs</div>
+            <p>VideoDPO + ORPO fine-tunes. Reads preference pairs from the compounding ledger, writes new checkpoints to MLflow.</p>
+          </div>
+          <div class="impl-card" data-service="gad">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-gad-adversary</h4></div>
+            <div class="impl-meta">GKE <code>dna-compute</code> · H100 · Phase 13 only</div>
+            <p>Discriminator + generator adversarial loop. Convergence criterion: discriminator AUC on (top-seller, generated) ≈ 0.5.</p>
+          </div>
+          <div class="impl-card" data-service="rlaif">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-rlaif-annotator</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · API-bound</div>
+            <p>Constitutional cross-check every preference pair vs brand-safety + TikTok Shop compliance rules before ledger append.</p>
+          </div>
+          <div class="impl-card" data-service="rollout">
+            <div class="impl-head"><span class="impl-pill">Go</span><h4>dna-rollout-controller</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · always-on</div>
+            <p>72-hour canary windows with continuous mSPRT monitoring. Auto-rollback on any guardrail trip.</p>
+          </div>
+          <div class="impl-card" data-service="drift">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-drift-monitor</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · scheduled 15min</div>
+            <p>PSI + KS + MMD on feature/reward distributions. Triggers retrain and alerts when drift crosses thresholds.</p>
+          </div>
+          <div class="impl-card" data-service="registry">
+            <div class="impl-head"><span class="impl-pill">TS</span><h4>dna-registry-gateway</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · edge-facing</div>
+            <p>Single API gateway for all <code>/api/v1/dna/*</code> routes. mTLS between internal services, OAuth2 for brand-facing endpoints.</p>
+          </div>
+        </div>
+
+        <div class="impl-split">
+          <div class="impl-slo">
+            <h3>15-SLO catalog</h3>
+            <div class="table-scroll">
+              <table class="sota-table slo-table">
+                <thead><tr><th>Service</th><th>SLO</th><th>Target</th><th>Budget</th></tr></thead>
+                <tbody>
+                  <tr><td>dna-ingest</td><td>availability</td><td>99.9%</td><td>43 min/mo</td></tr>
+                  <tr><td>dna-ingest</td><td>freshness</td><td>≤ 6h</td><td>daily</td></tr>
+                  <tr><td>dna-judge-ensemble</td><td>scoring latency p99</td><td>≤ 30s</td><td>12% breach/mo</td></tr>
+                  <tr><td>dna-judge-ensemble</td><td>ensemble agreement</td><td>≥ 0.7 cos-sim</td><td>5%/wk</td></tr>
+                  <tr><td>dna-ope</td><td>estimation freshness</td><td>≤ 6h</td><td>15%/mo</td></tr>
+                  <tr><td>dna-ope</td><td>CI coverage</td><td>≥ 90% calibrated</td><td>monthly audit</td></tr>
+                  <tr><td>dna-bandit-router</td><td>decision latency p99</td><td>≤ 100ms</td><td>10%/wk</td></tr>
+                  <tr><td>dna-bandit-router</td><td>posterior staleness</td><td>≤ 1h</td><td>2%/day</td></tr>
+                  <tr><td>dna-dpo-trainer</td><td>training job success rate</td><td>≥ 95%</td><td>2 fail/mo</td></tr>
+                  <tr><td>dna-rollout-controller</td><td>guardrail violations in canary</td><td>0</td><td>zero-tolerance</td></tr>
+                  <tr><td>dna-rollout-controller</td><td>auto-rollback time</td><td>≤ 5 min</td><td>1% over/mo</td></tr>
+                  <tr><td>dna-drift-monitor</td><td>detection lag</td><td>≤ 30 min</td><td>5%/wk</td></tr>
+                  <tr><td>dna-ledger-writer</td><td>write durability</td><td>99.99%</td><td>5 min/mo</td></tr>
+                  <tr><td>dna-registry-gateway</td><td>p99 latency</td><td>≤ 150ms</td><td>10%/wk</td></tr>
+                  <tr><td>dna-registry-gateway</td><td>auth success rate</td><td>≥ 99.95%</td><td>22 min/mo</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="impl-trace">
+            <h3>End-to-end trace skeleton</h3>
+            <p class="impl-trace-sub">One OpenTelemetry span per service boundary. Trace_id persists from generation through ledger append so we can debug any single variant in one query.</p>
+            <div class="trace-flow">
+              <div class="trace-node"><span class="trace-svc">dna-ingest</span><span class="trace-span">fetch_kalodata</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">scriptsage</span><span class="trace-span">generate_variant</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-judge</span><span class="trace-span">score_5dim</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-ope</span><span class="trace-span">beta_star_ips</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-bandit</span><span class="trace-span">assign_arm</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">partner-center</span><span class="trace-span">ab_result</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-rollout</span><span class="trace-span">msprt_gate</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-ledger</span><span class="trace-span">append_row</span></div>
+            </div>
+            <p class="impl-trace-note">Baggage tags propagate <code>brand_id</code>, <code>category_l1/l2/l3</code>, <code>experiment_id</code> across every hop. Prom + Loki + Tempo stack on GKE. Grafana dashboards reference these tags for every panel.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="costroi" class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">15 · Unit economics & ROI</div>
+          <h2 class="section-title">Cost per decision, payback by tier, <span class="grad-source">marginal ROI</span> by phase</h2>
+          <p class="section-sub">Every autonomous decision has a unit cost. Variants cost ~$4 to generate, judge ensembles cost ~$0.08 per scoring, DPO rounds cost ~$180 in H100 hours, OPE estimations cost pennies. Plot those against expected GMV lift and every roadmap phase has a defensible payback window before it is enabled for each brand tier.</p>
+        </div>
+
+        <div class="cost-grid">
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per variant generated</h4><span class="cost-badge">~$4.00</span></div>
+            <ul>
+              <li><span>Veo 3.1 Fast (15s)</span><strong>$3.60</strong></li>
+              <li><span>Prompt + orchestration</span><strong>$0.12</strong></li>
+              <li><span>GCS write + signed URL</span><strong>$0.01</strong></li>
+              <li><span>Queue + routing overhead</span><strong>$0.03</strong></li>
+              <li><span>Trace + telemetry</span><strong>$0.004</strong></li>
+            </ul>
+            <p class="cost-note">Bottleneck: model inference (Veo seconds). Lever: batching across chunks.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per judge scoring</h4><span class="cost-badge">~$0.08</span></div>
+            <ul>
+              <li><span>VideoReward (Kling)</span><strong>$0.04</strong></li>
+              <li><span>VisionReward</span><strong>$0.025</strong></li>
+              <li><span>7B distilled judge (after W38)</span><strong>$0.004</strong></li>
+              <li><span>Storage + write</span><strong>$0.005</strong></li>
+              <li><span>Ensemble combiner</span><strong>$0.002</strong></li>
+            </ul>
+            <p class="cost-note">10× reduction when distillation lands in Phase 11.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per OPE estimation</h4><span class="cost-badge">~$0.35</span></div>
+            <ul>
+              <li><span>β*-IPS compute (10K impr.)</span><strong>$0.18</strong></li>
+              <li><span>DoubleML orthogonalization</span><strong>$0.08</strong></li>
+              <li><span>CI bootstrap (1K reps)</span><strong>$0.06</strong></li>
+              <li><span>Logged-data read</span><strong>$0.02</strong></li>
+              <li><span>Registry write</span><strong>$0.01</strong></li>
+            </ul>
+            <p class="cost-note">Runs every 6h per active policy. Scales with logged volume not brand count.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per DPO round</h4><span class="cost-badge">~$180</span></div>
+            <ul>
+              <li><span>H100 × 20 hours</span><strong>$160</strong></li>
+              <li><span>Preference-pair mining</span><strong>$8</strong></li>
+              <li><span>MLflow artifact store</span><strong>$4</strong></li>
+              <li><span>Canary deploy</span><strong>$6</strong></li>
+              <li><span>Telemetry + audit</span><strong>$2</strong></li>
+            </ul>
+            <p class="cost-note">Weekly per tier-1 brand. LoRA-only variant drops cost 4×.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per GAD round</h4><span class="cost-badge">~$520</span></div>
+            <ul>
+              <li><span>Discriminator training</span><strong>$140</strong></li>
+              <li><span>Generator adversarial step</span><strong>$320</strong></li>
+              <li><span>Hard-negative mining</span><strong>$40</strong></li>
+              <li><span>Convergence check + report</span><strong>$15</strong></li>
+              <li><span>Checkpoint store</span><strong>$5</strong></li>
+            </ul>
+            <p class="cost-note">Phase 13 only, reserved for Enterprise brands until 7B judge distillation lands.</p>
+          </div>
+          <div class="cost-card">
+            <div class="cost-head"><h4>Cost per training datum</h4><span class="cost-badge">~$0.022</span></div>
+            <ul>
+              <li><span>Active-learning scorer</span><strong>$0.008</strong></li>
+              <li><span>DPP diversity filter</span><strong>$0.004</strong></li>
+              <li><span>Dedup + hash</span><strong>$0.002</strong></li>
+              <li><span>DVC/lakeFS write</span><strong>$0.005</strong></li>
+              <li><span>Provenance index</span><strong>$0.003</strong></li>
+            </ul>
+            <p class="cost-note">Cheapest unit. Volume dominates (~1.2M data points/mo at W40).</p>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Marginal ROI by roadmap phase</h3>
+        <div class="table-scroll">
+          <table class="sota-table roi-table">
+            <thead><tr><th>Phase</th><th>Window</th><th>Investment</th><th>Expected GMV lift</th><th>Payback</th><th>Confidence</th><th>Blocks?</th></tr></thead>
+            <tbody>
+              <tr><td>Phase 7</td><td>W21–25</td><td>$60K</td><td>+3-5%</td><td>1 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td>Phase 8</td><td>W26–28</td><td>$40K</td><td>+2-4%</td><td>1 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td>Phase 9</td><td>W29–30</td><td>$35K</td><td>+1-3%</td><td>1 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td class="row-sota"><strong>Phase 10</strong></td><td>W31–34</td><td>$95K</td><td>+4-7%</td><td>1.3 mo</td><td class="conf-high">High</td><td>—</td></tr>
+              <tr><td class="row-sota"><strong>Phase 11</strong></td><td>W35–40</td><td>$260K</td><td>+8-14%</td><td>2.1 mo</td><td class="conf-med">Med</td><td>Phase 10</td></tr>
+              <tr><td class="row-sota"><strong>Phase 12</strong></td><td>W41–50</td><td>$640K</td><td>+12-22%</td><td>3.8 mo</td><td class="conf-med">Med</td><td>Phase 11 + GPU capacity</td></tr>
+              <tr><td class="row-sota"><strong>Phase 13</strong></td><td>W51+</td><td>$780K</td><td>+15-30%</td><td>5.2 mo</td><td class="conf-low">Lower</td><td>Phase 12 + 7B judge distill</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="sub-h">Brand-tier payback rules</h3>
+        <div class="tier-grid">
+          <div class="tier-card tier-ent">
+            <h4>Enterprise · $50K+/mo</h4>
+            <p class="tier-rule">Enable all phases as they land. ROAS floor 4×. GAD allowed.</p>
+            <p class="tier-pay">Phase 13 payback: 3.2 mo</p>
+          </div>
+          <div class="tier-card tier-growth">
+            <h4>Growth · $10–50K/mo</h4>
+            <p class="tier-rule">Phases 10–12 at rollout. Phase 13 gated on top-decile GMV.</p>
+            <p class="tier-pay">Phase 12 payback: 4.0 mo</p>
+          </div>
+          <div class="tier-card tier-starter">
+            <h4>Starter · $2–10K/mo</h4>
+            <p class="tier-rule">Phases 10–11 only until Q3'26. Borrow learnings from hierarchical priors.</p>
+            <p class="tier-pay">Phase 11 payback: 4.5 mo</p>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Cost-optimization levers (ranked by $ impact)</h3>
+        <div class="lever-grid">
+          <div class="lever-card"><span class="lever-rank">1</span><h5>7B judge distillation</h5><p>Distill VideoReward/VisionReward into in-house 7B. ~10× judge cost reduction.</p><span class="lever-save">-$14K/mo @ W40</span></div>
+          <div class="lever-card"><span class="lever-rank">2</span><h5>LoRA over full fine-tune</h5><p>DPO/ORPO as LoRA adapters instead of full H100 fine-tune. 4× cheaper, ~95% of quality.</p><span class="lever-save">-$9K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">3</span><h5>Spot GPU for DPO/GAD</h5><p>Non-real-time training jobs run on preemptible pools with checkpoint-every-5min.</p><span class="lever-save">-$6K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">4</span><h5>Request batching (Veo)</h5><p>Batch chunk generations across the queue. 3× throughput, same quality.</p><span class="lever-save">-$5K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">5</span><h5>Prompt caching</h5><p>Cache brand-context prefix across variants. Vertex prompt-cache 50–75% hit.</p><span class="lever-save">-$3K/mo</span></div>
+          <div class="lever-card"><span class="lever-rank">6</span><h5>GCS lifecycle policy</h5><p>30-day nearline → 90-day coldline → 365-day archive for training corpus.</p><span class="lever-save">-$2K/mo</span></div>
+        </div>
+      </section>
+
+      <section id="failures" class="section section-quiet">
+        <div class="section-head">
+          <div class="section-eyebrow">16 · Failure modes & safety rails</div>
+          <h2 class="section-title">Seven failure classes, twelve <span class="grad-gate">circuit breakers</span>, three kill switches</h2>
+          <p class="section-sub">An autonomous pipeline that can spend a brand's budget without human approval must assume every component will fail in an adversarial direction. Goodhart's law, reward hacking, mode collapse, data gaming, drift, compliance drift, cascade failures — we catalog 30 failure modes across 7 classes, define formulas for each detection signal, and wire autonomous recoveries. Humans only at severity S1 or repeated S2.</p>
+        </div>
+
+        <div class="failure-grid">
+          <div class="fclass fclass-f1">
+            <div class="fclass-head"><span class="fclass-tag">F1</span><h4>Reward hacking</h4></div>
+            <p class="fclass-sub">Goodhart's law: the judge becomes the objective.</p>
+            <ul>
+              <li><strong>Judge/GMV divergence:</strong> |R<sub>judge</sub> − R<sub>GMV</sub>| &gt; 2σ over 7-day window</li>
+              <li><strong>Sycophantic judge:</strong> corr(judge_score, brand_prior) &gt; 0.8</li>
+              <li><strong>Spec gaming:</strong> reward ↑ while GMV-attribution ↓</li>
+              <li><strong>Adversarial prompt exploits:</strong> monthly red-team tournament</li>
+              <li class="remedy">Remedy: ORPO χ² regularization + RLAIF cross-check + shadow reward model</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f2">
+            <div class="fclass-head"><span class="fclass-tag">F2</span><h4>Distribution shift</h4></div>
+            <p class="fclass-sub">Seasonal, category-migration, concept drift.</p>
+            <ul>
+              <li><strong>PSI &gt; 0.25 warn, &gt; 0.5 alert</strong></li>
+              <li><strong>KS test on reward dist:</strong> p &lt; 0.01 over 24h</li>
+              <li><strong>MMD on embeddings:</strong> &gt; threshold per-category</li>
+              <li><strong>Conformal p-values trending low</strong></li>
+              <li class="remedy">Remedy: auto-retrain hyperpriors + canary freeze + escalate if persistent</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f3">
+            <div class="fclass-head"><span class="fclass-tag">F3</span><h4>Model collapse</h4></div>
+            <p class="fclass-sub">Generator or discriminator degenerates.</p>
+            <ul>
+              <li><strong>Effective arm count:</strong> 1/Σp<sub>i</sub>² &lt; 3 for 72h</li>
+              <li><strong>Discriminator trivial:</strong> AUC → 1.0 (generator too weak)</li>
+              <li><strong>DPO overfit:</strong> train↔eval KL &gt; 0.5</li>
+              <li><strong>Catastrophic forgetting:</strong> baseline regression on held-out set</li>
+              <li class="remedy">Remedy: DPP diversity penalty + ref-policy rollback + 10% replay buffer</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f4">
+            <div class="fclass-head"><span class="fclass-tag">F4</span><h4>Data poisoning / gaming</h4></div>
+            <p class="fclass-sub">Adversarial creators attack Kalodata feed.</p>
+            <ul>
+              <li><strong>GMV velocity spike</strong> 10× baseline, no paid push</li>
+              <li><strong>Unverified seller</strong> (age &lt;180d, return-rate ≥5%)</li>
+              <li><strong>Kalodata↔Fastmoss disagreement</strong> on same video</li>
+              <li><strong>Click-farm fingerprint</strong> in watch-time distribution</li>
+              <li class="remedy">Remedy: multi-source cross-check + velocity filter + hard-negative mining</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f5">
+            <div class="fclass-head"><span class="fclass-tag">F5</span><h4>Cold-start catastrophe</h4></div>
+            <p class="fclass-sub">New brands/categories misrouted.</p>
+            <ul>
+              <li><strong>Flat Beta(1,1)</strong> prior detected on any arm</li>
+              <li><strong>Brand has &lt;5 similar neighbors</strong> in prior index</li>
+              <li><strong>L3 category new &amp; unsupervised</strong></li>
+              <li class="remedy">Remedy: fallback chain brand→nearest-neighbor→L3→L2→L1→platform; never flat</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f6">
+            <div class="fclass-head"><span class="fclass-tag">F6</span><h4>Infra / pipeline</h4></div>
+            <p class="fclass-sub">Backpressure, staleness, DDoS, cascades.</p>
+            <ul>
+              <li><strong>Kafka consumer lag &gt; 10 min</strong></li>
+              <li><strong>OPE estimate staleness &gt; 6h</strong></li>
+              <li><strong>Neon replica lag &gt; 90s</strong></li>
+              <li><strong>Rate-limit cascade signal</strong> across &gt;2 services</li>
+              <li class="remedy">Remedy: circuit breakers + KEDA scale-out + graceful degradation to baseline</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f7">
+            <div class="fclass-head"><span class="fclass-tag">F7</span><h4>Governance / compliance</h4></div>
+            <p class="fclass-sub">FTC, TikTok policy, brand safety, PII.</p>
+            <ul>
+              <li><strong>FTC disclosure missing</strong> in any promoted variant</li>
+              <li><strong>TikTok policy update</strong> → constitution diff &gt; 0</li>
+              <li><strong>Brand-safety classifier flag</strong></li>
+              <li><strong>PII/copyright fingerprint</strong> in prompt or output</li>
+              <li class="remedy">Remedy: constitutional AI gate + human-in-loop on any red-flag + instant rollback</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Twelve circuit breakers</h3>
+        <div class="cb-grid">
+          <div class="cb-card"><code>cb_roas_floor</code><p>Brand ROAS &gt;30% below 7-day trailing → halt DPO for brand</p></div>
+          <div class="cb-card"><code>cb_judge_disagreement</code><p>Ensemble cos-sim &lt; 0.7 → route to human review</p></div>
+          <div class="cb-card"><code>cb_cost_ceiling</code><p>Weekly DNA cost &gt; 1.2× budget → pause DPO/GAD</p></div>
+          <div class="cb-card"><code>cb_msprt_unstable</code><p>&gt;3 decision flips → extend canary</p></div>
+          <div class="cb-card"><code>cb_drift_severe</code><p>PSI &gt; 0.5 → freeze promotions + retrain</p></div>
+          <div class="cb-card"><code>cb_ope_online_div</code><p>|OPE − online| &gt; 3σ → OPE model recalibration</p></div>
+          <div class="cb-card"><code>cb_mode_collapse</code><p>Effective arm &lt; 3 → force DPP diversity</p></div>
+          <div class="cb-card"><code>cb_brand_safety</code><p>Any classifier flag → instant rollback + notify</p></div>
+          <div class="cb-card"><code>cb_cold_start_flat</code><p>Flat prior detected → enforce fallback chain</p></div>
+          <div class="cb-card"><code>cb_gpu_budget</code><p>Weekly GPU-hours &gt; 1.2× cap → throttle scheduler</p></div>
+          <div class="cb-card"><code>cb_kafka_backpressure</code><p>Lag &gt; 10 min sustained → scale consumers + degrade</p></div>
+          <div class="cb-card"><code>cb_ledger_durability</code><p>Write-success &lt; 99.99% / 5min → failover + alert</p></div>
+        </div>
+
+        <h3 class="sub-h">Three-tier kill switches</h3>
+        <div class="ks-row">
+          <div class="ks-card ks-amber"><h4>AMBER · pause new promotions</h4><p>Owner: Eng Lead · Approval: on-call · MTTR &lt; 2 min · Keeps serving current variants, stops rollout of new ones.</p></div>
+          <div class="ks-card ks-red"><h4>RED · rollback since T</h4><p>Owner: CTO · Approval: Eng Lead + CTO · MTTR &lt; 15 min · Rolls every promotion post-timestamp back to prior MLflow champion.</p></div>
+          <div class="ks-card ks-black"><h4>BLACK · DNA fully off</h4><p>Owner: CEO · Approval: CEO · MTTR &lt; 5 min · Baseline-only serving resumes. DNA layer dark until root cause signed off.</p></div>
+        </div>
+      </section>
+
+      <section id="integration" class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">17 · Ecosystem integration</div>
+          <h2 class="section-title">One <span class="grad-learn">shared learning ledger</span> across DNA, APO, BEAST, PA, SID</h2>
+          <p class="section-sub">DNA does not live alone. Seven MomentIQ systems exchange contracts via a versioned event bus — Kalodata, ScriptSage, SID, BEAST, PA pipeline, APO, Partner Center — and all of them write to a single <code>learning_ledger</code> table partitioned by month. DNA's slow-compounding fine-tunes and APO's fast-loop TSS-200 experiments read and write the same schema. Every integration is additive, contract-versioned, and has a failure-mode plan.</p>
+        </div>
+
+        <div class="int-map">
+          <div class="int-col int-col-in">
+            <h4>Inbound to DNA</h4>
+            <div class="int-node">Kalodata<span>top-sellers · daily 04:00 UTC · Neon CDC</span></div>
+            <div class="int-node">SID<span>brand manifest · webhook on change</span></div>
+            <div class="int-node">ScriptSage<span>generation request · sync POST</span></div>
+            <div class="int-node">Partner Center<span>LIVE export · hourly signed URL</span></div>
+            <div class="int-node">Reacher<span>creator-tier · webhook</span></div>
+            <div class="int-node">BEAST<span>campaign state · Kafka every 15m</span></div>
+          </div>
+          <div class="int-hub">
+            <div class="int-hub-inner">
+              <span class="int-hub-eyebrow">DNA</span>
+              <h4>Shared ledger</h4>
+              <p>dna · apo · beast · pa → one schema</p>
+              <code>learning_ledger</code>
+            </div>
+          </div>
+          <div class="int-col int-col-out">
+            <h4>Outbound from DNA</h4>
+            <div class="int-node">SID<span>dna.recommendations.brand.v1</span></div>
+            <div class="int-node">ScriptSage<span>dna.config.promoted.v1 (new default)</span></div>
+            <div class="int-node">Partner Center<span>dna.insights.shareable.v1 (brand-scoped)</span></div>
+            <div class="int-node">APO<span>dna.ledger.delta.v1 (co-compound)</span></div>
+            <div class="int-node">PA pipeline<span>dna.arm.winning.v1 (bias budget)</span></div>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Shared learning ledger schema</h3>
+        <div class="ledger-schema">
+          <table class="sota-table">
+            <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ledger_id</code></td><td>uuid</td><td>primary key, monotonic</td></tr>
+              <tr><td><code>event_type</code></td><td>enum</td><td>experiment · promotion · rollback · drift · training</td></tr>
+              <tr><td><code>source_system</code></td><td>enum</td><td>dna · apo · beast · pa · sid</td></tr>
+              <tr><td><code>brand_id</code></td><td>uuid</td><td>nullable for platform-level</td></tr>
+              <tr><td><code>category_l1</code> / <code>l2</code> / <code>l3</code></td><td>text</td><td>hierarchy keys</td></tr>
+              <tr><td><code>knob_vector</code></td><td>jsonb</td><td>hook, pace, cta, captions, music, suffix, …</td></tr>
+              <tr><td><code>reward_vector</code></td><td>jsonb</td><td>5-dim: cinematic, alignment, motion, aesthetic, commercial</td></tr>
+              <tr><td><code>outcome</code></td><td>jsonb</td><td>gmv, ctr, watch-time, conversion, cost</td></tr>
+              <tr><td><code>confidence</code></td><td>float</td><td>posterior / OPE CI width</td></tr>
+              <tr><td><code>compounding_weight</code></td><td>float</td><td>decays by time & source-reliability</td></tr>
+              <tr><td><code>timestamp</code></td><td>timestamptz</td><td>partition key, monthly</td></tr>
+            </tbody>
+          </table>
+          <p class="ledger-note">Replication: write-local to each system's Neon, nightly merge to platform-wide index. Reading: any system queries <code>/api/v1/ledger/query</code> with predicates. Retention: 24 months, archived 24–60 months.</p>
+        </div>
+
+        <h3 class="sub-h">Cross-system safety rules</h3>
+        <div class="int-rules">
+          <div class="int-rule"><strong>ScriptSage down:</strong> DNA queues generation requests up to 6h, then graceful degrade to baseline configs.</div>
+          <div class="int-rule"><strong>Kalodata stale &gt; 24h:</strong> DNA freezes new-brand cold-starts. Existing arms keep running on prior posteriors.</div>
+          <div class="int-rule"><strong>APO ledger writes stop:</strong> DNA continues but flags "unilateral compounding — divergence risk" in dashboards.</div>
+          <div class="int-rule"><strong>BEAST campaign-state lag:</strong> bandit uses last-known bid envelope, refuses to promote until refreshed.</div>
+          <div class="int-rule"><strong>Partner Center backfill:</strong> OPE window extends proportionally, no blind promotions.</div>
+          <div class="int-rule"><strong>Schema breaking change:</strong> CI (`buf breaking`) blocks PR; v2 side-by-side for 90d before deprecation.</div>
+        </div>
+      </section>

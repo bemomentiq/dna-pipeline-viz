@@ -1,0 +1,944 @@
+      <section id="trace" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">11 · Lineage Trace</p>
+            <h2>Every primary attribute, end-to-end</h2>
+            <p class="section-sub">All 8 primary bandit attributes followed stop-by-stop through the pipeline — same 12-stop rail, attribute-specific values at each stop as of the April 2026 Vacuums profile.</p>
+          </div>
+
+          <div class="trace-all">
+          <!-- BEGIN: attribute 1 -->
+          <div class="trace-attr" data-attr="hook_type">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">1 / 8</span>
+                <code>hook_type</code>
+                <span class="trace-attr-arm">top arm: <code>problem_pain</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=94 β=60</code> &middot; mean <code>0.61</code></span>
+                <span>GPM corr <code>+0.62</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>hook_type</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>problem_pain</code> for 17/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.77</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.62</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>hook_type_weights.problem_pain: 0.77</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=4.08 β=1.92</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>hook_selector.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {hook_type, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>problem_pain</code> &mdash; 65% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>template</span><code>problem_pain &middot; pet hair &middot; 5s hook</code></div>
+                  <div class="trace-kv"><span>output</span>&ldquo;If you have a golden retriever&hellip;&rdquo;</div>
+                  <div class="trace-kv"><span>metric</span>WPS <code>2.85</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.84</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>hook_type: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.82</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>problem_pain α=5.08</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 1 -->
+          
+          <!-- BEGIN: attribute 2 -->
+          <div class="trace-attr" data-attr="duration_bucket">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">2 / 8</span>
+                <code>duration_bucket</code>
+                <span class="trace-attr-arm">top arm: <code>45&ndash;75s</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=64 β=44</code> &middot; mean <code>0.41</code></span>
+                <span>GPM corr <code>+0.48</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>duration_bucket</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>45-75s</code> for 10/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.46</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.48</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>duration_bucket_weights.45-75s: 0.46</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=2.84 β=3.16</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>duration_planner.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {duration_bucket, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>45-75s</code> &mdash; 42% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>template</span><code>60s / 3 beats &middot; 20s each</code></div>
+                  <div class="trace-kv"><span>output</span><code>planned_seconds: 62</code></div>
+                  <div class="trace-kv"><span>metric</span>beats <code>3</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.80</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>duration_bucket: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.79</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>45-75s α=3.84</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 2 -->
+          
+          <!-- BEGIN: attribute 3 -->
+          <div class="trace-attr" data-attr="cta_placement">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">3 / 8</span>
+                <code>cta_placement</code>
+                <span class="trace-attr-arm">top arm: <code>70&ndash;85%</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=82 β=44</code> &middot; mean <code>0.51</code></span>
+                <span>GPM corr <code>+0.54</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>cta_placement</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>70-85%</code> for 13/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.58</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.54</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>cta_placement_pct_target: 0.58</code> (continuous)</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=3.32 β=2.68</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>cta_builder.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {cta_placement, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>70-85%</code> &mdash; 52% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>pct</span><code>0.78</code> &rarr; frame at 46.8s of 60s</div>
+                  <div class="trace-kv"><span>lock</span><code>cta_at_ms: 46800</code></div>
+                  <div class="trace-kv"><span>metric</span>placement window <code>70&ndash;85%</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.79</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>cta_placement: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.83</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>70-85% α=4.32</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 3 -->
+          
+          <!-- BEGIN: attribute 4 -->
+          <div class="trace-attr" data-attr="cta_type">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">4 / 8</span>
+                <code>cta_type</code>
+                <span class="trace-attr-arm">top arm: <code>direct_command</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=58 β=40</code> &middot; mean <code>0.44</code></span>
+                <span>GPM corr <code>+0.41</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>cta_type</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>direct_command</code> for 11/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.49</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.41</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>cta_type_weights.direct_command: 0.49</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=2.96 β=3.04</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>cta_builder.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {cta_type, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>direct_command</code> &mdash; 46% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>template</span><code>direct_command</code></div>
+                  <div class="trace-kv"><span>output</span>&ldquo;Tap the yellow cart to grab yours&rdquo;</div>
+                  <div class="trace-kv"><span>strength</span><code>H</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.82</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>cta_type: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.81</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>direct_command α=3.96</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 4 -->
+          
+          <!-- BEGIN: attribute 5 -->
+          <div class="trace-attr" data-attr="audio_type">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">5 / 8</span>
+                <code>audio_type</code>
+                <span class="trace-attr-arm">top arm: <code>direct_speech_only</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=104 β=48</code> &middot; mean <code>0.71</code></span>
+                <span>GPM corr <code>+0.71</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>audio_type</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>direct_speech_only</code> for 18/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.81</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.71</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>audio_type_weights.direct_speech_only: 0.81</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=4.24 β=1.76</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>audio_planner.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {audio_type, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>direct_speech_only</code> &mdash; 73% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>mode</span><code>speech_only</code></div>
+                  <div class="trace-kv"><span>bed</span><code>none</code></div>
+                  <div class="trace-kv"><span>metric</span>VAD <code>-24 dBFS</code> target</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.87</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>audio_type: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.86</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>direct_speech_only α=5.24</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 5 -->
+          
+          <!-- BEGIN: attribute 6 -->
+          <div class="trace-attr" data-attr="demo_type">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">6 / 8</span>
+                <code>demo_type</code>
+                <span class="trace-attr-arm">top arm: <code>before_after</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=52 β=32</code> &middot; mean <code>0.34</code></span>
+                <span>GPM corr <code>+0.57</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>demo_type</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>before_after</code> for 14/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.64</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.57</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>demo_type_weights.before_after: 0.64</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=3.56 β=2.44</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>demo_planner.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {demo_type, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>before_after</code> &mdash; 36% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>template</span><code>before_after &middot; messy&rarr;clean</code></div>
+                  <div class="trace-kv"><span>scenes</span><code>2</code> back-to-back</div>
+                  <div class="trace-kv"><span>metric</span>cut_ms <code>1200</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.81</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>demo_type: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.80</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>before_after α=4.56</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 6 -->
+          
+          <!-- BEGIN: attribute 7 -->
+          <div class="trace-attr" data-attr="emotion_arc">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">7 / 8</span>
+                <code>emotion_arc</code>
+                <span class="trace-attr-arm">top arm: <code>problem_to_relief</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=72 β=44</code> &middot; mean <code>0.48</code></span>
+                <span>GPM corr <code>+0.46</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>emotion_arc</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>problem_to_relief</code> for 12/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.55</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.46</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>emotion_arc_weights.problem_to_relief: 0.55</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=3.20 β=2.80</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>emotion_arc_plotter.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {emotion_arc, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>problem_to_relief</code> &mdash; 50% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>curve</span><code>tension&rarr;release</code></div>
+                  <div class="trace-kv"><span>peaks</span><code>intro + climax</code></div>
+                  <div class="trace-kv"><span>metric</span>valence delta <code>+0.6</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.78</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>emotion_arc: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.77</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>problem_to_relief α=4.20</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 7 -->
+          
+          <!-- BEGIN: attribute 8 -->
+          <div class="trace-attr" data-attr="caption_style">
+            <div class="trace-attr-head">
+              <div class="trace-attr-name">
+                <span class="trace-attr-num">8 / 8</span>
+                <code>caption_style</code>
+                <span class="trace-attr-arm">top arm: <code>burned_in_large</code></span>
+              </div>
+              <div class="trace-attr-meta">
+                <span>posterior <code>α=122 β=36</code> &middot; mean <code>0.84</code></span>
+                <span>GPM corr <code>+0.68</code></span>
+                <span>category <code>vacuums</code></span>
+              </div>
+            </div>
+            <div class="trace-rail">
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">1</span><span class="trace-stop-label">Kalodata export</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>filter</span><code>US &middot; 30d &middot; sort by revenue</code></div>
+                  <div class="trace-kv"><span>category</span><code>vacuums &middot; n=22</code></div>
+                  <div class="trace-kv"><span>output</span><code>top_sellers.csv</code> with video URLs</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="source">
+                <div class="trace-stop-head"><span class="trace-stop-num">2</span><span class="trace-stop-label">Video download</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>tool</span><code>yt-dlp</code></div>
+                  <div class="trace-kv"><span>dest</span><code>gs://dna-raw/2026-04-13/&hellip;</code></div>
+                  <div class="trace-kv"><span>fallback</span>preview URL if DRM</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">3</span><span class="trace-stop-label">Gemini analysis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>model</span><code>gemini-2.0-flash</code></div>
+                  <div class="trace-kv"><span>prompt</span>extract <code>caption_style</code> from 42-attr schema</div>
+                  <div class="trace-kv"><span>result</span><code>burned_in_large</code> for 20/22 videos</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="proc">
+                <div class="trace-stop-head"><span class="trace-stop-num">4</span><span class="trace-stop-label">Synthesis</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_video_analyses</code> &times; 22 rows</div>
+                  <div class="trace-kv"><span>profile freq</span><code>0.92</code></div>
+                  <div class="trace-kv"><span>GPM corr</span><code>+0.68</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">5</span><span class="trace-stop-label">Profile write</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>table</span><code>dna_profiles</code></div>
+                  <div class="trace-kv"><span>key</span><code>2026-04-13 &middot; vacuums</code></div>
+                  <div class="trace-kv"><span>weight</span><code>caption_style_weights.burned_in_large: 0.92</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="config">
+                <div class="trace-stop-head"><span class="trace-stop-num">6</span><span class="trace-stop-label">Bandit seeding</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>prior</span><code>α=4.68 β=1.32</code></div>
+                  <div class="trace-kv"><span>formula</span><code>α=1+freq×4, β=1+(1-freq)×4</code></div>
+                  <div class="trace-kv"><span>persisted</span><code>dna_bandits</code> upsert</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">7</span><span class="trace-stop-label">ScriptSage selection</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>file</span><code>caption_styler.ts</code></div>
+                  <div class="trace-kv"><span>call</span><code>POST /dna/sample &middot; {caption_style, vacuums}</code></div>
+                  <div class="trace-kv"><span>draw</span><code>burned_in_large</code> &mdash; 85% of draws</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">8</span><span class="trace-stop-label">Script draft</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>style</span><code>burned_in_large &middot; 72pt</code></div>
+                  <div class="trace-kv"><span>coverage</span><code>100%</code></div>
+                  <div class="trace-kv"><span>metric</span>contrast <code>AA</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gen">
+                <div class="trace-stop-head"><span class="trace-stop-num">9</span><span class="trace-stop-label">Video generation</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>engine</span><code>dna_vertex &middot; veo31_fast</code></div>
+                  <div class="trace-kv"><span>chunks</span><code>3 &times; 8s</code> w/ voice lock</div>
+                  <div class="trace-kv"><span>IDS score</span><code>0.88</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="gate">
+                <div class="trace-stop-head"><span class="trace-stop-num">10</span><span class="trace-stop-label">Rubric scoring</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>dim score</span><code>caption_style: 1.0</code></div>
+                  <div class="trace-kv"><span>composite</span><code>0.89</code></div>
+                  <div class="trace-kv"><span>record</span><code>dna_compliance</code> row</div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="dist">
+                <div class="trace-stop-head"><span class="trace-stop-num">11</span><span class="trace-stop-label">Distribution</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>webhook</span><code>POST /videos/webhook</code></div>
+                  <div class="trace-kv"><span>platform</span>TikTok Shop &mdash; creator package uploaded</div>
+                  <div class="trace-kv"><span>campaign</span><code>GMV Max &middot; variant 14 / 50</code></div>
+                </div>
+              </div>
+              <div class="trace-stop" data-color="learn">
+                <div class="trace-stop-head"><span class="trace-stop-num">12</span><span class="trace-stop-label">Feedback &rarr; update</span></div>
+                <div class="trace-stop-body">
+                  <div class="trace-kv"><span>views</span><code>18,400</code> &middot; GPM <code>$19.40</code> &ge; P50 <code>$14.20</code></div>
+                  <div class="trace-kv"><span>reward</span><code>1</code> &rarr; α += 1</div>
+                  <div class="trace-kv"><span>new α</span><code>burned_in_large α=5.68</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- END: attribute 8 -->
+
+          </div>
+
+          <div class="trace-legend">
+            <span class="trace-legend-item" data-color="source">source</span>
+            <span class="trace-legend-item" data-color="proc">process</span>
+            <span class="trace-legend-item" data-color="config">config</span>
+            <span class="trace-legend-item" data-color="gen">generate</span>
+            <span class="trace-legend-item" data-color="gate">gate</span>
+            <span class="trace-legend-item" data-color="dist">distribute</span>
+            <span class="trace-legend-item" data-color="learn">learn</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- API CATALOG -->

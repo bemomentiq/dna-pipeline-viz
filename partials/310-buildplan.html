@@ -1,0 +1,121 @@
+      <section id="buildplan" class="section section-quiet">
+        <div class="section-head">
+          <div class="section-eyebrow">18 · Build plan</div>
+          <h2 class="section-title">33 issues · 4 milestones · <span class="grad-gate">5 weeks wall-clock</span> with the fleet</h2>
+          <p class="section-sub">The full build decomposes into four GitHub milestones (M10–M13) with 33 dispatchable issues — each with lane preference, effort estimate, and dependency edges. At 36 parallel slots (after the parallel-slots rollout), the critical path fits in ~5 weeks wall-clock, leaving ~86% headroom for other fleet work.</p>
+        </div>
+
+        <div class="bp-phases">
+          <div class="bp-phase bp-m10">
+            <div class="bp-phase-head">
+              <div class="bp-phase-num">M10</div>
+              <div class="bp-phase-body">
+                <h3>SOTA Training Pipeline</h3>
+                <div class="bp-phase-meta">W31–W36 · 8 issues · 24 hrs · 1 week wall-clock</div>
+              </div>
+            </div>
+            <ol class="bp-issues">
+              <li><span class="bp-tag p0">P0</span> <strong>M10.1</strong> — <code>dna_training_corpus</code> + <code>dna_features</code> tables <span class="bp-lane codex">codex · S</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M10.2</strong> — <code>dna-kalodata-harvester</code> service <span class="bp-lane codex">codex · M</span> <span class="bp-lane" style="background:#10b981">shipped · PR #103</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M10.3</strong> — <code>dna-cloudinary-uploader</code> service <span class="bp-lane codex">codex · M</span> <span class="bp-lane" style="background:#10b981">shipped · PR #102</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M10.4</strong> — <code>dna-ingest</code> event handler <span class="bp-lane codex">codex · M</span> <span class="bp-lane" style="background:#10b981">shipped · PR #104</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M10.5</strong> — Judges: fidelity + naturalness <span class="bp-lane claude">claude · L</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M10.6</strong> — Judges: commerce + diversity + safety <span class="bp-lane claude">claude · L</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M10.7</strong> — <code>dna-feature-extractor</code> (visual, audio, hook) <span class="bp-lane claude">claude · L</span> <span class="bp-lane" style="background:#10b981">shipped · PR #105</span></li>
+              <li><span class="bp-tag p2">P2</span> <strong>M10.8</strong> — OTel traces + SLOs for M10 <span class="bp-lane codex">codex · M</span></li>
+            </ol>
+          </div>
+
+          <div class="bp-phase bp-m11">
+            <div class="bp-phase-head">
+              <div class="bp-phase-num">M11</div>
+              <div class="bp-phase-body">
+                <h3>Autonomous A/B + OPE</h3>
+                <div class="bp-phase-meta">W37–W42 · 12 issues · 48 hrs · 2 weeks wall-clock</div>
+              </div>
+            </div>
+            <ol class="bp-issues">
+              <li><span class="bp-tag p0">P0</span> <strong>M11.1</strong> — <code>dna_arms</code> + <code>dna_scores</code> + <code>dna_bandit_state</code> <span class="bp-lane codex">codex · S</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M11.2</strong> — LinTS contextual bandit router <span class="bp-lane claude">claude · XL</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M11.3</strong> — <code>dna-ope-estimator</code> (DR-IPS) <span class="bp-lane claude">claude · L</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M11.4</strong> — <code>dna-nightly-distill</code> (LoRA loop) <span class="bp-lane codex">codex · L</span> <span class="bp-lane" style="background:#10b981">shipped · PR #109</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M11.5</strong> — <code>dna-rollout-controller</code> (canary + auto-revert) <span class="bp-lane codex">codex · L</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M11.6</strong> — <code>/api/v1/dna/config/promote</code> + <code>dna_active_config_view</code> <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M11.7</strong> — Guard-sweep service (kill switches) <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M11.8</strong> — CC <code>dna-issue-sync</code> cron <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M11.9</strong> — PR Guardian fork for momentiq-dna <span class="bp-lane codex">codex · S</span> <span class="bp-lane" style="background:#10b981">shipped · PR #100</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M11.10</strong> — Perplexity cron registry (6 crons) <span class="bp-lane codex">codex · S</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M11.11</strong> — Protobuf contracts for dna-sdk <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p2">P2</span> <strong>M11.12</strong> — Canary dashboard UI <span class="bp-lane codex">codex · M</span> <span class="bp-lane" style="background:#10b981">shipped · PR #106</span></li>
+            </ol>
+          </div>
+
+          <div class="bp-phase bp-m12">
+            <div class="bp-phase-head">
+              <div class="bp-phase-num">M12</div>
+              <div class="bp-phase-body">
+                <h3>Multi-Level ROAS + Convergence</h3>
+                <div class="bp-phase-meta">W43–W48 · 7 issues · 20 hrs · 1 week wall-clock</div>
+              </div>
+            </div>
+            <ol class="bp-issues">
+              <li><span class="bp-tag p0">P0</span> <strong>M12.1</strong> — Hierarchical arms schema (brand × L1 × L2 × L3) <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M12.2</strong> — 7-dim brand embedding extractor <span class="bp-lane claude">claude · L</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M12.3</strong> — Half-life 14d learnings decay <span class="bp-lane codex">codex · S</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M12.4</strong> — IDS score computation service <span class="bp-lane claude">claude · L</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M12.5</strong> — Convergence dashboard (indistinguishability curves) <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M12.6</strong> — L2/L3 category promotion logic <span class="bp-lane codex">done · PR #89</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M12.7</strong> — Brand-specific bandit priors from embeddings <span class="bp-lane claude">claude · L</span></li>
+            </ol>
+          </div>
+
+          <div class="bp-phase bp-m13">
+            <div class="bp-phase-head">
+              <div class="bp-phase-num">M13</div>
+              <div class="bp-phase-body">
+                <h3>Production Ops + Observability</h3>
+                <div class="bp-phase-meta">W49–W51+ · 6 issues · 14 hrs · 1 week wall-clock</div>
+              </div>
+            </div>
+            <ol class="bp-issues">
+              <li><span class="bp-tag p0">P0</span> <strong>M13.1</strong> — 18 SLOs published to Grafana <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M13.2</strong> — 3-tier kill-switch implementation <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p0">P0</span> <strong>M13.3</strong> — 32-failure circuit breakers <span class="bp-lane codex">codex · L</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M13.4</strong> — Pact tests for cross-system contracts <span class="bp-lane codex">codex · M</span></li>
+              <li><span class="bp-tag p1">P1</span> <strong>M13.5</strong> — Lineage audit weekly cron <span class="bp-lane codex">codex · S</span></li>
+              <li><span class="bp-tag p2">P2</span> <strong>M13.6</strong> — Cost dashboards (unit economics per lever) <span class="bp-lane codex">codex · M</span></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="bp-load">
+          <h3 class="sub-h">Fleet load projection</h3>
+          <table class="sota-table">
+            <thead><tr><th>Phase</th><th>Issues</th><th>Total hrs</th><th>Codex hrs</th><th>Claude hrs</th><th>Avg concurrent slots</th><th>Wall-clock</th></tr></thead>
+            <tbody>
+              <tr><td>M10</td><td>8</td><td>24</td><td>14</td><td>10</td><td>4</td><td>1 week</td></tr>
+              <tr><td>M11</td><td>12</td><td>48</td><td>18</td><td>30</td><td>6</td><td>2 weeks</td></tr>
+              <tr><td>M12</td><td>7</td><td>20</td><td>4</td><td>16</td><td>3</td><td>1 week</td></tr>
+              <tr><td>M13</td><td>6</td><td>14</td><td>10</td><td>4</td><td>3</td><td>1 week</td></tr>
+              <tr class="row-total"><td><strong>Total</strong></td><td><strong>33</strong></td><td><strong>106</strong></td><td><strong>46</strong></td><td><strong>60</strong></td><td><strong>5 avg / 36 cap</strong></td><td><strong>5 weeks</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bp-kickoff">
+          <h3 class="sub-h">Day-1 kickoff runbook</h3>
+          <ol class="bp-runbook">
+            <li>Create 4 milestones (M10–M13) in <code>bemomentiq/momentiq-dna</code></li>
+            <li>Create labels (<code>dna:infra</code>, <code>dna:training</code>, <code>dna:judge</code>, <code>dna:ab</code>, <code>dna:roas</code>, <code>dna:convergence</code>, <code>dna:obs</code>, <code>fleet-ready</code>, <code>fleet-dispatched</code>, <code>fleet-in-progress</code>, <code>fleet-blocked</code>, <code>fleet-completed</code>, <code>priority:p0/p1/p2</code>)</li>
+            <li>Seed all 33 issues with the fleet-ready agent-briefing template</li>
+            <li>Fork PR Guardian config for <code>momentiq-dna</code> repo</li>
+            <li>Register <code>dna-issue-sync</code> Perplexity cron (every 10m)</li>
+            <li>Dispatch M10.1 + M11.1 + M12.1 + M13.1 (schema migrations parallelize)</li>
+          </ol>
+        </div>
+      </section>
+
+
+      <!-- ============================================================
+           GAMEPLAN — Full E2E production gameplan
+           ============================================================ -->

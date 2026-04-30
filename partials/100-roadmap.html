@@ -1,0 +1,318 @@
+      <section id="roadmap" class="section section-quiet">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">08 · Roadmap</p>
+            <h2>52+ week implementation &mdash; core phases 1&ndash;9 + 4 SOTA phases</h2>
+            <p class="section-sub">
+              Sequenced so each phase produces a standalone deliverable. Exit criteria are the hard gate — no phase
+              promotes to the next until its criteria are green.
+            </p>
+          </div>
+
+          <ol class="roadmap">
+            <li class="roadmap-phase" data-phase="1">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 1&ndash;2</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 1 &middot; DNA Foundation</h3>
+                  <span class="status-pill status-shipped">shipped</span>
+                </header>
+                <p class="roadmap-goal">Reproducible extraction pipeline + April 2026 baseline in Neon.</p>
+                <ul class="roadmap-tasks">
+                  <li>DB migrations: <code>dna_video_analyses</code>, <code>dna_profiles</code></li>
+                  <li>Kalodata export + yt-dlp batch download (200 videos)</li>
+                  <li>Gemini 2.0 Flash analysis · 42-attribute JSON</li>
+                  <li>Synthesis pipeline · correlations + category profiles</li>
+                  <li>Weekly cron live (Mon 02:00 PT)</li>
+                </ul>
+                <div class="roadmap-exit">Exit: baseline in DB · attr coverage &ge; 95% · first 2 cron runs validated</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="2">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 3&ndash;4</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 2 &middot; Script Generation</h3>
+                  <span class="status-pill status-progress">in progress</span>
+                </header>
+                <p class="roadmap-goal">ScriptSage aware of hook weights, CTA placement, duration targets.</p>
+                <ul class="roadmap-tasks">
+                  <li><code>hook_type_weights</code> + <code>cta_placement_pct_target</code> params</li>
+                  <li><code>duration_range_seconds</code> &rarr; word count constraint (WPS 2.85)</li>
+                  <li>CTA template library · <code>cta_type_weights</code></li>
+                  <li><code>dna_generation_configs</code> · every job logs config used</li>
+                  <li>A/B framework · 10% traffic · DNA vs standard</li>
+                </ul>
+                <div class="roadmap-exit">Exit: human approval &ge; 80% · A/B split live</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="3">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 5&ndash;8</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 3 &middot; Video Pipeline Configs</h3>
+                  <span class="status-pill status-queued">queued</span>
+                </header>
+                <p class="roadmap-goal"><code>dna_vertex</code>, <code>dna_pollo</code>, <code>dna_seedance</code> live; post-processing overrides active.</p>
+                <ul class="roadmap-tasks">
+                  <li>All three DNA configs shipped as additive siblings</li>
+                  <li>Post-processing: <code>music_bed=false</code>, burned-in large captions, B-roll &le; 20%</li>
+                  <li>50 variants per product for <code>dna_vertex</code>; 25 for mid/budget</li>
+                  <li>QA 100 generated videos · caption / duration / music checks</li>
+                  <li>Canary 10% of new jobs</li>
+                </ul>
+                <div class="roadmap-exit">Exit: QA pass &ge; 85% · 50 variants clean · canary stable</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="4">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 9&ndash;10</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 4 &middot; Compliance Scoring</h3>
+                  <span class="status-pill status-queued">queued</span>
+                </header>
+                <p class="roadmap-goal">7-dim score on 100% of DNA outputs · quality gate at 0.70 composite.</p>
+                <ul class="roadmap-tasks">
+                  <li>Per-dimension scorer · Gemini re-analysis + audio classifier + scene detection</li>
+                  <li>Composite weighted average + distribution gate</li>
+                  <li>Consume voice-lock composite (&ge; 0.88) as second gate</li>
+                  <li>Scores persisted to <code>dna_video_analyses</code></li>
+                  <li>Metabase dashboard · score distribution + rejection reasons</li>
+                </ul>
+                <div class="roadmap-exit">Exit: 100% output coverage · median score &ge; 0.75 · dashboard live</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="5">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 11&ndash;14</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 5 &middot; Feedback Loop</h3>
+                  <span class="status-pill status-queued">queued</span>
+                </header>
+                <p class="roadmap-goal">TikTok metrics &rarr; bandit updates &rarr; weekly improvement.</p>
+                <ul class="roadmap-tasks">
+                  <li>TikTok Business API every 6h &rarr; <code>dna_performance_feedback</code></li>
+                  <li>Thompson Sampling bandit · persistence in <code>dna_bandits</code></li>
+                  <li>Cross-category blended priors for low-data categories (&lt; 50 videos)</li>
+                  <li>JS-divergence drift detection + Slack alerts</li>
+                  <li>Convergence validation over 4-week window</li>
+                </ul>
+                <div class="roadmap-exit">Exit: 2+ attributes converging · zero false-positive drift alerts</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="6">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 15&ndash;18</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 6 &middot; Self-Optimization</h3>
+                  <span class="status-pill status-queued">queued</span>
+                </header>
+                <p class="roadmap-goal">Autonomous loop · zero human touchpoints for a 2-week cycle.</p>
+                <ul class="roadmap-tasks">
+                  <li>Auto-update DNA configs from bandit state (weekly)</li>
+                  <li>Baseline auto-reset after 3 consecutive drift weeks</li>
+                  <li>Auto-enroll new categories once &ge; 50 videos</li>
+                  <li>VideoReward-style scorer vs rule-based compliance (precision test)</li>
+                  <li>Flow-DPO preference dataset from bandit outcomes</li>
+                </ul>
+                <div class="roadmap-exit">Exit: 2-week hands-off run · GMV lift &ge; 15% vs pre-DNA</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="7">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 19&ndash;22</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 7 &middot; Multi-account &amp; creator-specific DNA</h3>
+                  <span class="status-pill status-later">later</span>
+                </header>
+                <p class="roadmap-goal">Per-creator &amp; per-shop profiles on top of category profiles &mdash; hierarchical Bayesian blending.</p>
+                <ul class="roadmap-tasks">
+                  <li><code>dna_profiles_creator</code> table keyed <code>(creator_id, category)</code></li>
+                  <li>Hierarchical prior: category &rarr; creator (shrinkage by sample size)</li>
+                  <li>Per-shop override UI (brand voice locks, banned claims)</li>
+                  <li>Segment-level bandit state &middot; memory-efficient sparse posterior</li>
+                  <li>Back-compat: default path stays category-level</li>
+                </ul>
+                <div class="roadmap-exit">Exit: 20+ creators with &ge; 100 samples each · per-creator mean lift &ge; +5pp</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="8">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 23&ndash;26</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 8 &middot; Counterfactual &amp; off-policy evaluation</h3>
+                  <span class="status-pill status-later">later</span>
+                </header>
+                <p class="roadmap-goal">Retrain offline on historical logs &mdash; estimate &ldquo;what if&rdquo; rewards before live A/B.</p>
+                <ul class="roadmap-tasks">
+                  <li>Importance-sampled off-policy estimator on <code>dna_generation_configs</code> &times; <code>dna_performance_feedback</code></li>
+                  <li>Weighted IPS &amp; doubly-robust bounds</li>
+                  <li>Nightly &ldquo;shadow champion&rdquo; run: proposed policy vs live policy on last 7d logs</li>
+                  <li>CI gate: shadow lift must beat live at p &lt; 0.05 before promotion</li>
+                  <li>Publish champion-vs-shadow diffs to Slack each morning</li>
+                </ul>
+                <div class="roadmap-exit">Exit: 4 consecutive weeks with &ge; 1 shadow-promoted policy and zero regressions</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase" data-phase="9">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 27&ndash;30</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 9 &middot; International &amp; vertical expansion</h3>
+                  <span class="status-pill status-later">later</span>
+                </header>
+                <p class="roadmap-goal">Cross-locale profiles and new verticals (Home Appliances, Beauty Tools, Health).</p>
+                <ul class="roadmap-tasks">
+                  <li><code>locale</code> column on all DNA tables (US, UK, DE, JP pilots)</li>
+                  <li>Locale-aware hook taxonomy (<code>problem_pain_uk</code>, <code>social_proof_jp</code>)</li>
+                  <li>Language-aware caption_style arms (kana, romaji, umlauts)</li>
+                  <li>Compliance rubric locale overrides (music bed rules differ by market)</li>
+                  <li>2 new verticals onboarded with &ge; 50-video baseline each</li>
+                </ul>
+                <div class="roadmap-exit">Exit: 2 locales live · 2 new verticals live · no US regression</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase roadmap-phase-sota" data-phase="10">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 31&ndash;34</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 10 &middot; SOTA quick wins (Sprint 1)</h3>
+                  <span class="status-pill status-sota">SOTA</span>
+                </header>
+                <p class="roadmap-goal">5 high-leverage, low-effort SOTA upgrades. All prefixed <code>dna_*</code> / <code>/api/v1/dna/*</code> (additive-only).</p>
+                <ul class="roadmap-tasks">
+                  <li>Replace binary Gemini with <strong>VideoReward + VisionReward</strong> · 9-dim + 64-question judge · new table <code>dna_video_quality_scores_v2</code></li>
+                  <li><strong>mSPRT always-valid inference</strong> on <code>/api/v1/dna/experiments/*</code> · anytime-stop with &Lambda;<sub>t</sub> &gt; 1/&alpha;</li>
+                  <li><strong>CUPED variance reduction</strong> · pre-experiment covariate adjustment · &minus;50% variance target</li>
+                  <li><strong>MLflow champion/challenger</strong> aliases · McNemar paired test + guardrail metrics · new service <code>dna-model-registry</code></li>
+                  <li><strong>DVC + lakeFS</strong> branching on <code>dna_corpus_v{N}</code> · commit on every weekly extraction</li>
+                </ul>
+                <div class="roadmap-exit">Exit: 9-dim reward live · mSPRT stops &ge; 3 experiments early · MLflow promotes one challenger &middot; lakeFS branches per run</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase roadmap-phase-sota" data-phase="11">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 35&ndash;40</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 11 &middot; Core SOTA infra (Sprint 2)</h3>
+                  <span class="status-pill status-sota">SOTA</span>
+                </header>
+                <p class="roadmap-goal">VLM judge panel, causal attribution, off-policy evaluation, and hierarchical Bayes for portfolio intelligence.</p>
+                <ul class="roadmap-tasks">
+                  <li><strong>VLM ensemble judge</strong> · Gemini 2.5 Pro + GPT-4o + Qwen2.5-VL-72B · Elo + Bradley-Terry consensus &rarr; <code>dna_judge_panel</code> table</li>
+                  <li><strong>DoubleML CATE attribution</strong> · replaces correlation &middot; cross-fit nuisance models · unbiased creative-DNA effect on GMV</li>
+                  <li><strong>OBP &beta;*-IPS off-policy evaluation</strong> · logged propensities &rarr; evaluate 100+ policy variants / week offline · endpoint <code>/api/v1/dna/ope/*</code></li>
+                  <li><strong>ebmTS hierarchical bandits</strong> · brand → L3 → L2 → L1 partial pooling · 5&ndash;10&times; cold-start speedup · schema upgrade on <code>dna_category_weights</code></li>
+                  <li><strong>RLAIF constitutional judge</strong> · content constitution (hook-3s, product-8s, social-proof, CTA, trust) · auto-generates preference pairs nightly</li>
+                </ul>
+                <div class="roadmap-exit">Exit: judge panel agreement &ge; 0.80 · OPE evaluates &ge; 100 policies / wk · new brand cold-start &lt; 20 imps to stat-sig &middot; 500+ RLAIF pairs / day</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase roadmap-phase-sota" data-phase="12">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 41&ndash;50</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 12 &middot; Advanced capabilities (Sprint 3)</h3>
+                  <span class="status-pill status-sota">SOTA</span>
+                </header>
+                <p class="roadmap-goal">Combinatorial bandits, contextual policy, preference alignment loop, reward-hacking defense, and meta-learning.</p>
+                <ul class="roadmap-tasks">
+                  <li><strong>CMAB-MT combinatorial bandits</strong> · attribute super-arms with semi-bandit feedback · captures hook × CTA × music interactions</li>
+                  <li><strong>NeuralUCB contextual bandits</strong> · 136-d context (brand × category × time × product × creator) on encoder hidden features</li>
+                  <li><strong>VideoDPO weekly fine-tune loop</strong> · winners&rarr;chosen, near-miss&rarr;rejected · TRL DPOTrainer with KL anchor to frozen ref</li>
+                  <li><strong>ORPO &chi;&sup2; occupancy regularization</strong> · proxy-true gap monitor · RM-ensemble disagreement alerts · anti-Goodhart defense</li>
+                  <li><strong>MAML / hierarchical-Bayes meta-learning</strong> · one cross-brand meta-model · O(10) fine-tune steps on new brand vs O(200)</li>
+                  <li><strong>MOL-TS Pareto bandits</strong> · joint GMV × safety × completion × new-customer · time-varying operator weights per campaign</li>
+                </ul>
+                <div class="roadmap-exit">Exit: CMAB captures &ge; 1 attribute-interaction winner · VideoDPO weekly cadence stable · ORPO pins proxy-true gap &le; 0.10 · meta-learned priors beat flat priors on 3 new-brand cold starts</div>
+              </div>
+            </li>
+
+            <li class="roadmap-phase roadmap-phase-sota" data-phase="13">
+              <div class="roadmap-rail"><div class="roadmap-dot"></div><div class="roadmap-week">W 51+</div></div>
+              <div class="roadmap-card">
+                <header>
+                  <h3>Phase 13 &middot; Convergence endgame (Sprint 4)</h3>
+                  <span class="status-pill status-sota">SOTA</span>
+                </header>
+                <p class="roadmap-goal">Indistinguishability (GAD) + 3-phase curriculum + UCB budget allocator with global ROAS floor.</p>
+                <ul class="roadmap-tasks">
+                  <li><strong>GAD minimax training</strong> · discriminator co-evolves with generator · Nash equilibrium at chance-level accuracy · the principled indistinguishability target</li>
+                  <li><strong>3-phase curriculum self-play</strong> · Phase 1 SFT on DPP corpus → Phase 2 RLAIF+VideoDPO → Phase 3 GAD · automatic phase transitions on metric triggers</li>
+                  <li><strong>UCB portfolio budget allocator</strong> · global ROAS-floor constraint · PID pacing trim · sorted-greedy allocation across 50+ brands</li>
+                  <li><strong>DPP diversity + hard-negative mining</strong> on training corpus · replaces popularity-biased top-N · <code>dppy</code> Gibbs sampling over InternVideo2 embeddings</li>
+                  <li><strong>PRIME implicit process rewards</strong> · per-step (per-clip) credit assignment · free extraction from ORM without step labels</li>
+                </ul>
+                <div class="roadmap-exit">Exit: discriminator accuracy &le; 0.55 sustained 2 rounds · portfolio ROAS &ge; 4.0&times; with all-brand floor &middot; curriculum auto-advances through all 3 phases on production cadence</div>
+              </div>
+            </li>
+
+          </ol>
+
+          <div class="success-metrics">
+            <h3>Success metrics @ Week 18</h3>
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-head">Pipeline health</div>
+                <ul>
+                  <li>Weekly extraction success <strong>&ge; 90%</strong></li>
+                  <li>Attribute coverage <strong>&ge; 95%</strong></li>
+                  <li>Cron uptime <strong>&ge; 99%</strong></li>
+                </ul>
+              </div>
+              <div class="metric">
+                <div class="metric-head">Generation quality</div>
+                <ul>
+                  <li>Median compliance <strong>&ge; 0.80</strong></li>
+                  <li>Human approval <strong>&ge; 85%</strong></li>
+                  <li>Hook entropy <strong>&ge; 2.0 bits</strong></li>
+                </ul>
+              </div>
+              <div class="metric metric-hero">
+                <div class="metric-head">Performance (core KPI)</div>
+                <ul>
+                  <li>Median GPM <strong>&ge; $7.50</strong> (+21%)</li>
+                  <li>GMV per product <strong>+15% lift</strong></li>
+                  <li>Spark Ads ROAS <strong>&ge; 4.0&times;</strong></li>
+                </ul>
+              </div>
+              <div class="metric">
+                <div class="metric-head">System learning</div>
+                <ul>
+                  <li>Bandit arms with &ge; 100 samples <strong>&ge; 80%</strong></li>
+                  <li>Drift false-positives <strong>0/mo</strong></li>
+                  <li>Cross-category transfer <strong>rho &ge; 0.75</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="risk-matrix">
+            <h3>Top risks &amp; mitigations</h3>
+            <table class="risk-table">
+              <thead><tr><th>Risk</th><th>P</th><th>I</th><th>Mitigation</th></tr></thead>
+              <tbody>
+                <tr><td>TikTok blocks yt-dlp downloads</td><td>M</td><td>H</td><td>cookie rotation · Kalodata preview URL fallback</td></tr>
+                <tr><td>Compliance scorer blocks good videos</td><td>M</td><td>H</td><td>human review queue for 0.65&ndash;0.75 band</td></tr>
+                <tr><td>Bandit convergence too slow</td><td>M</td><td>M</td><td>min 200 variants per arm before inference</td></tr>
+                <tr><td>DNA profile drift (algorithm shift)</td><td>M</td><td>H</td><td>weekly JS-div · 3-week consecutive rule before reset</td></tr>
+                <tr><td>Additive-only constraint breached</td><td>L</td><td>H</td><td>PR checklist · CI check blocking edits to stnd configs</td></tr>
+                <tr><td>Small categories under-profile</td><td>H</td><td>M</td><td>cross-category Bayesian transfer · 50-video floor</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- REWARD LOOP -->
