@@ -3,34 +3,92 @@
   "totals": { "shipped": 33, "wiring": 9, "notstarted": 9, "total": 51 },
   "source": {
     "repo": "bemomentiq/momentiq-dna",
-    "pr": "#255",
+    "pr": "#255 (merged)",
     "doc": "docs/codebase-vs-roadmap-2026-04-30.md"
   },
   "phases": [
-    { "id": "p1-extraction", "title": "Phase 1 — Kalodata extraction", "status": "shipped", "meta": "Live · Neon `dna_*` tables", "items": ["Native Kalodata harvester", "Per-category bus + repo", "Schema-validated ingest"] },
-    { "id": "p2-config", "title": "Phase 2 — DNA config surface", "status": "shipped", "meta": "Live · `/api/v1/dna/config/*`", "items": ["Configs CRUD", "Active config promote/rollback", "Per-category config inheritance"] },
-    { "id": "p3-bandits", "title": "Phase 3 — Thompson sampling bandits", "status": "shipped", "meta": "Live", "items": ["Per attribute × category arms", "Bandit posterior store", "Bandit health endpoint"] },
-    { "id": "p4-rerun", "title": "Phase 4 — Generation rerun loop", "status": "wiring", "meta": "Service shipped · UI wiring partial", "items": ["Rerun queue + status route", "Compare experiments", "Drift overlay"] },
-    { "id": "p5-scoring", "title": "Phase 5 — Scoring & feedback", "status": "shipped", "meta": "Live", "items": ["Per-attribute scorer", "Pass/fail trend", "Feedback ledger"] },
-    { "id": "p6-reward", "title": "Phase 6 — Reward → bandit reweighting", "status": "wiring", "meta": "Reward shape live · Reweighting cron pending", "items": ["Reward formula audited", "Cron `dna_reward_aggregate`", "Bandit posterior update job"] },
-    { "id": "p7-monitoring", "title": "Phase 7 — Monitoring & gates", "status": "wiring", "meta": "12 signals defined · 4 wired", "items": ["Drift alerts", "Compliance trend", "Learning status board"] },
-    { "id": "p8-rollout", "title": "Phase 8 — Canary → steady state", "status": "notstarted", "meta": "Spec only", "items": ["5 promotion ramps", "Auto-rollback on KPI breach", "Steady-state guards"] },
-    { "id": "p9-governance", "title": "Phase 9 — Governance & change control", "status": "notstarted", "meta": "Spec only", "items": ["Owner + on-call registry", "Change-log enforcement", "RFC template"] },
-    { "id": "sota-1", "title": "SOTA Phase 1 — Compounder loop", "status": "wiring", "meta": "Generator self-improvement", "items": ["Weekly compounder run", "Generator weights snapshot", "Compounder eval gate"] },
-    { "id": "sota-2", "title": "SOTA Phase 2 — Portfolio ROAS", "status": "notstarted", "meta": "Brand → L3 → L2 → L1", "items": ["Portfolio attribution", "Cross-brand ROAS rollup", "Ecosystem signal feed"] },
-    { "id": "sota-3", "title": "SOTA Phase 3 — Convergence", "status": "notstarted", "meta": "Indistinguishability target", "items": ["End-to-end convergence loop", "Human eval double-blind", "Promotion guardrails"] },
-    { "id": "sota-4", "title": "SOTA Phase 4 — 27-capability gap", "status": "wiring", "meta": "Backlog tracked", "items": ["Capability ledger", "Per-capability scorer", "Quarterly delta review"] }
+    {
+      "title": "Sprints 1–5 · Foundation",
+      "status": "shipped",
+      "meta": "10 weeks",
+      "items": [
+        "DNA concept + 5-dimension scoring rubric · Gemini extraction templates · Neon schema (generation_scores, thompson_weights, thompson_priors)",
+        "Thompson Sampling (8 hook arms + 5 framework arms) · POST /api/dna/generate · queue-app routing · DNAFeedbackAggregator (7-day window, 3 AM)",
+        "3 DNA pipeline configs · GeminiDNAScorer · 88 category overrides · webhooks · rate limiting",
+        "Modularized packages · ≥85% test coverage · Next.js 15 control panel (7 pages)",
+        "Foundational docs (architecture, env vars, runbook, API reference, gap-analysis, roadmap)"
+      ]
+    },
+    {
+      "title": "Phase 5 · Performance Feedback Loop",
+      "status": "shipped",
+      "meta": "~6 weeks",
+      "items": [
+        "TikTok Shop perf ingestion → services/dna-tiktok-performance/src/ingester.ts (1,440 LOC)",
+        "dna.performance_feedback writes → services/dna-tiktok-performance/src/repo.ts",
+        "GMV-tied bandit reward stream → services/dna-bandit-router/src/reward/kalodata_gmv_live.ts",
+        "Bake-window guard inside the tiktok-performance ingester",
+        "Kalodata weekly extraction cron → services/dna-kalodata-harvester/, registered in services/dna-cron-registry/",
+        "Multi-candidate per chunk → services/dna-candidate-selector/src/selector.ts"
+      ]
+    },
+    {
+      "title": "Phase 6 · Self-Optimization",
+      "status": "shipped",
+      "meta": "~6 weeks",
+      "items": [
+        "Multi-variant orchestrator + credit assignment → services/dna-genco/src/credit-assigner.ts",
+        "Off-policy evaluation (DR-IPS) → services/dna-ope-estimator/src/dripss.ts",
+        "Vision reward scaffold → services/dna-vision-reward/src/scorer.ts (interface + in-memory; HTTP scorer is a TODO placeholder — see Phase 7)",
+        "SaleNet GMV prediction → services/dna-salenet/src/predictor.ts",
+        "Cross-category transfer → services/dna-arm-embedder/, services/dna-brand-priors/, services/dna-category-promotion/",
+        "Variant batch orchestration → services/dna-variant-batch/"
+      ]
+    },
+    {
+      "title": "Phase 7 · Autonomous Operation",
+      "status": "inprog",
+      "meta": "~24 days",
+      "items": [
+        "Vision reward HTTP scorer wiring (Gemini-backed) — replace InMemoryVisionRewardScorer default",
+        "Live rewards UI page in services/dna-canary-ui/ streaming dna.performance_feedback",
+        "GMV reward HTTP scorer on by default in dna-bandit-router",
+        "Cross-shop priors persisted in Neon (dna.arm_priors)",
+        "OPE → dna-rollout-controller auto-promote/demote",
+        "GenCO credit-assignment dashboard · Cron registry observability · Brand-priors scheduled refresh · Vision reward backfill"
+      ]
+    },
+    {
+      "title": "Phase 8 · Cross-Platform Expansion",
+      "status": "notstarted",
+      "meta": "Timeline TBD",
+      "items": [
+        "Meta Reels extraction (adapted prompts, Reels metrics)",
+        "YouTube Shorts extraction (different audience dynamics)",
+        "Platform-specific DNA profiles + unified comparative dashboard"
+      ]
+    },
+    {
+      "title": "Phase 9 · Monthly Retraining & RLHF",
+      "status": "notstarted",
+      "meta": "Timeline TBD",
+      "items": [
+        "Automated fine-tune pipeline for ScriptSage on latest DNA data",
+        "RLHF on top of dna-vision-reward once HTTP scorer is wired",
+        "Monthly retraining triggered from dna-cron-registry"
+      ]
+    }
   ],
   "topGaps": [
-    { "title": "Reward → bandit posterior update cron", "detail": "Reward shape lives in code, but the scheduled job that flushes reward into Thompson posteriors is not yet running on prod." },
-    { "title": "Drift alerts pipeline", "detail": "Drift is computed; alert fanout to Slack/PagerDuty stub-only." },
-    { "title": "Canary promotion automation", "detail": "5 ramps documented; no orchestrator yet — promotions are manual." },
-    { "title": "Auto-rollback on KPI breach", "detail": "Need KPI watchers + revert hook; depends on canary orchestrator." },
-    { "title": "Governance registry", "detail": "Owner / on-call / change-control roles defined in doc only — no system of record." },
-    { "title": "Portfolio ROAS rollup", "detail": "Per-brand attribution lands; cross-brand portfolio rollup not started." },
-    { "title": "Convergence loop", "detail": "Indistinguishability eval gate spec exists; double-blind harness not built." },
-    { "title": "Compounder eval gate", "detail": "Weekly compounder run wired; the eval gate that decides promote-vs-hold not yet enforced." },
-    { "title": "Capability ledger UX", "detail": "27-capability tracker exists as a spreadsheet; needs a first-class page in the dashboard." },
-    { "title": "RFC + change-log enforcement", "detail": "No CI hook validating RFC presence on `dna_*` schema changes." }
+    { "title": "Vision reward HTTP scorer wiring — ", "detail": "Replace InMemoryVisionRewardScorer default with Gemini-backed HttpVisionRewardScorer in services/dna-vision-reward/." },
+    { "title": "GMV reward on by default in bandit-router — ", "detail": "Flip default in services/dna-bandit-router/src/reward/index.ts." },
+    { "title": "Live rewards UI page — ", "detail": "Stream dna.performance_feedback in services/dna-canary-ui/." },
+    { "title": "Cross-shop priors persisted in Neon — ", "detail": "Persist prior-transfer.ts outputs to dna.arm_priors." },
+    { "title": "OPE → rollout-controller automation — ", "detail": "dna-rollout-controller consumes OPE outputs to promote/demote." },
+    { "title": "GenCO credit-assignment dashboard — ", "detail": "Operator-facing page reading from dna-genco." },
+    { "title": "Cron registry observability surface — ", "detail": "Last-run / next-run / error per job in the control panel." },
+    { "title": "Brand-priors → bandit-router scheduled refresh — ", "detail": "Periodic refresh job; new cron in dna-cron-registry." },
+    { "title": "Vision reward historical backfill — ", "detail": "One-shot backfill once HTTP scorer lands." },
+    { "title": "GMV Max deployment write-back — ", "detail": "Auto-deploy multi-variant outputs back to GMV Max." }
   ]
 }

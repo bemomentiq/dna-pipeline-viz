@@ -1,0 +1,118 @@
+      <section id="bandits" class="section">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">07 · Bandit state</p>
+            <h2>Thompson Sampling, per attribute × category</h2>
+            <p class="section-sub">
+              12 attributes total &mdash; 8 primary (routed on every job) and 4 secondary (sampled when data permits).
+              Arms below are the 8 primary attributes with posterior mean and 95% credible interval.
+            </p>
+          </div>
+
+          <div class="bandit-grid">
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>hook_type</h4><span>8 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">problem_pain</div><div class="brow-bar"><div style="width:76%"></div></div><div class="brow-val">0.61 · α=94 β=60</div></div>
+                <div class="brow"><div class="brow-arm">question</div><div class="brow-bar"><div style="width:44%"></div></div><div class="brow-val">0.14 · α=22 β=47</div></div>
+                <div class="brow"><div class="brow-arm">bold_claim</div><div class="brow-bar"><div style="width:38%"></div></div><div class="brow-val">0.10 · α=15 β=36</div></div>
+                <div class="brow"><div class="brow-arm">demonstration</div><div class="brow-bar"><div style="width:42%"></div></div><div class="brow-val">0.08 · α=12 β=26</div></div>
+                <div class="brow"><div class="brow-arm">social_proof</div><div class="brow-bar"><div style="width:32%"></div></div><div class="brow-val">0.05 · α=7 β=21</div></div>
+              </div>
+            </div>
+
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>duration_bucket</h4><span>5 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">45&ndash;75s</div><div class="brow-bar"><div style="width:72%"></div></div><div class="brow-val">0.41 · α=64 β=44</div></div>
+                <div class="brow"><div class="brow-arm">&lt;30s</div><div class="brow-bar"><div style="width:28%"></div></div><div class="brow-val">0.07 · α=8 β=26</div></div>
+                <div class="brow"><div class="brow-arm">30&ndash;45s</div><div class="brow-bar"><div style="width:54%"></div></div><div class="brow-val">0.22 · α=30 β=28</div></div>
+                <div class="brow"><div class="brow-arm">75&ndash;120s</div><div class="brow-bar"><div style="width:48%"></div></div><div class="brow-val">0.22 · α=28 β=30</div></div>
+                <div class="brow"><div class="brow-arm">&gt;120s</div><div class="brow-bar"><div style="width:66%"></div></div><div class="brow-val">0.08 · α=14 β=8</div></div>
+              </div>
+            </div>
+
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>cta_placement</h4><span>3 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">70&ndash;85%</div><div class="brow-bar"><div style="width:78%"></div></div><div class="brow-val">0.51 · α=82 β=44</div></div>
+                <div class="brow"><div class="brow-arm">end (85&ndash;100%)</div><div class="brow-bar"><div style="width:44%"></div></div><div class="brow-val">0.31 · α=38 β=36</div></div>
+                <div class="brow"><div class="brow-arm">mid (40&ndash;70%)</div><div class="brow-bar"><div style="width:36%"></div></div><div class="brow-val">0.18 · α=20 β=26</div></div>
+              </div>
+            </div>
+
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>cta_type</h4><span>5 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">direct_command</div><div class="brow-bar"><div style="width:68%"></div></div><div class="brow-val">0.44 · α=58 β=40</div></div>
+                <div class="brow"><div class="brow-arm">scarcity</div><div class="brow-bar"><div style="width:52%"></div></div><div class="brow-val">0.21 · α=24 β=24</div></div>
+                <div class="brow"><div class="brow-arm">discount</div><div class="brow-bar"><div style="width:46%"></div></div><div class="brow-val">0.18 · α=22 β=28</div></div>
+                <div class="brow"><div class="brow-arm">free_shipping</div><div class="brow-bar"><div style="width:36%"></div></div><div class="brow-val">0.12 · α=13 β=22</div></div>
+                <div class="brow"><div class="brow-arm">social_recommend</div><div class="brow-bar"><div style="width:30%"></div></div><div class="brow-val">0.05 · α=6 β=20</div></div>
+              </div>
+            </div>
+
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>audio_type</h4><span>4 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">direct_speech_only</div><div class="brow-bar"><div style="width:80%"></div></div><div class="brow-val">0.71 · α=104 β=48</div></div>
+                <div class="brow"><div class="brow-arm">speech_low_bed</div><div class="brow-bar"><div style="width:42%"></div></div><div class="brow-val">0.18 · α=18 β=24</div></div>
+                <div class="brow"><div class="brow-arm">speech_music</div><div class="brow-bar"><div style="width:28%"></div></div><div class="brow-val">0.08 · α=8 β=22</div></div>
+                <div class="brow"><div class="brow-arm">ambient_only</div><div class="brow-bar"><div style="width:22%"></div></div><div class="brow-val">0.03 · α=4 β=18</div></div>
+              </div>
+            </div>
+
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>demo_type</h4><span>5 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">before_after</div><div class="brow-bar"><div style="width:74%"></div></div><div class="brow-val">0.34 · α=52 β=32</div></div>
+                <div class="brow"><div class="brow-arm">direct_use</div><div class="brow-bar"><div style="width:66%"></div></div><div class="brow-val">0.31 · α=44 β=30</div></div>
+                <div class="brow"><div class="brow-arm">transformation</div><div class="brow-bar"><div style="width:58%"></div></div><div class="brow-val">0.18 · α=26 β=24</div></div>
+                <div class="brow"><div class="brow-arm">routine</div><div class="brow-bar"><div style="width:42%"></div></div><div class="brow-val">0.12 · α=16 β=26</div></div>
+                <div class="brow"><div class="brow-arm">unboxing</div><div class="brow-bar"><div style="width:28%"></div></div><div class="brow-val">0.05 · α=6 β=22</div></div>
+              </div>
+            </div>
+
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>emotion_arc</h4><span>5 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">problem_to_relief</div><div class="brow-bar"><div style="width:76%"></div></div><div class="brow-val">0.48 · α=72 β=44</div></div>
+                <div class="brow"><div class="brow-arm">curiosity_to_satisfaction</div><div class="brow-bar"><div style="width:60%"></div></div><div class="brow-val">0.24 · α=32 β=30</div></div>
+                <div class="brow"><div class="brow-arm">excitement</div><div class="brow-bar"><div style="width:48%"></div></div><div class="brow-val">0.16 · α=20 β=28</div></div>
+                <div class="brow"><div class="brow-arm">surprise</div><div class="brow-bar"><div style="width:34%"></div></div><div class="brow-val">0.08 · α=10 β=24</div></div>
+                <div class="brow"><div class="brow-arm">flat</div><div class="brow-bar"><div style="width:20%"></div></div><div class="brow-val">0.04 · α=4 β=22</div></div>
+              </div>
+            </div>
+
+            <div class="bandit-card">
+              <div class="bandit-head"><h4>caption_style</h4><span>3 arms</span></div>
+              <div class="bandit-rows">
+                <div class="brow" data-win><div class="brow-arm">burned_in_large</div><div class="brow-bar"><div style="width:82%"></div></div><div class="brow-val">0.84 · α=122 β=36</div></div>
+                <div class="brow"><div class="brow-arm">burned_in_small</div><div class="brow-bar"><div style="width:38%"></div></div><div class="brow-val">0.12 · α=14 β=22</div></div>
+                <div class="brow"><div class="brow-arm">auto_generated</div><div class="brow-bar"><div style="width:22%"></div></div><div class="brow-val">0.04 · α=4 β=20</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bandit-meta">
+            <div class="bandit-note">
+              <span class="bandit-note-label">Reward fn</span>
+              <code>reward = 1 if gpm &ge; P50 baseline for category else 0</code>
+            </div>
+            <div class="bandit-note">
+              <span class="bandit-note-label">Floor</span>
+              &ge; 1,000 views per video before eligible to update
+            </div>
+            <div class="bandit-note">
+              <span class="bandit-note-label">Drift alert</span>
+              Jensen&ndash;Shannon divergence &ge; 0.10 vs baseline &rarr; Slack <code>#dna-alerts</code>
+            </div>
+            <div class="bandit-note">
+              <span class="bandit-note-label">Secondary attrs</span>
+              <code>presenter_age</code>, <code>presenter_gender</code>, <code>setting_type</code>, <code>broll_bucket</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROADMAP -->

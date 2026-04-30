@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · DNA Pipeline · MomentIQ</title>
+<meta name="description" content="MomentIQ DNA Pipeline — Kalodata → AI Content Platform training pipeline.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="" aria-label="Home">
+      <span class="brand-mark" aria-hidden>◆</span>
+      <span>DNA Pipeline</span>
+      <span class="brand-org">MomentIQ</span>
+    </a>
+    <nav class="primary-nav">
+          <a href="" class="active">Home</a>
+          <a href="overview/">Overview</a>
+          <a href="architecture/">Architecture</a>
+          <a href="bandits/">Bandits &amp; Reward</a>
+          <a href="quality/">Quality &amp; Gates</a>
+          <a href="operations/">Operations</a>
+          <a href="reference/">Reference</a>
+    </nav>
+  </div>
+</header>
+<main class="page">
+
+<section aria-labelledby="roadmap-heading">
+  <span class="kicker">Roadmap snapshot</span>
+  <h1 id="roadmap-heading">DNA Pipeline — Status</h1>
+  <p>Audit refresh 2026-04-30. Source: bemomentiq/momentiq-dna · #255 (merged). See <code>docs/codebase-vs-roadmap-2026-04-30.md</code>.</p>
+
+  <div class="snapshot-stats">
+    <div class="stat shipped"><div class="num">64.7%</div><div class="label">Shipped (33)</div></div>
+    <div class="stat wiring"><div class="num">17.6%</div><div class="label">Wiring incomplete (9)</div></div>
+    <div class="stat notstarted"><div class="num">17.6%</div><div class="label">Not started (9)</div></div>
+    <div class="stat total"><div class="num">51</div><div class="label">Total claims</div></div>
+  </div>
+
+  <div class="legend">
+    <span class="l-shipped">Shipped</span>
+    <span class="l-wiring">Wiring incomplete</span>
+    <span class="l-notstarted">Not started</span>
+  </div>
+  <div class="bar" aria-hidden>
+    <span class="b-shipped" style="width:64.7%"></span>
+    <span class="b-wiring" style="width:17.6%"></span>
+    <span class="b-notstarted" style="width:17.6%"></span>
+  </div>
+
+  <h2>Phases</h2>
+  <div class="phase-list">
+        <article class="phase">
+          <div class="phase-head">
+            <span class="phase-title">Sprints 1–5 · Foundation</span>
+            <span class="badge shipped">Shipped</span>
+            <span class="phase-meta">10 weeks</span>
+          </div>
+          <ul><li>DNA concept + 5-dimension scoring rubric · Gemini extraction templates · Neon schema (generation_scores, thompson_weights, thompson_priors)</li><li>Thompson Sampling (8 hook arms + 5 framework arms) · POST /api/dna/generate · queue-app routing · DNAFeedbackAggregator (7-day window, 3 AM)</li><li>3 DNA pipeline configs · GeminiDNAScorer · 88 category overrides · webhooks · rate limiting</li><li>Modularized packages · ≥85% test coverage · Next.js 15 control panel (7 pages)</li><li>Foundational docs (architecture, env vars, runbook, API reference, gap-analysis, roadmap)</li></ul>
+        </article>
+        <article class="phase">
+          <div class="phase-head">
+            <span class="phase-title">Phase 5 · Performance Feedback Loop</span>
+            <span class="badge shipped">Shipped</span>
+            <span class="phase-meta">~6 weeks</span>
+          </div>
+          <ul><li>TikTok Shop perf ingestion → services/dna-tiktok-performance/src/ingester.ts (1,440 LOC)</li><li>dna.performance_feedback writes → services/dna-tiktok-performance/src/repo.ts</li><li>GMV-tied bandit reward stream → services/dna-bandit-router/src/reward/kalodata_gmv_live.ts</li><li>Bake-window guard inside the tiktok-performance ingester</li><li>Kalodata weekly extraction cron → services/dna-kalodata-harvester/, registered in services/dna-cron-registry/</li><li>Multi-candidate per chunk → services/dna-candidate-selector/src/selector.ts</li></ul>
+        </article>
+        <article class="phase">
+          <div class="phase-head">
+            <span class="phase-title">Phase 6 · Self-Optimization</span>
+            <span class="badge shipped">Shipped</span>
+            <span class="phase-meta">~6 weeks</span>
+          </div>
+          <ul><li>Multi-variant orchestrator + credit assignment → services/dna-genco/src/credit-assigner.ts</li><li>Off-policy evaluation (DR-IPS) → services/dna-ope-estimator/src/dripss.ts</li><li>Vision reward scaffold → services/dna-vision-reward/src/scorer.ts (interface + in-memory; HTTP scorer is a TODO placeholder — see Phase 7)</li><li>SaleNet GMV prediction → services/dna-salenet/src/predictor.ts</li><li>Cross-category transfer → services/dna-arm-embedder/, services/dna-brand-priors/, services/dna-category-promotion/</li><li>Variant batch orchestration → services/dna-variant-batch/</li></ul>
+        </article>
+        <article class="phase">
+          <div class="phase-head">
+            <span class="phase-title">Phase 7 · Autonomous Operation</span>
+            <span class="badge inprog">In progress</span>
+            <span class="phase-meta">~24 days</span>
+          </div>
+          <ul><li>Vision reward HTTP scorer wiring (Gemini-backed) — replace InMemoryVisionRewardScorer default</li><li>Live rewards UI page in services/dna-canary-ui/ streaming dna.performance_feedback</li><li>GMV reward HTTP scorer on by default in dna-bandit-router</li><li>Cross-shop priors persisted in Neon (dna.arm_priors)</li><li>OPE → dna-rollout-controller auto-promote/demote</li><li>GenCO credit-assignment dashboard · Cron registry observability · Brand-priors scheduled refresh · Vision reward backfill</li></ul>
+        </article>
+        <article class="phase">
+          <div class="phase-head">
+            <span class="phase-title">Phase 8 · Cross-Platform Expansion</span>
+            <span class="badge notstarted">Not started</span>
+            <span class="phase-meta">Timeline TBD</span>
+          </div>
+          <ul><li>Meta Reels extraction (adapted prompts, Reels metrics)</li><li>YouTube Shorts extraction (different audience dynamics)</li><li>Platform-specific DNA profiles + unified comparative dashboard</li></ul>
+        </article>
+        <article class="phase">
+          <div class="phase-head">
+            <span class="phase-title">Phase 9 · Monthly Retraining &amp; RLHF</span>
+            <span class="badge notstarted">Not started</span>
+            <span class="phase-meta">Timeline TBD</span>
+          </div>
+          <ul><li>Automated fine-tune pipeline for ScriptSage on latest DNA data</li><li>RLHF on top of dna-vision-reward once HTTP scorer is wired</li><li>Monthly retraining triggered from dna-cron-registry</li></ul>
+        </article>
+  </div>
+
+  <h2>Top remaining wiring gaps</h2>
+  <div class="gap-list card"><ol><li><b>Vision reward HTTP scorer wiring — </b>Replace InMemoryVisionRewardScorer default with Gemini-backed HttpVisionRewardScorer in services/dna-vision-reward/.</li><li><b>GMV reward on by default in bandit-router — </b>Flip default in services/dna-bandit-router/src/reward/index.ts.</li><li><b>Live rewards UI page — </b>Stream dna.performance_feedback in services/dna-canary-ui/.</li><li><b>Cross-shop priors persisted in Neon — </b>Persist prior-transfer.ts outputs to dna.arm_priors.</li><li><b>OPE → rollout-controller automation — </b>dna-rollout-controller consumes OPE outputs to promote/demote.</li><li><b>GenCO credit-assignment dashboard — </b>Operator-facing page reading from dna-genco.</li><li><b>Cron registry observability surface — </b>Last-run / next-run / error per job in the control panel.</li><li><b>Brand-priors → bandit-router scheduled refresh — </b>Periodic refresh job; new cron in dna-cron-registry.</li><li><b>Vision reward historical backfill — </b>One-shot backfill once HTTP scorer lands.</li><li><b>GMV Max deployment write-back — </b>Auto-deploy multi-variant outputs back to GMV Max.</li></ol></div>
+</section>
+
+<h2 style="margin-top:48px">Explore the engine</h2>
+<p>Seven layers, drill all the way down. Pulled from the original 33-section walkthrough.</p>
+<div class="section-grid">
+        <a class="section-card" href="overview/">
+          <h3>Overview</h3>
+          <p>How the loop works, end-to-end. The hub, the flow, the phase-by-phase walkthrough.</p>
+        </a>
+        <a class="section-card" href="architecture/">
+          <h3>Architecture</h3>
+          <p>Where DNA lives in the stack — configs, schema, APIs, integrations.</p>
+        </a>
+        <a class="section-card" href="bandits/">
+          <h3>Bandits &amp; Reward</h3>
+          <p>Per-attribute × category Thompson sampling, reward shape, and category drift.</p>
+        </a>
+        <a class="section-card" href="quality/">
+          <h3>Quality &amp; Gates</h3>
+          <p>Nothing ships that hasn&#x27;t cleared every gate.</p>
+        </a>
+        <a class="section-card" href="operations/">
+          <h3>Operations</h3>
+          <p>Day-to-day: cron, traces, failures, quickstart, ROAS, cost/ROI.</p>
+        </a>
+        <a class="section-card" href="reference/">
+          <h3>Reference</h3>
+          <p>Glossary, SOTA gap, implementation notes, build plan, gameplan.</p>
+        </a>
+</div>
+
+</main>
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>MomentIQ · DNA Pipeline</span>
+    <span>Source · <a href="https://github.com/bemomentiq/dna-pipeline-viz" target="_blank" rel="noreferrer">bemomentiq/dna-pipeline-viz</a></span>
+  </div>
+</footer>
+</body>
+</html>

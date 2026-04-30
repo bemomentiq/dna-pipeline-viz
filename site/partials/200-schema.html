@@ -1,0 +1,68 @@
+      <section id="schema" class="section section-dark">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">18 · Persistence</p>
+            <h2>Net-new database surface in Neon</h2>
+            <p class="section-sub">Every DNA table is a sibling, not a replacement. Zero modifications to existing schema.</p>
+          </div>
+
+          <div class="schema-grid">
+            <div class="schema-card">
+              <div class="schema-name">dna_video_analyses</div>
+              <div class="schema-sub">Per-video Gemini outputs · one row per video per run</div>
+              <ul>
+                <li><code>video_id</code>, <code>kalodata_export_date</code> (unique pair)</li>
+                <li>42 attribute columns + <code>revenue_usd</code>, <code>gpm</code>, <code>views</code></li>
+                <li><code>analysis_model</code>, <code>analyzed_at</code></li>
+              </ul>
+            </div>
+            <div class="schema-card">
+              <div class="schema-name">dna_profiles</div>
+              <div class="schema-sub">Synthesized baseline profiles · one per run × category</div>
+              <ul>
+                <li><code>profile_date</code>, <code>category</code> (unique pair)</li>
+                <li><code>n_videos</code>, <code>total_gmv_usd</code></li>
+                <li><code>profile_json JSONB</code></li>
+              </ul>
+            </div>
+            <div class="schema-card">
+              <div class="schema-name">dna_generation_configs</div>
+              <div class="schema-sub">Which DNA knobs were used for which job</div>
+              <ul>
+                <li><code>generation_job_id PK</code></li>
+                <li><code>config_id</code>, <code>profile_date</code></li>
+                <li><code>hook_type_selected</code>, <code>cta_type_selected</code>, <code>duration_target_s</code></li>
+              </ul>
+            </div>
+            <div class="schema-card">
+              <div class="schema-name">dna_performance_feedback</div>
+              <div class="schema-sub">Live TikTok metrics · feeds bandit update loop</div>
+              <ul>
+                <li><code>tiktok_video_id</code>, <code>generation_job_id</code></li>
+                <li><code>impressions</code>, <code>views</code>, <code>revenue_usd</code>, <code>gpm</code>, <code>orders</code></li>
+                <li><code>bandit_updated</code> flag</li>
+              </ul>
+            </div>
+            <div class="schema-card">
+              <div class="schema-name">dna_bandits</div>
+              <div class="schema-sub">Thompson Sampling state</div>
+              <ul>
+                <li><code>(attribute, category, arm_value)</code></li>
+                <li><code>alpha</code>, <code>beta</code></li>
+                <li>updated on each feedback batch</li>
+              </ul>
+            </div>
+            <div class="schema-card schema-api">
+              <div class="schema-name">/api/v1/dna/*</div>
+              <div class="schema-sub">Net-new endpoints, existing auth middleware</div>
+              <ul>
+                <li><code>GET /profile/latest</code> · <code>GET /profile/{category}</code></li>
+                <li><code>POST /generate</code> · <code>GET /compliance/{video_id}</code></li>
+                <li><code>POST /feedback</code> · <code>GET /bandits/status</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CRON -->

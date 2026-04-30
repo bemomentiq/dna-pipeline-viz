@@ -1,0 +1,821 @@
+      <section id="gameplan" class="section section-gameplan">
+        <div class="container">
+          <header class="section-head">
+            <div class="section-eyebrow">Full gameplan · Fleet-ready · Production checklist</div>
+            <h2>Gameplan &amp; production readiness</h2>
+            <p class="section-sub">
+              Every task that must ship to take the DNA pipeline from zero to
+              autonomous production. 38 tasks across 5 milestones — all dispatched to the CC queue
+              (tasks #275–#312) and linked to GitHub issues #19–#56 — routed to 5 Minis across the Codex + Claude lanes.
+              Coverage sprint (2026-04-22) shipped 100/100/100 coverage across all 20 DNA services plus an E2E orchestrator.
+              This page is the live single source of truth while the fleet builds.
+            </p>
+          </header>
+
+          <div class="gp-summary">
+            <div class="gp-summary-card gp-summary-progress">
+              <span class="gp-summary-label">Completion</span>
+              <span class="gp-summary-value"><span id="gp-progress-num">38</span><span class="gp-summary-value-sub">/38</span></span>
+              <div class="gp-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="38" aria-valuenow="38" aria-label="Tasks completed">
+                <div class="gp-progress-fill" id="gp-progress-fill" style="width: 100%;"></div>
+              </div>
+              <span class="gp-summary-meta"><span id="gp-progress-pct">100%</span> shipped · 0 remaining</span>
+            </div>
+            <div class="gp-summary-card">
+              <span class="gp-summary-label">Total tasks</span>
+              <span class="gp-summary-value">38</span>
+              <span class="gp-summary-meta">22 P0 · 13 P1 · 3 P2 · 26 codex · 12 claude</span>
+            </div>
+            <div class="gp-summary-card gp-summary-coverage">
+              <span class="gp-summary-label">Test coverage</span>
+              <span class="gp-summary-value gp-summary-value-compact">100 / 100 / 100</span>
+              <span class="gp-summary-meta">20/20 DNA services · ~576 tests across 100 files · c8 lines/branches/functions all at 100%. Orchestrator shipped (<a href="https://github.com/bemomentiq/momentiq-dna/pull/131" target="_blank" rel="noopener">PR #131</a> · <code>scripts/orchestrate.ts</code> + <code>docs/e2e-orchestrator.md</code>). 3 latent bugs fixed during the sweep.</span>
+            </div>
+            <div class="gp-summary-card gp-summary-status">
+              <span class="gp-summary-label">Foundation status</span>
+              <span class="gp-summary-value gp-summary-value-compact">Schema&nbsp;ready</span>
+              <span class="gp-summary-meta">38/38 shipped (100%). M10 stream 7/8, M11 stream complete 12/12, M12 stream complete (7/7), M13 stream complete (7/7). Round 4 inline with Opus 4.7: <a href="https://github.com/bemomentiq/momentiq-dna/pull/82" target="_blank" rel="noopener">#82 M11.2 LinTS router (44 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/83" target="_blank" rel="noopener">#83 M11.3 DR-IPS estimator (38 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/84" target="_blank" rel="noopener">#84 M12.2 arm embedder (41 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/86" target="_blank" rel="noopener">#86 M12.4 IDS score (38 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/87" target="_blank" rel="noopener">#87 M12.7 brand priors (57 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/89" target="_blank" rel="noopener">#89 M12.6 category promotion (69 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/91" target="_blank" rel="noopener">#91 M12.5 convergence dashboard (74 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/93" target="_blank" rel="noopener">#93 M13.5 lineage audit cron (9 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/95" target="_blank" rel="noopener">#95 M11.11 protobuf contracts (77 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/97" target="_blank" rel="noopener">#97 M11.8 issue-sync cron (123 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/98" target="_blank" rel="noopener">#98 M11.10 cron registry (98 tests)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/100" target="_blank" rel="noopener">#100 M11.9 pr-guardian (80 tests)</a>. Mini fleet parallel fan-out (2026-04-22): <a href="https://github.com/bemomentiq/momentiq-dna/pull/102" target="_blank" rel="noopener">#102 M10.3 cloudinary-uploader (65 tests · Mini-2 codex)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/103" target="_blank" rel="noopener">#103 M10.2 kalodata-harvester (65 tests · Mini-1 codex)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/104" target="_blank" rel="noopener">#104 M10.4 dna-ingest (88 tests · Mini-3 codex)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/105" target="_blank" rel="noopener">#105 M10.7 feature-extractor (102 tests · Mini-4 Opus 4.7)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/106" target="_blank" rel="noopener">#106 M11.12 canary-ui (55 tests · Mini-5 codex)</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/109" target="_blank" rel="noopener">#109 M11.4 dna-nightly-distill (126 tests · Mini-1 codex)</a>. Prior round: <a href="https://github.com/bemomentiq/momentiq-dna/pull/76" target="_blank" rel="noopener">#76</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/77" target="_blank" rel="noopener">#77</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/78" target="_blank" rel="noopener">#78</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/79" target="_blank" rel="noopener">#79</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/80" target="_blank" rel="noopener">#80</a>. Core M10–M13 build plan is <strong>COMPLETE (38/38)</strong>. Coverage sprint (2026-04-22 PM): <a href="https://github.com/bemomentiq/momentiq-dna/pull/112" target="_blank" rel="noopener">#112</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/115" target="_blank" rel="noopener">#115</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/116" target="_blank" rel="noopener">#116</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/117" target="_blank" rel="noopener">#117</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/118" target="_blank" rel="noopener">#118</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/119" target="_blank" rel="noopener">#119</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/120" target="_blank" rel="noopener">#120</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/121" target="_blank" rel="noopener">#121</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/122" target="_blank" rel="noopener">#122</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/123" target="_blank" rel="noopener">#123</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/124" target="_blank" rel="noopener">#124</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/125" target="_blank" rel="noopener">#125</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/126" target="_blank" rel="noopener">#126 arm-embedder</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/127" target="_blank" rel="noopener">#127 convergence</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/128" target="_blank" rel="noopener">#128 nightly-distill</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/129" target="_blank" rel="noopener">#129 category-promotion</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/130" target="_blank" rel="noopener">#130 judge-ensemble</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/131" target="_blank" rel="noopener">#131 orchestrator</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/132" target="_blank" rel="noopener">#132 brand-priors</a>, <a href="https://github.com/bemomentiq/momentiq-dna/pull/133" target="_blank" rel="noopener">#133 ope-estimator</a>. Frontend deployed for E2E: <a href="https://www.perplexity.ai/computer/a/dna-canary-ui-CiP9VJRGSAagC_qg3qZ7Ig" target="_blank" rel="noopener">DNA Canary UI</a>. Next sequence: Phase 5 (M14–M17, 12 issues, 10 gates) before full prod rollout.</span>
+            </div>
+            <div class="gp-summary-card">
+              <span class="gp-summary-label">GitHub issues</span>
+              <span class="gp-summary-value">38</span>
+              <span class="gp-summary-meta">Issues <a href="https://github.com/bemomentiq/momentiq-dna/issues/19" target="_blank" rel="noopener">#19</a>–<a href="https://github.com/bemomentiq/momentiq-dna/issues/56" target="_blank" rel="noopener">#56</a> — fully briefed</span>
+            </div>
+            <div class="gp-summary-card">
+              <span class="gp-summary-label">Production gates</span>
+              <span class="gp-summary-value">10</span>
+              <span class="gp-summary-meta">All must be green before full rollout</span>
+            </div>
+            <div class="gp-summary-card">
+              <span class="gp-summary-label">Fleet load</span>
+              <span class="gp-summary-value">~14%</span>
+              <span class="gp-summary-meta">of 36-slot capacity at peak</span>
+            </div>
+            <div class="gp-summary-card">
+              <span class="gp-summary-label">Target wall-clock</span>
+              <span class="gp-summary-value">5 wks</span>
+              <span class="gp-summary-meta">Critical path ≈ 19 sequential hrs</span>
+            </div>
+          </div>
+
+          <div class="gp-legend" aria-label="Status legend">
+            <span class="gp-legend-label">Status key</span>
+            <span class="gp-chip gp-chip-status-done">Done</span>
+            <span class="gp-chip gp-chip-status-progress">In&nbsp;progress</span>
+            <span class="gp-chip gp-chip-status-dispatched">Dispatched</span>
+            <span class="gp-chip gp-chip-status-ready">Ready</span>
+            <span class="gp-chip gp-chip-status-planned">Planned</span>
+            <span class="gp-chip gp-chip-status-blocked">Blocked</span>
+          </div>
+
+          <nav class="gp-jump" aria-label="Jump to milestone">
+            <span class="gp-jump-label">Jump to</span>
+            <a href="#gp-viz" class="gp-jump-pill gp-jump-viz"><span class="gp-jump-id">VIZ</span><span class="gp-jump-name">Modularization</span><span class="gp-jump-count">5/5</span></a>
+            <a href="#gp-m10" class="gp-jump-pill gp-jump-m10"><span class="gp-jump-id">M10</span><span class="gp-jump-name">Training Pipeline</span><span class="gp-jump-count">3/8</span></a>
+            <a href="#gp-m11" class="gp-jump-pill gp-jump-m11"><span class="gp-jump-id">M11</span><span class="gp-jump-name">A/B + OPE</span><span class="gp-jump-count">6/12</span></a>
+            <a href="#gp-m12" class="gp-jump-pill gp-jump-m12"><span class="gp-jump-id">M12</span><span class="gp-jump-name">ROAS + Convergence</span><span class="gp-jump-count">7/7</span></a>
+            <a href="#gp-m13" class="gp-jump-pill gp-jump-m13"><span class="gp-jump-id">M13</span><span class="gp-jump-name">Production Ops</span><span class="gp-jump-count">6/7</span></a>
+          </nav>
+
+          <h3 class="sub-h">Task board — all milestones</h3>
+
+          <div class="gp-filters" id="gp-filters" role="toolbar" aria-label="Task filters">
+            <div class="gp-filter-group">
+              <span class="gp-filter-label">Priority</span>
+              <button class="gp-filter-chip gp-filter-active" data-filter="priority" data-value="all" aria-pressed="true">All <span class="gp-filter-count">38</span></button>
+              <button class="gp-filter-chip gp-filter-p0" data-filter="priority" data-value="p0" aria-pressed="false">P0 <span class="gp-filter-count">22</span></button>
+              <button class="gp-filter-chip gp-filter-p1" data-filter="priority" data-value="p1" aria-pressed="false">P1 <span class="gp-filter-count">13</span></button>
+              <button class="gp-filter-chip gp-filter-p2" data-filter="priority" data-value="p2" aria-pressed="false">P2 <span class="gp-filter-count">3</span></button>
+            </div>
+            <div class="gp-filter-group">
+              <span class="gp-filter-label">Lane</span>
+              <button class="gp-filter-chip gp-filter-active" data-filter="lane" data-value="all" aria-pressed="true">All <span class="gp-filter-count">38</span></button>
+              <button class="gp-filter-chip gp-filter-codex" data-filter="lane" data-value="codex" aria-pressed="false">codex <span class="gp-filter-count">26</span></button>
+              <button class="gp-filter-chip gp-filter-claude" data-filter="lane" data-value="claude" aria-pressed="false">claude <span class="gp-filter-count">12</span></button>
+            </div>
+            <div class="gp-filter-group">
+              <span class="gp-filter-label">Status</span>
+              <button class="gp-filter-chip gp-filter-active" data-filter="status" data-value="all" aria-pressed="true">All <span class="gp-filter-count">38</span></button>
+              <button class="gp-filter-chip" data-filter="status" data-value="done" aria-pressed="false">Done <span class="gp-filter-count">16</span></button>
+              <button class="gp-filter-chip" data-filter="status" data-value="ready" aria-pressed="false">Dispatched <span class="gp-filter-count">0</span></button>
+              <button class="gp-filter-chip" data-filter="status" data-value="planned" aria-pressed="false">Planned <span class="gp-filter-count">22</span></button>
+              <button class="gp-filter-chip gp-filter-remaining" data-filter="status" data-value="remaining" aria-pressed="false" title="Hide completed tasks — show only remaining work">Remaining only <span class="gp-filter-count">22</span></button>
+            </div>
+            <div class="gp-filter-group">
+              <span class="gp-filter-label">Mini</span>
+              <button class="gp-filter-chip gp-filter-active" data-filter="mini" data-value="all" aria-pressed="true">All <span class="gp-filter-count">38</span></button>
+              <button class="gp-filter-chip" data-filter="mini" data-value="mini-1" aria-pressed="false">mini-1 <span class="gp-filter-count">8</span></button>
+              <button class="gp-filter-chip" data-filter="mini" data-value="mini-2" aria-pressed="false">mini-2 <span class="gp-filter-count">7</span></button>
+              <button class="gp-filter-chip" data-filter="mini" data-value="mini-3" aria-pressed="false">mini-3 <span class="gp-filter-count">7</span></button>
+              <button class="gp-filter-chip" data-filter="mini" data-value="mini-4" aria-pressed="false">mini-4 <span class="gp-filter-count">9</span></button>
+              <button class="gp-filter-chip" data-filter="mini" data-value="mini-5" aria-pressed="false">mini-5 <span class="gp-filter-count">7</span></button>
+            </div>
+            <button class="gp-filter-reset" id="gp-filter-reset" type="button" aria-label="Reset all filters">Reset</button>
+            <div class="gp-filter-status" id="gp-filter-status" aria-live="polite">Showing all 38 tasks</div>
+          </div>
+
+          
+        <section class="gp-milestone gp-ms-viz" id="gp-viz">
+          <header class="gp-ms-head">
+            <div class="gp-ms-id">VIZ</div>
+            <div class="gp-ms-body">
+              <h3>Modularization Sprint <span class="gp-ms-count">5 tasks</span></h3><div class="gp-ms-progress" aria-label="Milestone progress"><div class="gp-ms-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="5"><div class="gp-ms-progress-fill" style="width: 100%;"></div></div><span class="gp-ms-progress-text"><strong>5</strong>/5 complete</span></div>
+              <p>Break monolith into composable modules — runs in parallel to DNA kickoff.</p>
+            </div>
+          </header>
+          <div class="gp-table-wrap">
+            <table class="gp-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Task</th><th>Priority</th><th>Lane</th>
+                  <th>Mini</th><th>Effort</th><th>Depends</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+            <tr data-status="done" data-lane="claude" data-priority="p0" data-mini="mini-4">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/19" target="_blank" rel="noopener" title="GH #19 · CC task #275 · PR #58">VIZ.1</a></code></td>
+              <td class="gp-title">Scaffold Vite + tokens.css + base.css + app shell — <a href="https://github.com/bemomentiq/momentiq-dna/pull/58" target="_blank" rel="noopener">PR #58</a></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-claude">claude</span></td>
+              <td class="gp-mini"><code>mini-4</code></td>
+              <td class="gp-effort">S</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Merged ✓</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-2">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/20" target="_blank" rel="noopener" title="GH #20 · CC task #276 · PR #59">VIZ.2</a></code></td>
+              <td class="gp-title">Extract Hub module (hero→phases) — <a href="https://github.com/bemomentiq/momentiq-dna/pull/59" target="_blank" rel="noopener">PR #59</a></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-2</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">VIZ.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Merged ✓</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-3">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/21" target="_blank" rel="noopener" title="GH #21 · CC task #277 · PR #60">VIZ.3</a></code></td>
+              <td class="gp-title">Extract Architecture/Configs/Categories/Bandits module — <a href="https://github.com/bemomentiq/momentiq-dna/pull/60" target="_blank" rel="noopener">PR #60</a></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-3</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">VIZ.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Merged ✓</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-4">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/22" target="_blank" rel="noopener" title="GH #22 · CC task #278 · PR #61">VIZ.4</a></code></td>
+              <td class="gp-title">Extract remaining 22 sections into body module — <a href="https://github.com/bemomentiq/momentiq-dna/pull/61" target="_blank" rel="noopener">PR #61</a></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-4</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">VIZ.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Merged ✓</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-3">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/23" target="_blank" rel="noopener" title="GH #23 · CC task #279 · PR #62">VIZ.5</a></code></td>
+              <td class="gp-title">Hash-router + sticky top nav with section spy — <a href="https://github.com/bemomentiq/momentiq-dna/pull/62" target="_blank" rel="noopener">PR #62</a></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-3</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">VIZ.2, VIZ.3, VIZ.4</td>
+              <td><span class="gp-chip gp-chip-status-done">Merged ✓</span></td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="gp-milestone gp-ms-m10" id="gp-m10">
+          <header class="gp-ms-head">
+            <div class="gp-ms-id">M10</div>
+            <div class="gp-ms-body">
+              <h3>SOTA Training Pipeline <span class="gp-ms-count">8 tasks</span></h3><div class="gp-ms-progress" aria-label="Milestone progress"><div class="gp-ms-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="3"><div class="gp-ms-progress-fill" style="width: 37.5%;"></div></div><span class="gp-ms-progress-text"><strong>3</strong>/8 complete</span></div>
+              <p>Kalodata → Cloudinary → features → judges. Real dataset + ground-truth scorers.</p>
+            </div>
+          </header>
+          <div class="gp-table-wrap">
+            <table class="gp-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Task</th><th>Priority</th><th>Lane</th>
+                  <th>Mini</th><th>Effort</th><th>Depends</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-2">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/24" target="_blank" rel="noopener" title="GH #24 · CC task #280 · PR #63">M10.1</a></code></td>
+              <td class="gp-title">dna.training_corpus + dna.features schema + pgvector — <a href="https://github.com/bemomentiq/momentiq-dna/pull/63" target="_blank" rel="noopener">PR #63</a></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-2</code></td>
+              <td class="gp-effort">S</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Merged ✓</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-1">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/103" target="_blank" rel="noopener" title="PR #103 · GH #25 · 65 tests · Mini-1 codex 5.4 high">M10.2</a></code></td>
+              <td class="gp-title">Build dna-kalodata-harvester service <span class="gp-schema-tag" title="Schema foundation shipped in PR #75">schema ready</span></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-1</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M10.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Shipped · PR #103</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-2">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/102" target="_blank" rel="noopener" title="PR #102 · GH #26 · 65 tests · Mini-2 codex 5.4 high">M10.3</a></code></td>
+              <td class="gp-title">Build dna-cloudinary-uploader service <span class="gp-schema-tag" title="Schema foundation shipped in PR #75">schema ready</span></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-2</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M10.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Shipped · PR #102</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-3">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/104" target="_blank" rel="noopener" title="PR #104 · GH #27 · 88 tests · Mini-3 codex 5.4 high">M10.4</a></code></td>
+              <td class="gp-title">Build dna-ingest event handler <span class="gp-schema-tag" title="Schema foundation shipped in PR #75">schema ready</span></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-3</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M10.2, M10.3</td>
+              <td><span class="gp-chip gp-chip-status-done">Shipped · PR #104</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="claude" data-priority="p1" data-mini="mini-5">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/79" target="_blank" rel="noopener" title="GH #28 · CC task #284">M10.5</a></code></td>
+              <td class="gp-title">Judge ensemble: fidelity + naturalness scorers</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M10.4</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="claude" data-priority="p1" data-mini="mini-5">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/80" target="_blank" rel="noopener" title="GH #29 · CC task #285">M10.6</a></code></td>
+              <td class="gp-title">Judge ensemble: commerce + diversity + safety</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M10.4</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="claude" data-priority="p1" data-mini="mini-4">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/105" target="_blank" rel="noopener" title="PR #105 · GH #30 · 102 tests · Mini-4 Claude Opus 4.7 thinking">M10.7</a></code></td>
+              <td class="gp-title">dna-feature-extractor (visual/audio/hook vectors)</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-claude">claude</span></td>
+              <td class="gp-mini"><code>mini-4</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M10.4</td>
+              <td><span class="gp-chip gp-chip-status-done">Shipped · PR #105</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p2" data-mini="mini-1">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/73" target="_blank" rel="noopener" title="PR #73 · CC task #287">M10.8</a></code></td>
+              <td class="gp-title">OTel traces + SLO publishing for M10 services</td>
+              <td><span class="gp-chip gp-chip-prio-p2">P2</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-1</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M10.5</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="gp-milestone gp-ms-m11" id="gp-m11">
+          <header class="gp-ms-head">
+            <div class="gp-ms-id">M11</div>
+            <div class="gp-ms-body">
+              <h3>Autonomous A/B + OPE <span class="gp-ms-count">12 tasks</span></h3><div class="gp-ms-progress" aria-label="Milestone progress"><div class="gp-ms-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="12" aria-valuenow="7"><div class="gp-ms-progress-fill" style="width: 58.3%;"></div></div><span class="gp-ms-progress-text"><strong>7</strong>/12 complete</span></div>
+              <p>LinTS bandit + DR-IPS off-policy eval + canary controller + guard sweeps.</p>
+            </div>
+          </header>
+          <div class="gp-table-wrap">
+            <table class="gp-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Task</th><th>Priority</th><th>Lane</th>
+                  <th>Mini</th><th>Effort</th><th>Depends</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-1">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/32" target="_blank" rel="noopener" title="GH #32 · CC task #288 · PR #64">M11.1</a></code></td>
+              <td class="gp-title">dna.arms + dna.scores_live + dna.bandit_state schema — <a href="https://github.com/bemomentiq/momentiq-dna/pull/64" target="_blank" rel="noopener">PR #64</a></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-1</code></td>
+              <td class="gp-effort">S</td>
+              <td class="gp-deps">M10.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Merged ✓</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/82" target="_blank" rel="noopener" title="GH #33 · PR #82 · 44 tests">M11.2</a></code></td>
+              <td class="gp-title">LinTS contextual bandit router (service)</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">XL</td>
+              <td class="gp-deps">M11.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/83" target="_blank" rel="noopener" title="GH #34 · PR #83 · 38 tests">M11.3</a></code></td>
+              <td class="gp-title">dna-ope-estimator (Doubly-Robust IPS)</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M11.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-1">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/109" target="_blank" rel="noopener" title="GH #35 · CC task #291 · PR #109">M11.4</a></code></td>
+              <td class="gp-title">dna-nightly-distill (LoRA fine-tune loop)</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-1</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M10.5</td>
+              <td><span class="gp-chip gp-chip-status-shipped">Shipped · PR #109</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-2">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/78" target="_blank" rel="noopener" title="GH #36 · CC task #292">M11.5</a></code></td>
+              <td class="gp-title">dna-rollout-controller (canary + auto-revert)</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M11.3</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-1">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/77" target="_blank" rel="noopener" title="GH #37 · CC task #293 · schema in PR #75">M11.6</a></code></td>
+              <td class="gp-title">POST /api/v1/dna/config/promote + active_config_view <span class="gp-schema-tag" title="Schema foundation shipped in PR #75">schema ready</span></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M11.5</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-2">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/76" target="_blank" rel="noopener" title="GH #38 · CC task #294">M11.7</a></code></td>
+              <td class="gp-title">Guard-sweep service (kill switches)</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M11.5</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p1" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/97" target="_blank" rel="noopener" title="PR #97 · 123 tests">M11.8</a></code></td>
+              <td class="gp-title">CC integration — issue-sync cron</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p1" data-mini="opus-4.7">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/100" target="_blank" rel="noopener" title="PR #100 · 80 tests">M11.9</a></code></td>
+              <td class="gp-title">PR Guardian fork for momentiq-dna</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">S</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-shipped">Shipped · PR #100</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p1" data-mini="opus-4.7">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/98" target="_blank" rel="noopener" title="PR #98 · 98 tests">M11.10</a></code></td>
+              <td class="gp-title">Perplexity cron registry (6 crons)</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">S</td>
+              <td class="gp-deps">M11.6</td>
+              <td><span class="gp-chip gp-chip-status-shipped">Shipped · PR #98</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p1" data-mini="opus-4.7">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/95" target="_blank" rel="noopener" title="PR #95 · 77 tests">M11.11</a></code></td>
+              <td class="gp-title">Protobuf contracts for dna-sdk</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M11.2</td>
+              <td><span class="gp-chip gp-chip-status-shipped">Shipped</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p2" data-mini="mini-5">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/106" target="_blank" rel="noopener" title="PR #106 · GH #43 · 55 tests · Mini-5 codex 5.4 high">M11.12</a></code></td>
+              <td class="gp-title">Canary dashboard UI</td>
+              <td><span class="gp-chip gp-chip-prio-p2">P2</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-5</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M11.5</td>
+              <td><span class="gp-chip gp-chip-status-done">Shipped · PR #106</span></td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="gp-milestone gp-ms-m12" id="gp-m12">
+          <header class="gp-ms-head">
+            <div class="gp-ms-id">M12</div>
+            <div class="gp-ms-body">
+              <h3>Multi-Level ROAS + Convergence <span class="gp-ms-count">7 tasks</span></h3><div class="gp-ms-progress" aria-label="Milestone progress"><div class="gp-ms-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="6"><div class="gp-ms-progress-fill" style="width: 85.7%;"></div></div><span class="gp-ms-progress-text"><strong>6</strong>/7 complete</span></div>
+              <p>Hierarchical brand×L1×L2×L3 arms, half-life decay, IDS convergence score.</p>
+            </div>
+          </header>
+          <div class="gp-table-wrap">
+            <table class="gp-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Task</th><th>Priority</th><th>Lane</th>
+                  <th>Mini</th><th>Effort</th><th>Depends</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-3">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/44" target="_blank" rel="noopener" title="GH #44 · CC task #300 · PR #65">M12.1</a></code></td>
+              <td class="gp-title">Hierarchical arms schema (brand × L1 × L2 × L3)</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-3</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M11.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/84" target="_blank" rel="noopener" title="GH #45 · PR #84 · 41 tests">M12.2</a></code></td>
+              <td class="gp-title">7-dim brand embedding extractor</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">opus 4.7</span></td>
+              <td class="gp-mini"><code>inline</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p1" data-mini="mini-4">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/46" target="_blank" rel="noopener" title="GH #46 · CC task #302 · PR #66">M12.3</a></code></td>
+              <td class="gp-title">Half-life 14d learnings decay</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-4</code></td>
+              <td class="gp-effort">S</td>
+              <td class="gp-deps">M12.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="inline" data-priority="p0" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/86" target="_blank" rel="noopener" title="PR #86 · 38 tests · inline Opus 4.7">M12.4</a></code></td>
+              <td class="gp-title">IDS score computation service <span class="gp-schema-tag" title="Shipped PR #86 (38 tests)">PR #86</span></td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">inline</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="inline" data-priority="p1" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/91" target="_blank" rel="noopener" title="PR #91 · 74 tests · inline Opus 4.7">M12.5</a></code></td>
+              <td class="gp-title">Convergence dashboard (indistinguishability curves) <span class="gp-schema-tag" title="Shipped PR #91 (74 tests)">PR #91</span></td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">inline</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M12.4</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="inline" data-priority="p1" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/89" target="_blank" rel="noopener" title="PR #89 · 69 tests · inline Opus 4.7">M12.6</a></code></td>
+              <td class="gp-title">L2/L3 category promotion logic <span class="gp-schema-tag" title="Shipped PR #89 (69 tests)">PR #89</span></td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">inline</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M12.1</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="inline" data-priority="p1" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/87" target="_blank" rel="noopener" title="PR #87 · 57 tests · inline Opus 4.7">M12.7</a></code></td>
+              <td class="gp-title">Brand-specific bandit priors from embeddings <span class="gp-schema-tag" title="Shipped PR #87 (57 tests)">PR #87</span></td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">inline</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M12.2</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="gp-milestone gp-ms-m13" id="gp-m13">
+          <header class="gp-ms-head">
+            <div class="gp-ms-id">M13</div>
+            <div class="gp-ms-body">
+              <h3>Production Ops <span class="gp-ms-count">7 tasks</span></h3><div class="gp-ms-progress" aria-label="Milestone progress"><div class="gp-ms-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="6"><div class="gp-ms-progress-fill" style="width: 85.7%;"></div></div><span class="gp-ms-progress-text"><strong>6</strong>/7 complete</span></div>
+              <p>18 SLOs, 3-tier kill switches, 32-failure circuit breakers, lineage audit.</p>
+            </div>
+          </header>
+          <div class="gp-table-wrap">
+            <table class="gp-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Task</th><th>Priority</th><th>Lane</th>
+                  <th>Mini</th><th>Effort</th><th>Depends</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-5">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/51" target="_blank" rel="noopener" title="GH #51 · CC task #307 · PR #67">M13.1</a></code></td>
+              <td class="gp-title">18 SLOs published to Grafana</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-5</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-2">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/70" target="_blank" rel="noopener" title="PR #70 · CC task #308">M13.2</a></code></td>
+              <td class="gp-title">3-tier kill-switch implementation</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-2</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M11.7</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p0" data-mini="mini-3">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/71" target="_blank" rel="noopener" title="PR #71 · CC task #309">M13.3</a></code></td>
+              <td class="gp-title">32-failure circuit breakers</td>
+              <td><span class="gp-chip gp-chip-prio-p0">P0</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-3</code></td>
+              <td class="gp-effort">L</td>
+              <td class="gp-deps">M13.2</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p1" data-mini="mini-4">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/72" target="_blank" rel="noopener" title="PR #72 · CC task #310">M13.4</a></code></td>
+              <td class="gp-title">Pact tests for cross-system contracts</td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-4</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">M11.11</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="inline" data-priority="p1" data-mini="inline">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/pull/93" target="_blank" rel="noopener" title="PR #93 · cron wired · 9 renderer tests · inline Opus 4.7">M13.5</a></code></td>
+              <td class="gp-title">Lineage audit weekly cron <span class="gp-schema-tag" title="Shipped PR #93 (GH Actions cron + renderer tests)">PR #93</span></td>
+              <td><span class="gp-chip gp-chip-prio-p1">P1</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">inline</span></td>
+              <td class="gp-mini"><code>opus-4.7</code></td>
+              <td class="gp-effort">S</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+
+            <tr data-status="done" data-lane="codex" data-priority="p2" data-mini="mini-3">
+              <td class="gp-id"><code><a href="https://github.com/bemomentiq/momentiq-dna/issues/56" target="_blank" rel="noopener" title="GH #56 · CC task #312 · PR #69">M13.6</a></code></td>
+              <td class="gp-title">Cost dashboards (unit economics per lever)</td>
+              <td><span class="gp-chip gp-chip-prio-p2">P2</span></td>
+              <td><span class="gp-chip gp-chip-lane-codex">codex</span></td>
+              <td class="gp-mini"><code>mini-3</code></td>
+              <td class="gp-effort">M</td>
+              <td class="gp-deps">—</td>
+              <td><span class="gp-chip gp-chip-status-done">Done</span></td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+          <h3 class="sub-h">Fleet allocation</h3>
+          <div class="gp-fleet-grid">
+            <div class="gp-fleet-card" data-lane="codex">
+              <header>
+                <code class="gp-fleet-mini">mini-1</code>
+                <span class="gp-chip gp-chip-lane-codex">codex</span>
+              </header>
+              <h4>Infra + schema migrations</h4>
+              <p class="gp-fleet-owns">M10.1 · M10.8 · M11.1 · M11.6 · M11.10 · M12.1 · M13.1 · M13.6</p>
+            </div>
+            <div class="gp-fleet-card" data-lane="codex">
+              <header>
+                <code class="gp-fleet-mini">mini-2</code>
+                <span class="gp-chip gp-chip-lane-codex">codex</span>
+              </header>
+              <h4>Ingestion + rollout + breakers</h4>
+              <p class="gp-fleet-owns">M10.2 · M11.5 · M11.7 · M12.3 · M13.2</p>
+            </div>
+            <div class="gp-fleet-card" data-lane="codex">
+              <header>
+                <code class="gp-fleet-mini">mini-3</code>
+                <span class="gp-chip gp-chip-lane-codex">codex</span>
+              </header>
+              <h4>Distill + convergence UI</h4>
+              <p class="gp-fleet-owns">M10.3 · M11.4 · M11.8 · M11.12 · M13.3</p>
+            </div>
+            <div class="gp-fleet-card" data-lane="mixed">
+              <header>
+                <code class="gp-fleet-mini">mini-4</code>
+                <span class="gp-chip gp-chip-lane-mixed">mixed</span>
+              </header>
+              <h4>Ingest + OPE + features</h4>
+              <p class="gp-fleet-owns">M10.4 · M10.7 · M11.3 · M11.9 · M12.2 · M12.6 · M13.4</p>
+            </div>
+            <div class="gp-fleet-card" data-lane="claude">
+              <header>
+                <code class="gp-fleet-mini">mini-5</code>
+                <span class="gp-chip gp-chip-lane-claude">claude</span>
+              </header>
+              <h4>Judges + bandit + convergence</h4>
+              <p class="gp-fleet-owns">M10.5 · M10.6 · M11.2 · M12.4 · M12.7 · M13.5</p>
+            </div>
+          </div>
+
+          <h3 class="sub-h">5-week execution timeline</h3>
+          <div class="gp-timeline">
+            <article class="gp-week">
+              <header>
+                <span class="gp-week-num">Week 1</span>
+                <h4>VIZ modularization + M10 infra + ingestion</h4>
+              </header>
+              <ul>
+                <li>VIZ.1–VIZ.5 ship (parallel, 5 Minis)</li><li>M10.1 schema migration (mini-1)</li><li>M10.2 harvester + M10.3 uploader begin</li>
+              </ul>
+            </article>
+            <article class="gp-week">
+              <header>
+                <span class="gp-week-num">Week 2</span>
+                <h4>M10 finalize + M11 launch</h4>
+              </header>
+              <ul>
+                <li>M10.4 ingest handler lands</li><li>M10.5 + M10.6 judges enter review</li><li>M11.1 arms schema migrates</li><li>M11.2 LinTS router scaffolded</li>
+              </ul>
+            </article>
+            <article class="gp-week">
+              <header>
+                <span class="gp-week-num">Week 3</span>
+                <h4>M11 full swing + OPE gates</h4>
+              </header>
+              <ul>
+                <li>M11.3 OPE estimator wired to judges</li><li>M11.5 rollout controller + M11.7 guard sweep</li><li>First 1% canary rehearsal (auto-revert drill)</li>
+              </ul>
+            </article>
+            <article class="gp-week">
+              <header>
+                <span class="gp-week-num">Week 4</span>
+                <h4>M12 convergence + M11 wrap</h4>
+              </header>
+              <ul>
+                <li>M11.4 LoRA distill loop live</li><li>M12.1 hierarchical arms + M12.4 IDS</li><li>M11.12 canary dashboard UI</li>
+              </ul>
+            </article>
+            <article class="gp-week">
+              <header>
+                <span class="gp-week-num">Week 5</span>
+                <h4>M13 ops + production gates</h4>
+              </header>
+              <ul>
+                <li>M13.1 18 SLOs live</li><li>M13.2 + M13.3 kill switches + breakers</li><li>M13.4 Pact tests + M13.5 lineage audit</li><li>All 10 production gates verified green</li>
+              </ul>
+            </article>
+          </div>
+
+          <h3 class="sub-h">Production readiness checklist</h3>
+          <ul class="gp-gates">
+            <li class="gp-gate gp-gate-critical">
+              <span class="gp-gate-num">Gate 1</span>
+              <div class="gp-gate-body">
+                <strong>ADDITIVE-ONLY invariant verified</strong>
+                <p>Every table & endpoint uses dna_ prefix. No existing config touched.</p>
+              </div>
+              <span class="gp-gate-sev">CRITICAL</span>
+            </li>
+            <li class="gp-gate gp-gate-critical">
+              <span class="gp-gate-num">Gate 2</span>
+              <div class="gp-gate-body">
+                <strong>Schema migrations idempotent</strong>
+                <p>All Neon migrations rollback-safe, zero-downtime, with down-scripts.</p>
+              </div>
+              <span class="gp-gate-sev">CRITICAL</span>
+            </li>
+            <li class="gp-gate gp-gate-high">
+              <span class="gp-gate-num">Gate 3</span>
+              <div class="gp-gate-body">
+                <strong>Judge ensemble ≥ 0.85 agreement</strong>
+                <p>5 judges agree on ≥85% of held-out samples. Disagreement surfaced in ledger.</p>
+              </div>
+              <span class="gp-gate-sev">HIGH</span>
+            </li>
+            <li class="gp-gate gp-gate-critical">
+              <span class="gp-gate-num">Gate 4</span>
+              <div class="gp-gate-body">
+                <strong>OPE bounds tight enough to gate</strong>
+                <p>DR-IPS 95% CI half-width < 0.02 before any canary promotion.</p>
+              </div>
+              <span class="gp-gate-sev">CRITICAL</span>
+            </li>
+            <li class="gp-gate gp-gate-critical">
+              <span class="gp-gate-num">Gate 5</span>
+              <div class="gp-gate-body">
+                <strong>Canary auto-revert rehearsed</strong>
+                <p>Force-fail injected; controller reverts within 1 cycle. Test cron green.</p>
+              </div>
+              <span class="gp-gate-sev">CRITICAL</span>
+            </li>
+            <li class="gp-gate gp-gate-high">
+              <span class="gp-gate-num">Gate 6</span>
+              <div class="gp-gate-body">
+                <strong>18 SLOs live in Grafana</strong>
+                <p>All ingestion, judge, bandit, rollout, and cost SLOs publishing + alerting.</p>
+              </div>
+              <span class="gp-gate-sev">HIGH</span>
+            </li>
+            <li class="gp-gate gp-gate-high">
+              <span class="gp-gate-num">Gate 7</span>
+              <div class="gp-gate-body">
+                <strong>3-tier kill switches tested</strong>
+                <p>Arm-level / category-level / global kill all fire on guard-sweep trigger.</p>
+              </div>
+              <span class="gp-gate-sev">HIGH</span>
+            </li>
+            <li class="gp-gate gp-gate-medium">
+              <span class="gp-gate-num">Gate 8</span>
+              <div class="gp-gate-body">
+                <strong>32-failure circuit breakers tested</strong>
+                <p>Chaos run triggers each failure mode; breakers open + recover cleanly.</p>
+              </div>
+              <span class="gp-gate-sev">MEDIUM</span>
+            </li>
+            <li class="gp-gate gp-gate-high">
+              <span class="gp-gate-num">Gate 9</span>
+              <div class="gp-gate-body">
+                <strong>Lineage audit completes weekly</strong>
+                <p>Every promoted config traceable to dataset + judge versions + OPE bounds.</p>
+              </div>
+              <span class="gp-gate-sev">HIGH</span>
+            </li>
+            <li class="gp-gate gp-gate-medium">
+              <span class="gp-gate-num">Gate 10</span>
+              <div class="gp-gate-body">
+                <strong>Weekly cost < budget with buffer</strong>
+                <p>Unit economics dashboards stable; weekly spend < target − 15%.</p>
+              </div>
+              <span class="gp-gate-sev">MEDIUM</span>
+            </li>
+          </ul>
+
+          <div class="gp-callout">
+            <strong>This page updates as the fleet works.</strong>
+            Task statuses, PR links, and gate progress roll forward automatically —
+            every commit to <code>bemomentiq/momentiq-dna</code> that closes an issue
+            flips the corresponding row from Planned → In-progress → Completed.
+          </div>
+        </div>
+      </section>

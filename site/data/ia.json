@@ -1,0 +1,76 @@
+{
+  "layers": [
+    {
+      "slug": "overview",
+      "title": "Overview",
+      "blurb": "How the loop works, end-to-end. The hub, the flow, the phase-by-phase walkthrough.",
+      "sections": [
+        { "slug": "loop", "title": "The closed loop", "blurb": "Closed-loop training, not a one-shot ETL.", "partial": "030-overview.html" },
+        { "slug": "flow", "title": "The full flow", "blurb": "The full loop, in one pane.", "partial": "040-flow.html" },
+        { "slug": "phases", "title": "Phase walkthrough", "blurb": "What actually happens at each node.", "partial": "050-phases.html" },
+        { "slug": "hub", "title": "Pipeline hub", "blurb": "Where to start. Top-level navigation across the engine.", "partial": "020-hub.html" }
+      ]
+    },
+    {
+      "slug": "architecture",
+      "title": "Architecture",
+      "blurb": "Where DNA lives in the stack — configs, schema, APIs, integrations.",
+      "sections": [
+        { "slug": "stack", "title": "Stack placement", "blurb": "Where DNA lives across services and stores.", "partial": "060-architecture.html" },
+        { "slug": "configs", "title": "Configs", "blurb": "Every DNA knob, by content surface.", "partial": "070-configs.html" },
+        { "slug": "schema", "title": "Schema", "blurb": "Net-new database surface in Neon.", "partial": "200-schema.html" },
+        { "slug": "api", "title": "API surface", "blurb": "All `/api/v1/dna/*` endpoints.", "partial": "140-api.html" },
+        { "slug": "integration", "title": "Integrations", "blurb": "Kalodata, content platform, Reacher, Veo.", "partial": "300-integration.html" }
+      ]
+    },
+    {
+      "slug": "bandits",
+      "title": "Bandits & Reward",
+      "blurb": "Per-attribute × category Thompson sampling, reward shape, and category drift.",
+      "sections": [
+        { "slug": "thompson", "title": "Thompson sampling", "blurb": "Posteriors per attribute × category.", "partial": "090-bandits.html" },
+        { "slug": "reward", "title": "Reward shape", "blurb": "How live performance rewires the bandits.", "partial": "110-reward.html" },
+        { "slug": "categories", "title": "Category drift", "blurb": "DNA shifts per category.", "partial": "080-categories.html" },
+        { "slug": "convergence", "title": "Convergence loop", "blurb": "Closed loop that converges on indistinguishability.", "partial": "260-convergence.html" },
+        { "slug": "compounder", "title": "Compounder", "blurb": "The generator gets better every week, not just the bandits.", "partial": "240-compounder.html" }
+      ]
+    },
+    {
+      "slug": "quality",
+      "title": "Quality & Gates",
+      "blurb": "Nothing ships that hasn't cleared every gate.",
+      "sections": [
+        { "slug": "gates", "title": "Gates", "blurb": "Nothing ships without clearing every gate.", "partial": "120-gates.html" },
+        { "slug": "invariants", "title": "Invariants", "blurb": "Non-negotiable rules the pipeline enforces.", "partial": "220-invariants.html" },
+        { "slug": "monitoring", "title": "Monitoring", "blurb": "The 12 signals that keep the pipeline honest.", "partial": "160-monitoring.html" },
+        { "slug": "rollout", "title": "Rollout", "blurb": "From 0% canary to steady-state — the 5 promotion ramps.", "partial": "170-rollout.html" },
+        { "slug": "governance", "title": "Governance", "blurb": "Roles, on-call, change control.", "partial": "150-governance.html" }
+      ]
+    },
+    {
+      "slug": "operations",
+      "title": "Operations",
+      "blurb": "Day-to-day: cron, traces, failures, quickstart, ROAS, cost/ROI.",
+      "sections": [
+        { "slug": "cron", "title": "Scheduled jobs", "blurb": "Crons that keep the loop alive.", "partial": "210-cron.html" },
+        { "slug": "trace", "title": "Trace", "blurb": "Every primary attribute, end-to-end.", "partial": "130-trace.html" },
+        { "slug": "failures", "title": "Failure modes", "blurb": "What breaks, how it surfaces, who fixes it.", "partial": "290-failures.html" },
+        { "slug": "quickstart", "title": "Quickstart", "blurb": "If something breaks — this card first.", "partial": "190-quickstart.html" },
+        { "slug": "roas", "title": "Portfolio ROAS", "blurb": "Brand → L3 → L2 → L1 → ecosystem.", "partial": "250-roas.html" },
+        { "slug": "cost-roi", "title": "Cost & ROI", "blurb": "Pipeline economics.", "partial": "280-costroi.html" }
+      ]
+    },
+    {
+      "slug": "reference",
+      "title": "Reference",
+      "blurb": "Glossary, SOTA gap, implementation notes, build plan, gameplan.",
+      "sections": [
+        { "slug": "glossary", "title": "Glossary", "blurb": "Every term you'll see in the ledger.", "partial": "180-glossary.html" },
+        { "slug": "sota-gap", "title": "SOTA gap", "blurb": "27-capability delta vs 2024–2026 state-of-the-art.", "partial": "230-sotagap.html" },
+        { "slug": "impl", "title": "Implementation", "blurb": "How phases land in code.", "partial": "270-impl.html" },
+        { "slug": "build-plan", "title": "Build plan", "blurb": "Sprint-by-sprint plan to feature-complete.", "partial": "310-buildplan.html" },
+        { "slug": "gameplan", "title": "Gameplan", "blurb": "Production readiness gameplan.", "partial": "320-gameplan.html" }
+      ]
+    }
+  ]
+}

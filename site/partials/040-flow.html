@@ -1,0 +1,132 @@
+      <section id="flow" class="section flow-section">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">02 · Flow diagram</p>
+            <h2>The full loop, one pane</h2>
+            <p class="section-sub">Tap any node to focus. Arrows show data motion — curved arrows are feedback.</p>
+          </div>
+
+          <div class="flow-wrap">
+            <div class="flow-rail" role="list">
+              <!-- PHASE 1: EXTRACT -->
+              <button class="node node-source" data-phase="1" role="listitem">
+                <span class="node-num">01</span>
+                <span class="node-title">Kalodata Export</span>
+                <span class="node-meta">Top 200 · US · 30d rolling</span>
+                <span class="node-artifact">kalodata_export_YYYY-MM-DD.csv</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 2: DOWNLOAD -->
+              <button class="node node-proc" data-phase="2" role="listitem">
+                <span class="node-num">02</span>
+                <span class="node-title">Video Download</span>
+                <span class="node-meta">yt-dlp · 4 parallel · 720p</span>
+                <span class="node-artifact">videos/{id}.mp4 · ~3 GB</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 3: ANALYZE -->
+              <button class="node node-proc" data-phase="3" role="listitem">
+                <span class="node-num">03</span>
+                <span class="node-title">Gemini Vision Analysis</span>
+                <span class="node-meta">gemini-2.0-flash · $0.05/video</span>
+                <span class="node-artifact">42-attribute JSON per video</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 4: SYNTHESIZE -->
+              <button class="node node-proc" data-phase="4" role="listitem">
+                <span class="node-num">04</span>
+                <span class="node-title">Synthesis</span>
+                <span class="node-meta">Stats · correlations · categories</span>
+                <span class="node-artifact">dna_profile_YYYY-MM-DD.json</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 5: CONFIG GEN -->
+              <button class="node node-config" data-phase="5" role="listitem">
+                <span class="node-num">05</span>
+                <span class="node-title">Content-Type Configs</span>
+                <span class="node-meta">Hook weights · CTA · duration</span>
+                <span class="node-artifact">dna_vertex · dna_pollo · dna_seedance</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 6: GENERATE -->
+              <button class="node node-gen" data-phase="6" role="listitem">
+                <span class="node-num">06</span>
+                <span class="node-title">Multi-Variant Generation</span>
+                <span class="node-meta">Thompson Sampling · 25–50/product</span>
+                <span class="node-artifact">ScriptSage → queue-app → vidgen</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 7: SCORE -->
+              <button class="node node-gate" data-phase="7" role="listitem">
+                <span class="node-num">07</span>
+                <span class="node-title">DNA Compliance Gate</span>
+                <span class="node-meta">7 dims · threshold ≥ 0.70</span>
+                <span class="node-artifact">dna_video_analyses row</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 8: DISTRIBUTE -->
+              <button class="node node-dist" data-phase="8" role="listitem">
+                <span class="node-num">08</span>
+                <span class="node-title">Distribution</span>
+                <span class="node-meta">TikTok Shop · GMV Max / Spark</span>
+                <span class="node-artifact">Live videos in wild</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 9: FEEDBACK -->
+              <button class="node node-learn" data-phase="9" role="listitem">
+                <span class="node-num">09</span>
+                <span class="node-title">Performance Ingestion</span>
+                <span class="node-meta">TikTok Business API · 6h cadence</span>
+                <span class="node-artifact">dna_performance_feedback</span>
+              </button>
+
+              <div class="arrow" aria-hidden="true">→</div>
+
+              <!-- PHASE 10: LEARN -->
+              <button class="node node-learn" data-phase="10" role="listitem">
+                <span class="node-num">10</span>
+                <span class="node-title">Bandit Update + Drift</span>
+                <span class="node-meta">Beta(α,β) · JS-divergence ≥0.10</span>
+                <span class="node-artifact">dna_bandits + alerts</span>
+              </button>
+            </div>
+
+            <!-- Feedback arc — drawn below rail, spans from node 10 back to node 5 -->
+            <div class="feedback-loop">
+              <div class="feedback-line" aria-hidden="true"></div>
+              <div class="feedback-label">
+                <span class="feedback-badge">feedback loop</span>
+                updated priors · new baseline · fresh hook &amp; CTA weights → back to <code>dna_*</code> configs
+              </div>
+            </div>
+          </div>
+
+          <div class="legend">
+            <span class="legend-item"><span class="swatch sw-source"></span>Data source</span>
+            <span class="legend-item"><span class="swatch sw-proc"></span>Processing</span>
+            <span class="legend-item"><span class="swatch sw-config"></span>Config</span>
+            <span class="legend-item"><span class="swatch sw-gen"></span>Generation</span>
+            <span class="legend-item"><span class="swatch sw-gate"></span>Compliance gate</span>
+            <span class="legend-item"><span class="swatch sw-dist"></span>Distribution</span>
+            <span class="legend-item"><span class="swatch sw-learn"></span>Learning</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PHASE DETAILS -->

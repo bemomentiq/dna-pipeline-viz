@@ -1,0 +1,275 @@
+      <section id="configs" class="section">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">05 · Configs</p>
+            <h2>Every DNA knob, by content surface</h2>
+            <p class="section-sub">
+              DNA findings translate into seven config surfaces. The tabs below group by what gets configured; each
+              tab shows exactly which values are written from the current baseline.
+            </p>
+          </div>
+
+          <div class="tabs" role="tablist" data-tabs="configs">
+            <button type="button" class="tab tab-active" data-tab="script" role="tab" aria-selected="true">Script</button>
+            <button type="button" class="tab" data-tab="video" role="tab" aria-selected="false">Video</button>
+            <button type="button" class="tab" data-tab="image" role="tab" aria-selected="false">Image</button>
+            <button type="button" class="tab" data-tab="tts" role="tab" aria-selected="false">TTS / Voice</button>
+            <button type="button" class="tab" data-tab="post" role="tab" aria-selected="false">Post-processing</button>
+            <button type="button" class="tab" data-tab="compliance" role="tab" aria-selected="false">Compliance</button>
+            <button type="button" class="tab" data-tab="category" role="tab" aria-selected="false">Category overrides</button>
+          </div>
+
+          <!-- SCRIPT TAB -->
+          <div class="tab-panel tab-panel-active" data-panel="script">
+            <div class="config-matrix">
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>Script generation</h4>
+                  <span class="config-col-sub">ScriptSage · <code>hook_selector.ts</code> · <code>cta_templates.ts</code></span>
+                </div>
+                <table class="knob-table">
+                  <thead><tr><th>Knob</th><th>DNA value</th><th>From finding</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>hook_type_weights.problem_pain</code></td><td>0.61</td><td>61% of top-sellers · $7.60 GPM</td></tr>
+                    <tr><td><code>hook_type_weights.question</code></td><td>0.14</td><td>14% · $6.10 GPM</td></tr>
+                    <tr><td><code>hook_type_weights.bold_claim</code></td><td>0.10</td><td>10% · $5.80 GPM</td></tr>
+                    <tr><td><code>hook_type_weights.demonstration</code></td><td>0.08</td><td>8% · $6.40 GPM</td></tr>
+                    <tr><td><code>hook_type_weights.social_proof</code></td><td>0.05</td><td>5% · $5.20 GPM</td></tr>
+                    <tr><td><code>hook_type_weights.curiosity_gap</code></td><td>0.02</td><td>2% · $4.10 GPM</td></tr>
+                    <tr><td><code>duration_range_seconds</code></td><td>[45, 75]</td><td>+0.29 revenue corr · 41% of sample</td></tr>
+                    <tr><td><code>target_word_count</code></td><td>128&ndash;214 (WPS 2.85)</td><td>derived from duration × WPS</td></tr>
+                    <tr><td><code>cta_placement_pct_target</code></td><td>0.77</td><td>51% placed at 70&ndash;85% · $7.80 GPM</td></tr>
+                    <tr><td><code>cta_type_weights.direct_command</code></td><td>0.44</td><td>“hit the link” / “tap the orange cart”</td></tr>
+                    <tr><td><code>cta_modality</code></td><td>verbal+visual</td><td>73% of winners · $8.40 vs $5.10 GPM</td></tr>
+                    <tr><td><code>emotion_arc_preference</code></td><td>problem_to_relief</td><td>48% · $8.10 GPM</td></tr>
+                    <tr><td><code>broll_percentage_max</code></td><td>0.20</td><td>&lt;10% broll = $8.10 GPM</td></tr>
+                    <tr><td><code>product_first_appearance_pct</code></td><td>0.30&ndash;0.40</td><td>winners reveal product @ 35% mark</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIDEO TAB -->
+          <div class="tab-panel" data-panel="video" hidden>
+            <div class="config-matrix config-matrix-3">
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>dna_vertex.json</h4>
+                  <span class="config-col-sub">Vertex AI · Veo 3.1 · premium</span>
+                </div>
+                <table class="knob-table">
+                  <tbody>
+                    <tr><td>base_config</td><td><code>vertex_standard</code></td></tr>
+                    <tr><td>duration_range</td><td>[45, 75]s</td></tr>
+                    <tr><td>presenter</td><td>human_single</td></tr>
+                    <tr><td>setting</td><td>home_lifestyle</td></tr>
+                    <tr><td>style</td><td>ugc_polished</td></tr>
+                    <tr><td>variant_count</td><td>50</td></tr>
+                    <tr><td>chunk_strategy</td><td>8s + extend chain</td></tr>
+                    <tr><td>image_anchor</td><td>SKU hero (persistent)</td></tr>
+                    <tr><td>firstchunk_audio_check</td><td>&ge; -60 dBFS RMS</td></tr>
+                    <tr><td>unit_cost</td><td>~$1.80 / 60s</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>dna_pollo.json</h4>
+                  <span class="config-col-sub">Pollo.ai · mid-tier · resilient</span>
+                </div>
+                <table class="knob-table">
+                  <tbody>
+                    <tr><td>base_config</td><td><code>pollo_standard</code></td></tr>
+                    <tr><td>duration_range</td><td>[45, 75]s</td></tr>
+                    <tr><td>style</td><td>ugc_authentic</td></tr>
+                    <tr><td>motion_intensity</td><td>medium</td></tr>
+                    <tr><td>variant_count</td><td>25</td></tr>
+                    <tr><td>retry_policy</td><td>3 attempts · expo backoff</td></tr>
+                    <tr><td>fallback_model</td><td>seedance_standard</td></tr>
+                    <tr><td>unit_cost</td><td>~$0.60 / 60s</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>dna_seedance.json</h4>
+                  <span class="config-col-sub">Seedance · budget lane</span>
+                </div>
+                <table class="knob-table">
+                  <tbody>
+                    <tr><td>base_config</td><td><code>seedance_standard</code></td></tr>
+                    <tr><td>duration_range</td><td>[45, 75]s</td></tr>
+                    <tr><td>motion_intensity</td><td>low_medium</td></tr>
+                    <tr><td>broll_max</td><td>0.15</td></tr>
+                    <tr><td>variant_count</td><td>25</td></tr>
+                    <tr><td>use_for</td><td>A/B against dna_pollo at scale</td></tr>
+                    <tr><td>unit_cost</td><td>~$0.25 / 60s</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- IMAGE TAB -->
+          <div class="tab-panel" data-panel="image" hidden>
+            <div class="config-matrix">
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>dna_imagegen.json</h4>
+                  <span class="config-col-sub">imagegen-engine · Nano Banana · Imagen 4</span>
+                </div>
+                <table class="knob-table">
+                  <thead><tr><th>Knob</th><th>DNA value</th><th>Rationale</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>storyboard_frames</code></td><td>4&ndash;6</td><td>matches duration buckets · 1 frame / 10s</td></tr>
+                    <tr><td><code>hero_frame_style</code></td><td>home_lifestyle</td><td>68% of top-sellers are UGC raw/polished</td></tr>
+                    <tr><td><code>presenter_framing</code></td><td>medium_closeup</td><td>mascara cat: 100% close-up, $6.80 GPM</td></tr>
+                    <tr><td><code>before_after_split</code></td><td>enabled</td><td>vacuums 64% · skincare 71% · best GPM</td></tr>
+                    <tr><td><code>product_prominence</code></td><td>frame_2_plus</td><td>winners reveal @ 35% mark, not hook</td></tr>
+                    <tr><td><code>thumbnail_text</code></td><td>burned-in · 3+ words/line</td><td>matches 84% burned-in caption norm</td></tr>
+                    <tr><td><code>shoppable_post_count</code></td><td>6 per product</td><td>existing <code>shoppable_post_jobs</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TTS TAB -->
+          <div class="tab-panel" data-panel="tts" hidden>
+            <div class="config-matrix">
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>dna_tts.json</h4>
+                  <span class="config-col-sub">tts-engine · voice-continuity layer</span>
+                </div>
+                <table class="knob-table">
+                  <thead><tr><th>Knob</th><th>DNA value</th><th>Source</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>default_wps</code></td><td>2.85</td><td><code>internal/core/chunking/veo/rules.go</code> · not per-speaker (P1)</td></tr>
+                    <tr><td><code>voice_lock_composite_target</code></td><td>&ge; 0.88</td><td>production floor · ceiling ~0.92</td></tr>
+                    <tr><td><code>f0_drift_reject</code></td><td>&gt; 25 Hz</td><td>voice-continuity tournament finding</td></tr>
+                    <tr><td><code>firstchunk_silence_reject</code></td><td>&lt; -60 dBFS RMS</td><td>Veo generate emits no audio, only extend does (P0)</td></tr>
+                    <tr><td><code>music_bed</code></td><td>false</td><td>71% of winners · direct speech 2.3&times; GPM of mixed</td></tr>
+                    <tr><td><code>speech_to_music_ratio_min</code></td><td>0.95</td><td>compliance gate — rejects any music layer</td></tr>
+                    <tr><td><code>presenter_gender_split</code></td><td>female 0.72 / male 0.28</td><td>Kalodata top-seller presenter distribution</td></tr>
+                    <tr><td><code>langdetect_guard</code></td><td>enabled</td><td>reject chunks whose detected lang ≠ target</td></tr>
+                    <tr><td><code>image_anchor_on_extend</code></td><td>true</td><td>fixes SKU drift at chunk 9</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- POST-PROCESSING TAB -->
+          <div class="tab-panel" data-panel="post" hidden>
+            <div class="config-matrix">
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>dna_postprocess.json</h4>
+                  <span class="config-col-sub">ffmpeg · captions · stitch</span>
+                </div>
+                <table class="knob-table">
+                  <thead><tr><th>Knob</th><th>DNA value</th><th>From finding</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>caption_style</code></td><td>burned_in_large</td><td>84% burned-in · $7.80 GPM variant</td></tr>
+                    <tr><td><code>caption_words_per_line_min</code></td><td>3</td><td>readability + TikTok native look</td></tr>
+                    <tr><td><code>caption_font</code></td><td>Bebas Neue / TikTok Sans</td><td>match native TikTok burned-in style</td></tr>
+                    <tr><td><code>pacing_cuts_per_minute</code></td><td>11.3 (p50)</td><td>6&ndash;10s cuts = $7.30 GPM (best)</td></tr>
+                    <tr><td><code>broll_percentage_cap</code></td><td>0.20</td><td>&lt;10% broll = $8.10 GPM</td></tr>
+                    <tr><td><code>music_bed</code></td><td>false</td><td>71% music-free</td></tr>
+                    <tr><td><code>chunk_stitch_crossfade_ms</code></td><td>60</td><td>hides extend-boundary audio seams</td></tr>
+                    <tr><td><code>output_resolution</code></td><td>1080x1920 @ 30fps</td><td>TikTok native</td></tr>
+                    <tr><td><code>dedup_script_hash</code></td><td>sha256 script text</td><td>prevents near-duplicate variants</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- COMPLIANCE TAB -->
+          <div class="tab-panel" data-panel="compliance" hidden>
+            <div class="config-matrix config-matrix-2">
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>Video compliance · 7 dims</h4>
+                  <span class="config-col-sub">Gemini re-analysis · composite &ge; 0.70</span>
+                </div>
+                <table class="knob-table">
+                  <thead><tr><th>Dimension</th><th>Weight</th><th>Measure</th></tr></thead>
+                  <tbody>
+                    <tr><td>Duration in 45&ndash;75s</td><td>15%</td><td>ffprobe + curve</td></tr>
+                    <tr><td>Hook matches DNA mode</td><td>20%</td><td>Gemini re-analysis</td></tr>
+                    <tr><td>Burned-in captions (large)</td><td>15%</td><td>OCR + style</td></tr>
+                    <tr><td>No music bed</td><td>10%</td><td>speech:music ratio</td></tr>
+                    <tr><td>CTA @ 70&ndash;85% mark</td><td>15%</td><td>scene + CTA timestamp</td></tr>
+                    <tr><td>Demo present</td><td>15%</td><td>Gemini vision</td></tr>
+                    <tr><td>B-roll &le; 20%</td><td>10%</td><td>scene classification</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>Voice composite · continuity</h4>
+                  <span class="config-col-sub">Target &ge; 0.88 · hard reject triggers</span>
+                </div>
+                <table class="knob-table">
+                  <thead><tr><th>Signal</th><th>Floor</th><th>Action</th></tr></thead>
+                  <tbody>
+                    <tr><td>F0 drift across chunks</td><td>&le; 25 Hz</td><td>hard reject</td></tr>
+                    <tr><td>Chunk-1 RMS (audio present)</td><td>&ge; -60 dBFS</td><td>regenerate</td></tr>
+                    <tr><td>langdetect match</td><td>== target</td><td>hard reject</td></tr>
+                    <tr><td>Spectral centroid delta</td><td>within 10%</td><td>soft penalty</td></tr>
+                    <tr><td>Speech rate variance</td><td>within 15% of WPS</td><td>soft penalty</td></tr>
+                    <tr><td>Seam crossfade quality</td><td>SSIM &ge; 0.90</td><td>soft penalty</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="config-col config-col-full">
+                <div class="config-col-head">
+                  <h4>Product-level checks (commerce)</h4>
+                  <span class="config-col-sub">hard blocks · TikTok Shop policy</span>
+                </div>
+                <div class="pill-row">
+                  <span class="pill">product_visibility &gt; 80% frames</span>
+                  <span class="pill">product_accuracy vs reference &gt; 0.85</span>
+                  <span class="pill">OCR price = listing price</span>
+                  <span class="pill">no competitor logos</span>
+                  <span class="pill">no misleading claims (NLP)</span>
+                  <span class="pill">NSFW clean</span>
+                  <span class="pill">no copyrighted music detected</span>
+                  <span class="pill">still-frame &lt; 2s segments</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CATEGORY OVERRIDES TAB -->
+          <div class="tab-panel" data-panel="category" hidden>
+            <div class="config-matrix">
+              <div class="config-col">
+                <div class="config-col-head">
+                  <h4>Per-category override sheet</h4>
+                  <span class="config-col-sub">applied when <code>n_videos</code> &ge; 50; blended priors below that</span>
+                </div>
+                <table class="knob-table">
+                  <thead><tr><th>Category</th><th>Hook override</th><th>Demo override</th><th>Duration</th><th>Presenter</th></tr></thead>
+                  <tbody>
+                    <tr><td>Vacuums</td><td>problem_pain 0.78</td><td>before_after 0.64</td><td>65&ndash;90s</td><td>home_owner</td></tr>
+                    <tr><td>Kitchen Gadgets</td><td>demonstration 0.54</td><td>direct_use 0.87</td><td>40&ndash;60s</td><td>home_cook</td></tr>
+                    <tr><td>Skincare</td><td>problem_pain 0.68</td><td>before_after 0.71</td><td>45&ndash;75s</td><td>adult / senior</td></tr>
+                    <tr><td>Mascara &amp; Eye</td><td>demonstration 0.62</td><td>transformation 0.79</td><td>30&ndash;50s</td><td>close-up single</td></tr>
+                    <tr><td>Supplements</td><td>expert_claim 0.52</td><td>routine 0.44</td><td>45&ndash;75s</td><td>expert / adult</td></tr>
+                  </tbody>
+                </table>
+                <p class="prose prose-small">
+                  Below the <code>n ≥ 50</code> floor, a category falls back to a 60/40 blend between its own posterior
+                  and related-category priors (computed monthly in <code>recompute_priors.py</code>).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORIES SHOWCASE -->
