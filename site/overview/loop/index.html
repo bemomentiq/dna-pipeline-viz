@@ -34,7 +34,22 @@
 <span class="kicker">Overview</span>
 <h1>The closed loop</h1>
 <p>Closed-loop training, not a one-shot ETL.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="overview" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">01 · Mental model</p>
+            <h2>Closed-loop training, not a one-shot ETL</h2>
+          </div>
+          <p class="prose">
+            The pipeline is additive to the existing content platform — every DNA artifact (<code>dna_*.json</code>
+            configs, <code>dna_*</code> tables, <code>/api/v1/dna/*</code> endpoints) is net-new. The loop starts at
+            Kalodata, flows through Gemini vision analysis, lands in Neon as a versioned DNA profile, drives generation
+            configs, gates outputs on compliance, ships to TikTok, and returns performance back to Thompson Sampling
+            bandits that update every attribute arm.
+          </p>
+        </div>
+      </section>
+
 
 </main>
 <footer class="site-footer">
