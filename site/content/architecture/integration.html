@@ -1,0 +1,69 @@
+      <section id="integration" class="section">
+        <div class="section-head">
+          <div class="section-eyebrow">17 · Ecosystem integration</div>
+          <h2 class="section-title">One <span class="grad-learn">shared learning ledger</span> across DNA, APO, BEAST, PA, SID</h2>
+          <p class="section-sub">DNA does not live alone. Seven MomentIQ systems exchange contracts via a versioned event bus — Kalodata, ScriptSage, SID, BEAST, PA pipeline, APO, Partner Center — and all of them write to a single <code>learning_ledger</code> table partitioned by month. DNA's slow-compounding fine-tunes and APO's fast-loop TSS-200 experiments read and write the same schema. Every integration is additive, contract-versioned, and has a failure-mode plan.</p>
+        </div>
+
+        <div class="int-map">
+          <div class="int-col int-col-in">
+            <h4>Inbound to DNA</h4>
+            <div class="int-node">Kalodata<span>top-sellers · daily 04:00 UTC · Neon CDC</span></div>
+            <div class="int-node">SID<span>brand manifest · webhook on change</span></div>
+            <div class="int-node">ScriptSage<span>generation request · sync POST</span></div>
+            <div class="int-node">Partner Center<span>LIVE export · hourly signed URL</span></div>
+            <div class="int-node">Reacher<span>creator-tier · webhook</span></div>
+            <div class="int-node">BEAST<span>campaign state · Kafka every 15m</span></div>
+          </div>
+          <div class="int-hub">
+            <div class="int-hub-inner">
+              <span class="int-hub-eyebrow">DNA</span>
+              <h4>Shared ledger</h4>
+              <p>dna · apo · beast · pa → one schema</p>
+              <code>learning_ledger</code>
+            </div>
+          </div>
+          <div class="int-col int-col-out">
+            <h4>Outbound from DNA</h4>
+            <div class="int-node">SID<span>dna.recommendations.brand.v1</span></div>
+            <div class="int-node">ScriptSage<span>dna.config.promoted.v1 (new default)</span></div>
+            <div class="int-node">Partner Center<span>dna.insights.shareable.v1 (brand-scoped)</span></div>
+            <div class="int-node">APO<span>dna.ledger.delta.v1 (co-compound)</span></div>
+            <div class="int-node">PA pipeline<span>dna.arm.winning.v1 (bias budget)</span></div>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Shared learning ledger schema</h3>
+        <div class="ledger-schema">
+          <table class="sota-table">
+            <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td><code>ledger_id</code></td><td>uuid</td><td>primary key, monotonic</td></tr>
+              <tr><td><code>event_type</code></td><td>enum</td><td>experiment · promotion · rollback · drift · training</td></tr>
+              <tr><td><code>source_system</code></td><td>enum</td><td>dna · apo · beast · pa · sid</td></tr>
+              <tr><td><code>brand_id</code></td><td>uuid</td><td>nullable for platform-level</td></tr>
+              <tr><td><code>category_l1</code> / <code>l2</code> / <code>l3</code></td><td>text</td><td>hierarchy keys</td></tr>
+              <tr><td><code>knob_vector</code></td><td>jsonb</td><td>hook, pace, cta, captions, music, suffix, …</td></tr>
+              <tr><td><code>reward_vector</code></td><td>jsonb</td><td>5-dim: cinematic, alignment, motion, aesthetic, commercial</td></tr>
+              <tr><td><code>outcome</code></td><td>jsonb</td><td>gmv, ctr, watch-time, conversion, cost</td></tr>
+              <tr><td><code>confidence</code></td><td>float</td><td>posterior / OPE CI width</td></tr>
+              <tr><td><code>compounding_weight</code></td><td>float</td><td>decays by time & source-reliability</td></tr>
+              <tr><td><code>timestamp</code></td><td>timestamptz</td><td>partition key, monthly</td></tr>
+            </tbody>
+          </table>
+          <p class="ledger-note">Replication: write-local to each system's Neon, nightly merge to platform-wide index. Reading: any system queries <code>/api/v1/ledger/query</code> with predicates. Retention: 24 months, archived 24–60 months.</p>
+        </div>
+
+        <h3 class="sub-h">Cross-system safety rules</h3>
+        <div class="int-rules">
+          <div class="int-rule"><strong>ScriptSage down:</strong> DNA queues generation requests up to 6h, then graceful degrade to baseline configs.</div>
+          <div class="int-rule"><strong>Kalodata stale &gt; 24h:</strong> DNA freezes new-brand cold-starts. Existing arms keep running on prior posteriors.</div>
+          <div class="int-rule"><strong>APO ledger writes stop:</strong> DNA continues but flags "unilateral compounding — divergence risk" in dashboards.</div>
+          <div class="int-rule"><strong>BEAST campaign-state lag:</strong> bandit uses last-known bid envelope, refuses to promote until refreshed.</div>
+          <div class="int-rule"><strong>Partner Center backfill:</strong> OPE window extends proportionally, no blind promotions.</div>
+          <div class="int-rule"><strong>Schema breaking change:</strong> CI (`buf breaking`) blocks PR; v2 side-by-side for 90d before deprecation.</div>
+        </div>
+      </section>
+
+
+

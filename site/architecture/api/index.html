@@ -34,7 +34,97 @@
 <span class="kicker">Architecture</span>
 <h1>API surface</h1>
 <p>All `/api/v1/dna/*` endpoints.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="api" class="section section-quiet">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">12 · API Catalog</p>
+            <h2>Every <code>/api/v1/dna/*</code> endpoint</h2>
+            <p class="section-sub">All net-new, all behind the existing auth middleware. No existing endpoints touched.</p>
+          </div>
+
+          <div class="api-grid">
+            <article class="api-card">
+              <header class="api-card-head"><span class="api-method api-get">GET</span><code>/api/v1/dna/profile/latest</code></header>
+              <p class="api-desc">Latest synthesized DNA profile across all categories. Used by ScriptSage at script-plan time.</p>
+              <div class="api-io"><div class="api-io-label">Response</div><pre><code>{
+  "profile_date": "2026-04-13",
+  "categories": {
+    "vacuums": { "n": 22, "hook_type_weights": { … }, … },
+    …
+  }
+}</code></pre></div>
+            </article>
+            <article class="api-card">
+              <header class="api-card-head"><span class="api-method api-get">GET</span><code>/api/v1/dna/profile/{category}</code></header>
+              <p class="api-desc">Category-scoped profile including override flags and prior blending provenance.</p>
+              <div class="api-io"><div class="api-io-label">Response</div><pre><code>{
+  "category": "vacuums",
+  "n": 22,
+  "median_gpm": 14.20,
+  "overrides": { "duration_range": [65, 90], "demo_type": "before_after" },
+  "prior_source": "own"
+}</code></pre></div>
+            </article>
+            <article class="api-card">
+              <header class="api-card-head"><span class="api-method api-post">POST</span><code>/api/v1/dna/generate</code></header>
+              <p class="api-desc">Create a generation job with DNA-seeded config. Delegates to queue-app dispatcher.</p>
+              <div class="api-io"><div class="api-io-label">Request</div><pre><code>{
+  "product_id": "tts_12345",
+  "category": "vacuums",
+  "variant_count": 50,
+  "force_arms": null
+}</code></pre></div>
+              <div class="api-io"><div class="api-io-label">Response</div><pre><code>{ "job_id": "job_01HV…", "arms": { "hook_type": "problem_pain", … } }</code></pre></div>
+            </article>
+            <article class="api-card">
+              <header class="api-card-head"><span class="api-method api-get">GET</span><code>/api/v1/dna/compliance/{video_id}</code></header>
+              <p class="api-desc">Compliance record for a generated video &mdash; 7 dimension breakdown, pass/fail per chunk.</p>
+              <div class="api-io"><div class="api-io-label">Response</div><pre><code>{
+  "video_id": "vid_9af…",
+  "composite": 0.82,
+  "dimensions": { "hook": 1.0, "caption": 0.85, … },
+  "chunks": [{ "t": "0-15s", "score": 0.88 }, …]
+}</code></pre></div>
+            </article>
+            <article class="api-card">
+              <header class="api-card-head"><span class="api-method api-post">POST</span><code>/api/v1/dna/feedback</code></header>
+              <p class="api-desc">Ingest live TikTok metrics. Idempotent on <code>(tiktok_video_id, window_end)</code>.</p>
+              <div class="api-io"><div class="api-io-label">Request</div><pre><code>{
+  "tiktok_video_id": "7338…",
+  "generation_job_id": "job_01HV…",
+  "window_end": "2026-04-17T17:00Z",
+  "impressions": 124000,
+  "views": 18400,
+  "revenue_usd": 356.96,
+  "orders": 42
+}</code></pre></div>
+            </article>
+            <article class="api-card">
+              <header class="api-card-head"><span class="api-method api-get">GET</span><code>/api/v1/dna/bandits/status</code></header>
+              <p class="api-desc">Current Thompson Sampling state. Powers the Bandits section of this dashboard.</p>
+              <div class="api-io"><div class="api-io-label">Response</div><pre><code>{
+  "attributes": [
+    { "attr": "hook_type", "category": "vacuums",
+      "arms": [ { "v": "problem_pain", "α": 94, "β": 60, "mean": 0.61 }, … ] }
+  ]
+}</code></pre></div>
+            </article>
+            <article class="api-card api-card-internal">
+              <header class="api-card-head"><span class="api-method api-internal">INTERNAL</span><code>POST /dna/sample</code></header>
+              <p class="api-desc">ScriptSage-only sampling endpoint. Draws arm values for a specific (attribute, category) at job-create time.</p>
+              <div class="api-io"><div class="api-io-label">Response</div><pre><code>{ "attribute": "hook_type", "arm": "problem_pain", "theta": 0.62 }</code></pre></div>
+            </article>
+            <article class="api-card api-card-internal">
+              <header class="api-card-head"><span class="api-method api-internal">INTERNAL</span><code>POST /dna/drift/check</code></header>
+              <p class="api-desc">Weekly cron trigger &mdash; compares latest profile to prior run. Returns JS-divergence per attribute.</p>
+              <div class="api-io"><div class="api-io-label">Response</div><pre><code>{ "js_div_max": 0.09, "attributes_flagged": [], "reset_required": false }</code></pre></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- GOVERNANCE -->
+
 
 </main>
 <footer class="site-footer">

@@ -34,7 +34,119 @@
 <span class="kicker">Reference</span>
 <h1>Implementation</h1>
 <p>How phases land in code.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="impl" class="section section-quiet">
+        <div class="section-head">
+          <div class="section-eyebrow">14 · Implementation & observability</div>
+          <h2 class="section-title">Ten <span class="grad-config">dna-* services</span>, fifteen SLOs, one distributed trace</h2>
+          <p class="section-sub">The SOTA methods are nothing without the plumbing. Ten new services on GKE, a unified event bus with versioned protobuf contracts, and OpenTelemetry traces that stitch one training cycle from Kalodata ingest through judge → OPE → bandit → rollout → DPO → ledger. Everything runs in dedicated <code>dna-compute / dna-inference / dna-data</code> namespaces — the baseline ScriptSage / queue-app / vidgen-engine deployment is untouched.</p>
+        </div>
+
+        <div class="impl-grid">
+          <div class="impl-card" data-service="ingest">
+            <div class="impl-head"><span class="impl-pill">Go</span><h4>dna-ingest</h4></div>
+            <div class="impl-meta">GKE <code>dna-data</code> · KEDA on Kafka lag</div>
+            <p>Pulls Kalodata top-seller feed, validates schema, writes to <code>dna_training_corpus</code>, emits <code>dna.variant.ingested</code> events. Owns P1.</p>
+          </div>
+          <div class="impl-card" data-service="judge">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-judge-ensemble</h4></div>
+            <div class="impl-meta">GKE <code>dna-compute</code> · GPU A100 · HPA on queue depth</div>
+            <p>VideoReward + VisionReward + 7B distilled judge. Returns 5-dim reward vector. Owns P2 scoring.</p>
+          </div>
+          <div class="impl-card" data-service="ope">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-ope</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · CPU-heavy · batch every 6h</div>
+            <p>Runs β*-IPS + DoubleML over logged bandit data. Gates every promotion candidate before any impressions are spent.</p>
+          </div>
+          <div class="impl-card" data-service="bandit">
+            <div class="impl-head"><span class="impl-pill">Go</span><h4>dna-bandit-router</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · low-latency · p99 &lt;100ms</div>
+            <p>CMAB-MT + MOL-TS arm selection. Serves the live A/B traffic split. Reads hierarchical posteriors from ebmTS.</p>
+          </div>
+          <div class="impl-card" data-service="dpo">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-dpo-trainer</h4></div>
+            <div class="impl-meta">GKE <code>dna-compute</code> · H100 · weekly jobs</div>
+            <p>VideoDPO + ORPO fine-tunes. Reads preference pairs from the compounding ledger, writes new checkpoints to MLflow.</p>
+          </div>
+          <div class="impl-card" data-service="gad">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-gad-adversary</h4></div>
+            <div class="impl-meta">GKE <code>dna-compute</code> · H100 · Phase 13 only</div>
+            <p>Discriminator + generator adversarial loop. Convergence criterion: discriminator AUC on (top-seller, generated) ≈ 0.5.</p>
+          </div>
+          <div class="impl-card" data-service="rlaif">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-rlaif-annotator</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · API-bound</div>
+            <p>Constitutional cross-check every preference pair vs brand-safety + TikTok Shop compliance rules before ledger append.</p>
+          </div>
+          <div class="impl-card" data-service="rollout">
+            <div class="impl-head"><span class="impl-pill">Go</span><h4>dna-rollout-controller</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · always-on</div>
+            <p>72-hour canary windows with continuous mSPRT monitoring. Auto-rollback on any guardrail trip.</p>
+          </div>
+          <div class="impl-card" data-service="drift">
+            <div class="impl-head"><span class="impl-pill">Python</span><h4>dna-drift-monitor</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · scheduled 15min</div>
+            <p>PSI + KS + MMD on feature/reward distributions. Triggers retrain and alerts when drift crosses thresholds.</p>
+          </div>
+          <div class="impl-card" data-service="registry">
+            <div class="impl-head"><span class="impl-pill">TS</span><h4>dna-registry-gateway</h4></div>
+            <div class="impl-meta">GKE <code>dna-inference</code> · edge-facing</div>
+            <p>Single API gateway for all <code>/api/v1/dna/*</code> routes. mTLS between internal services, OAuth2 for brand-facing endpoints.</p>
+          </div>
+        </div>
+
+        <div class="impl-split">
+          <div class="impl-slo">
+            <h3>15-SLO catalog</h3>
+            <div class="table-scroll">
+              <table class="sota-table slo-table">
+                <thead><tr><th>Service</th><th>SLO</th><th>Target</th><th>Budget</th></tr></thead>
+                <tbody>
+                  <tr><td>dna-ingest</td><td>availability</td><td>99.9%</td><td>43 min/mo</td></tr>
+                  <tr><td>dna-ingest</td><td>freshness</td><td>≤ 6h</td><td>daily</td></tr>
+                  <tr><td>dna-judge-ensemble</td><td>scoring latency p99</td><td>≤ 30s</td><td>12% breach/mo</td></tr>
+                  <tr><td>dna-judge-ensemble</td><td>ensemble agreement</td><td>≥ 0.7 cos-sim</td><td>5%/wk</td></tr>
+                  <tr><td>dna-ope</td><td>estimation freshness</td><td>≤ 6h</td><td>15%/mo</td></tr>
+                  <tr><td>dna-ope</td><td>CI coverage</td><td>≥ 90% calibrated</td><td>monthly audit</td></tr>
+                  <tr><td>dna-bandit-router</td><td>decision latency p99</td><td>≤ 100ms</td><td>10%/wk</td></tr>
+                  <tr><td>dna-bandit-router</td><td>posterior staleness</td><td>≤ 1h</td><td>2%/day</td></tr>
+                  <tr><td>dna-dpo-trainer</td><td>training job success rate</td><td>≥ 95%</td><td>2 fail/mo</td></tr>
+                  <tr><td>dna-rollout-controller</td><td>guardrail violations in canary</td><td>0</td><td>zero-tolerance</td></tr>
+                  <tr><td>dna-rollout-controller</td><td>auto-rollback time</td><td>≤ 5 min</td><td>1% over/mo</td></tr>
+                  <tr><td>dna-drift-monitor</td><td>detection lag</td><td>≤ 30 min</td><td>5%/wk</td></tr>
+                  <tr><td>dna-ledger-writer</td><td>write durability</td><td>99.99%</td><td>5 min/mo</td></tr>
+                  <tr><td>dna-registry-gateway</td><td>p99 latency</td><td>≤ 150ms</td><td>10%/wk</td></tr>
+                  <tr><td>dna-registry-gateway</td><td>auth success rate</td><td>≥ 99.95%</td><td>22 min/mo</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="impl-trace">
+            <h3>End-to-end trace skeleton</h3>
+            <p class="impl-trace-sub">One OpenTelemetry span per service boundary. Trace_id persists from generation through ledger append so we can debug any single variant in one query.</p>
+            <div class="trace-flow">
+              <div class="trace-node"><span class="trace-svc">dna-ingest</span><span class="trace-span">fetch_kalodata</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">scriptsage</span><span class="trace-span">generate_variant</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-judge</span><span class="trace-span">score_5dim</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-ope</span><span class="trace-span">beta_star_ips</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-bandit</span><span class="trace-span">assign_arm</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">partner-center</span><span class="trace-span">ab_result</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-rollout</span><span class="trace-span">msprt_gate</span></div>
+              <div class="trace-arrow">→</div>
+              <div class="trace-node"><span class="trace-svc">dna-ledger</span><span class="trace-span">append_row</span></div>
+            </div>
+            <p class="impl-trace-note">Baggage tags propagate <code>brand_id</code>, <code>category_l1/l2/l3</code>, <code>experiment_id</code> across every hop. Prom + Loki + Tempo stack on GKE. Grafana dashboards reference these tags for every panel.</p>
+          </div>
+        </div>
+      </section>
+
+
 
 </main>
 <footer class="site-footer">

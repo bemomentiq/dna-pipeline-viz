@@ -1,0 +1,76 @@
+      <section id="gates" class="section section-quiet">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">10 · Quality Gates</p>
+            <h2>Nothing ships that hasn't cleared every gate</h2>
+            <p class="section-sub">Three stacked gates: per-chunk voice continuity, per-video compliance rubric, and product-level deliverability checks. A variant needs all three green.</p>
+          </div>
+
+          <div class="gates-stack">
+            <article class="gate-card gate-voice">
+              <header class="gate-card-head">
+                <div class="gate-card-tag">CHUNK-LEVEL</div>
+                <h3>Voice continuity &mdash; P0 blocker</h3>
+                <div class="gate-card-threshold">composite &ge; <strong>0.88</strong></div>
+              </header>
+              <div class="gate-card-body">
+                <div class="gate-dims">
+                  <div class="gate-dim"><span class="gate-dim-name">F0 drift</span><span class="gate-dim-target">&le; 25 Hz</span><span class="gate-dim-tool">librosa.pyin</span></div>
+                  <div class="gate-dim"><span class="gate-dim-name">RMS drift</span><span class="gate-dim-target">&le; 3 dB</span><span class="gate-dim-tool">ffmpeg ebur128</span></div>
+                  <div class="gate-dim"><span class="gate-dim-name">First-chunk silence</span><span class="gate-dim-target">reject &lt; &minus;60 dBFS</span><span class="gate-dim-tool">P0 Veo reject</span></div>
+                  <div class="gate-dim"><span class="gate-dim-name">Language consistency</span><span class="gate-dim-target">langdetect = en</span><span class="gate-dim-tool">fasttext</span></div>
+                  <div class="gate-dim"><span class="gate-dim-name">Voice embedding</span><span class="gate-dim-target">cos &ge; 0.90</span><span class="gate-dim-tool">ECAPA-TDNN</span></div>
+                  <div class="gate-dim"><span class="gate-dim-name">Cross-fade continuity</span><span class="gate-dim-target">60 ms stitch</span><span class="gate-dim-tool">pydub</span></div>
+                </div>
+                <div class="gate-card-footer">Fail &rarr; auto-regen chunk with image anchor on extend. Two fails &rarr; escalate to human review.</div>
+              </div>
+            </article>
+
+            <article class="gate-card gate-rubric">
+              <header class="gate-card-head">
+                <div class="gate-card-tag">VIDEO-LEVEL</div>
+                <h3>7-dimension DNA compliance rubric</h3>
+                <div class="gate-card-threshold">composite &ge; <strong>0.70</strong></div>
+              </header>
+              <div class="gate-card-body">
+                <table class="rubric-table">
+                  <thead><tr><th>Dimension</th><th>Weight</th><th>Full credit (1.0)</th><th>Partial (0.7)</th><th>Detector</th></tr></thead>
+                  <tbody>
+                    <tr><td>Duration in target range</td><td>15%</td><td>45&ndash;75 s</td><td>&plusmn;10 s</td><td>ffprobe</td></tr>
+                    <tr><td>Hook type matches DNA mode</td><td>20%</td><td>top mode of profile</td><td>top-3 mode</td><td>Gemini re-analysis</td></tr>
+                    <tr><td>Caption style: burned-in large</td><td>15%</td><td>&ge;32 px, 3-word lines</td><td>&ge;24 px</td><td>OCR + style</td></tr>
+                    <tr><td>No music bed</td><td>10%</td><td>speech/music &ge; 10</td><td>&ge; 5</td><td>audio classifier</td></tr>
+                    <tr><td>CTA in 70&ndash;85% window</td><td>15%</td><td>inside window</td><td>&plusmn;5 pp outside</td><td>scene detect + STT</td></tr>
+                    <tr><td>Demo present</td><td>15%</td><td>direct_use or before_after</td><td>product_shot only</td><td>Gemini vision</td></tr>
+                    <tr><td>B-roll &le; 20%</td><td>10%</td><td>&le; 20%</td><td>&le; 30%</td><td>scene ratio</td></tr>
+                  </tbody>
+                </table>
+                <div class="gate-card-footer">Long videos (&gt; 60 s) scored per 15 s chunk. Any single dim &lt; 0.4 forces human review regardless of composite.</div>
+              </div>
+            </article>
+
+            <article class="gate-card gate-product">
+              <header class="gate-card-head">
+                <div class="gate-card-tag">PRODUCT-LEVEL</div>
+                <h3>Deliverability &amp; campaign readiness</h3>
+                <div class="gate-card-threshold">all-or-nothing</div>
+              </header>
+              <div class="gate-card-body">
+                <div class="gate-check-grid">
+                  <div class="gate-check"><span class="gate-check-dot"></span>Shoppable post count &ge; target (25 std / 50 GMV Max)</div>
+                  <div class="gate-check"><span class="gate-check-dot"></span>Storyboard frames &ge; 6 with hero frame locked</div>
+                  <div class="gate-check"><span class="gate-check-dot"></span>Variant script dedup via SHA-256 on normalized text</div>
+                  <div class="gate-check"><span class="gate-check-dot"></span>Diversity: no hook type &gt; 30% of variant set</div>
+                  <div class="gate-check"><span class="gate-check-dot"></span>Duration spread: &ge; 10 variants per short/mid/long bucket</div>
+                  <div class="gate-check"><span class="gate-check-dot"></span>Category override applied (if category recognized)</div>
+                  <div class="gate-check"><span class="gate-check-dot"></span>Compliance record persisted to <code>dna_compliance</code></div>
+                  <div class="gate-check"><span class="gate-check-dot"></span>Webhook fired to <code>POST /videos/webhook</code></div>
+                </div>
+                <div class="gate-card-footer">Any miss &rarr; variant pool returns to queue; job state stays <code>incomplete</code> until gap is closed.</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- LINEAGE TRACE -->

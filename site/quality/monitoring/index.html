@@ -34,7 +34,47 @@
 <span class="kicker">Quality &amp; Gates</span>
 <h1>Monitoring</h1>
 <p>The 12 signals that keep the pipeline honest.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="monitoring" class="section section-quiet">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">14 &middot; Monitoring &amp; Alerting</p>
+            <h2>The 12 signals that keep the pipeline honest</h2>
+            <p class="section-sub">Each signal has an owner, a threshold, an alerting destination, and a documented runbook step.</p>
+          </div>
+
+          <div class="monitor-table-wrap">
+            <table class="monitor-table">
+              <thead>
+                <tr><th>Signal</th><th>Layer</th><th>Threshold</th><th>Severity</th><th>Destination</th><th>Runbook</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>extraction_success_rate</code></td><td>source</td><td>&lt; 90% over 1 run</td><td class="sev-p1">P1</td><td>PagerDuty &middot; Data</td><td>rotate yt-dlp cookies, retry failed IDs</td></tr>
+                <tr><td><code>attribute_coverage</code></td><td>proc</td><td>&lt; 95% of videos</td><td class="sev-p2">P2</td><td><code>#dna-alerts</code></td><td>check Gemini rate limits &amp; timeouts</td></tr>
+                <tr><td><code>profile_n</code> per category</td><td>proc</td><td>&lt; 20 (floor)</td><td class="sev-p2">P2</td><td><code>#dna-alerts</code></td><td>widen Kalodata filter window</td></tr>
+                <tr><td><code>js_divergence</code> weekly</td><td>config</td><td>&ge; 0.10</td><td class="sev-p2">P2</td><td><code>#dna-alerts</code></td><td>review drift report, consider reset</td></tr>
+                <tr><td><code>voice_composite</code></td><td>gate</td><td>&lt; 0.88 (blocker)</td><td class="sev-p1">P1</td><td><code>#content-platform</code></td><td>inspect TTS chunks, re-run voice-lock</td></tr>
+                <tr><td><code>compliance_composite</code></td><td>gate</td><td>median &lt; 0.75/week</td><td class="sev-p2">P2</td><td><code>#dna-alerts</code></td><td>check prompt drift + rubric calibration</td></tr>
+                <tr><td><code>feedback_lag</code></td><td>learn</td><td>&gt; 12h since last</td><td class="sev-p1">P1</td><td>PagerDuty &middot; Partners</td><td>TikTok Business API health + token</td></tr>
+                <tr><td><code>bandit_update_lag</code></td><td>learn</td><td>&gt; 1h post-ingest</td><td class="sev-p2">P2</td><td><code>#dna-alerts</code></td><td>worker liveness, retry unprocessed rows</td></tr>
+                <tr><td><code>arm_credibility_width</code></td><td>learn</td><td>&gt; 0.25 @ top arm</td><td class="sev-p3">P3</td><td>dashboard</td><td>more variants, stratified sampling</td></tr>
+                <tr><td><code>additive_guard</code> (CI)</td><td>meta</td><td>any non-<code>dna_*</code> edit</td><td class="sev-p0">P0</td><td>PR block</td><td>revert, split into a new <code>dna_*</code> sibling</td></tr>
+                <tr><td><code>dna_generation_share</code></td><td>dist</td><td>&gt; 30% too early</td><td class="sev-p1">P1</td><td><code>#dna-alerts</code></td><td>canary clamp, roll back to 10%</td></tr>
+                <tr><td><code>gmv_lift_vs_std</code></td><td>outcome</td><td>&lt; 0% for 2 weeks</td><td class="sev-p1">P1</td><td><code>#dna-alerts</code></td><td>pause promotion, inspect winners</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="monitor-legend">
+            <span class="sev sev-p0">P0 &middot; pipeline halted</span>
+            <span class="sev sev-p1">P1 &middot; page within 15 min</span>
+            <span class="sev sev-p2">P2 &middot; review within 24h</span>
+            <span class="sev sev-p3">P3 &middot; track in ledger</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROLLOUT / MIGRATION -->
+
 
 </main>
 <footer class="site-footer">

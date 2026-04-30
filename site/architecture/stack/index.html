@@ -34,7 +34,214 @@
 <span class="kicker">Architecture</span>
 <h1>Stack placement</h1>
 <p>Where DNA lives across services and stores.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="architecture" class="section section-quiet">
+        <div class="container container-wide">
+          <div class="section-head">
+            <p class="section-eyebrow">04 · Architecture</p>
+            <h2>Where DNA lives in the stack</h2>
+            <p class="section-sub">
+              DNA is a sidecar on top of the existing three-surface content platform: ScriptSage monolith,
+              queue-app dispatcher, and generation engines. Every arrow below is a real HTTP or queue hop.
+            </p>
+          </div>
+
+          <div class="arch-diagram">
+            <!-- Row 1 — Source -->
+            <div class="arch-row arch-row-source">
+              <div class="arch-lane-label">Source</div>
+              <div class="arch-row-boxes">
+              <div class="arch-box arch-box-source">
+                <div class="arch-box-head">Kalodata<span class="arch-box-tag">top-200</span></div>
+                <div class="arch-box-meta">US · 30d · rev desc</div>
+              </div>
+              <div class="arch-box arch-box-source">
+                <div class="arch-box-head">TikTok Shop<span class="arch-box-tag">video URLs</span></div>
+                <div class="arch-box-meta">yt-dlp · cookies · 720p</div>
+              </div>
+              <div class="arch-box arch-box-source">
+                <div class="arch-box-head">Live creatives<span class="arch-box-tag">feedback</span></div>
+                <div class="arch-box-meta">TikTok Business API · 6h</div>
+              </div>
+            
+              </div>
+            </div>
+
+            <!-- Row 2 — DNA Layer -->
+            <div class="arch-row arch-row-dna">
+              <div class="arch-lane-label">DNA layer (net-new)</div>
+              <div class="arch-row-boxes">
+              <div class="arch-box arch-box-proc">
+                <div class="arch-box-head">analyze_videos.py</div>
+                <div class="arch-box-meta">Gemini 2.0 Flash · 42 attrs</div>
+              </div>
+              <div class="arch-box arch-box-proc">
+                <div class="arch-box-head">synthesize_dna.py</div>
+                <div class="arch-box-meta">stats · corr · drift</div>
+              </div>
+              <div class="arch-box arch-box-config">
+                <div class="arch-box-head">dna_profiles (Neon)</div>
+                <div class="arch-box-meta">versioned · JSONB · per category</div>
+              </div>
+              <div class="arch-box arch-box-learn">
+                <div class="arch-box-head">dna_bandits</div>
+                <div class="arch-box-meta">Beta(α,β) · per attr × category</div>
+              </div>
+            
+              </div>
+            </div>
+
+            <!-- Row 3 — ScriptSage monolith -->
+            <div class="arch-row arch-row-monolith">
+              <div class="arch-lane-label">ScriptSage monolith<br /><code>content-api.bemomentiq.com</code></div>
+              <div class="arch-row-boxes">
+              <div class="arch-box arch-box-mono">
+                <div class="arch-box-head">Express <code>routes.ts</code></div>
+                <div class="arch-box-meta">~630 KB · 60+ endpoints</div>
+              </div>
+              <div class="arch-box arch-box-mono">
+                <div class="arch-box-head">hook_selector</div>
+                <div class="arch-box-meta">reads <code>hook_type_weights</code></div>
+              </div>
+              <div class="arch-box arch-box-mono">
+                <div class="arch-box-head">cta_templates</div>
+                <div class="arch-box-meta">reads <code>cta_type_weights</code></div>
+              </div>
+              <div class="arch-box arch-box-mono">
+                <div class="arch-box-head">prompt_templates</div>
+                <div class="arch-box-meta">OpenAI Assistant overrides</div>
+              </div>
+              <div class="arch-box arch-box-mono">
+                <div class="arch-box-head">credit_ledger</div>
+                <div class="arch-box-meta">Stripe · subscriptions</div>
+              </div>
+            
+              </div>
+            </div>
+
+            <!-- Row 4 — queue-app -->
+            <div class="arch-row arch-row-queue">
+              <div class="arch-lane-label">queue-app<br />dispatcher</div>
+              <div class="arch-row-boxes">
+              <div class="arch-box arch-box-queue">
+                <div class="arch-box-head">fairness queue</div>
+                <div class="arch-box-meta">per-tenant · per-config</div>
+              </div>
+              <div class="arch-box arch-box-queue">
+                <div class="arch-box-head">route selector</div>
+                <div class="arch-box-meta">DNA vs std · bandit draws</div>
+              </div>
+              <div class="arch-box arch-box-queue">
+                <div class="arch-box-head">webhook relay</div>
+                <div class="arch-box-meta"><code>POST /videos/webhook</code></div>
+              </div>
+            
+              </div>
+            </div>
+
+            <!-- Row 5 — engines -->
+            <div class="arch-row arch-row-engines">
+              <div class="arch-lane-label">Generation engines<br />(Go microservices)</div>
+              <div class="arch-row-boxes">
+              <div class="arch-box arch-box-gen">
+                <div class="arch-box-head">vidgen-engine</div>
+                <div class="arch-box-meta">Vertex/Veo · Pollo · Seedance · chunker</div>
+              </div>
+              <div class="arch-box arch-box-gen">
+                <div class="arch-box-head">imagegen-engine</div>
+                <div class="arch-box-meta">storyboard · Nano Banana · Imagen 4</div>
+              </div>
+              <div class="arch-box arch-box-gen">
+                <div class="arch-box-head">tts-engine</div>
+                <div class="arch-box-meta">ElevenLabs v3 · WPS=2.85 · voice-lock</div>
+              </div>
+              <div class="arch-box arch-box-gen">
+                <div class="arch-box-head">ffmpeg post</div>
+                <div class="arch-box-meta">captions burned-in · music mute · stitch</div>
+              </div>
+            
+              </div>
+            </div>
+
+            <!-- Row 6 — storage -->
+            <div class="arch-row arch-row-storage">
+              <div class="arch-lane-label">Storage &amp; cache</div>
+              <div class="arch-row-boxes">
+              <div class="arch-box arch-box-store">
+                <div class="arch-box-head">Neon Postgres</div>
+                <div class="arch-box-meta">Drizzle · sessions · scripts · dna_*</div>
+              </div>
+              <div class="arch-box arch-box-store">
+                <div class="arch-box-head">Cloud SQL</div>
+                <div class="arch-box-meta">queue-app state · job lifecycle</div>
+              </div>
+              <div class="arch-box arch-box-store">
+                <div class="arch-box-head">Redis</div>
+                <div class="arch-box-meta">rate limits · idempotency · locks</div>
+              </div>
+              <div class="arch-box arch-box-store">
+                <div class="arch-box-head">GCS + Cloudinary</div>
+                <div class="arch-box-meta">mp4 assets · thumbnails · proxies</div>
+              </div>
+            
+              </div>
+            </div>
+
+            <!-- Row 7 — surfaces -->
+            <div class="arch-row arch-row-surfaces">
+              <div class="arch-lane-label">User surfaces</div>
+              <div class="arch-row-boxes">
+              <div class="arch-box arch-box-surface">
+                <div class="arch-box-head">content.bemomentiq.com</div>
+                <div class="arch-box-meta">React 18 · Vite · Vercel</div>
+              </div>
+              <div class="arch-box arch-box-surface">
+                <div class="arch-box-head">content-api.bemomentiq.com</div>
+                <div class="arch-box-meta">prod API</div>
+              </div>
+              <div class="arch-box arch-box-surface">
+                <div class="arch-box-head">content-dev-api.bemomentiq.com</div>
+                <div class="arch-box-meta">dev API</div>
+              </div>
+              <div class="arch-box arch-box-surface">
+                <div class="arch-box-head">admin panel</div>
+                <div class="arch-box-meta">prompt QA · AI logs · analytics</div>
+              </div>
+            
+              </div>
+            </div>
+          </div>
+
+          <div class="arch-notes">
+            <div class="arch-note">
+              <div class="arch-note-label">Ownership split</div>
+              <p>
+                DNA layer (Neon tables, <code>/api/v1/dna/*</code>) is owned by the ML track. ScriptSage monolith,
+                queue-app, and engines stay under Platform Engineering — DNA reads/writes only through versioned
+                interfaces, never patches in place.
+              </p>
+            </div>
+            <div class="arch-note">
+              <div class="arch-note-label">Invariant</div>
+              <p>
+                No production generation path is rewritten. <code>vertex_standard</code>, <code>pollo_standard</code>,
+                <code>seedance_standard</code> remain the default; DNA configs are routed only by explicit A/B selection
+                or tenant opt-in.
+              </p>
+            </div>
+            <div class="arch-note">
+              <div class="arch-note-label">Compliance handoff</div>
+              <p>
+                Generated videos land in GCS, then are scored against the DNA rubric AND voice-lock composite (≥0.88
+                production target). Either gate can reject. Rejections feed <code>dna_video_analyses</code> with
+                failure reasons for root-cause analysis.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONFIGS — FULL MATRIX -->
+
 
 </main>
 <footer class="site-footer">

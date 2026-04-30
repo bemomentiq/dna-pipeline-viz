@@ -34,7 +34,59 @@
 <span class="kicker">Quality &amp; Gates</span>
 <h1>Rollout</h1>
 <p>From 0% canary to steady-state — the 5 promotion ramps.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="rollout" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">15 &middot; Rollout &amp; Migration</p>
+            <h2>From 0% canary to steady-state &mdash; the 5 promotion ramps</h2>
+            <p class="section-sub">DNA configs never replace standards. They ramp alongside, carrying their own traffic share until they prove out against GMV baselines.</p>
+          </div>
+
+          <ol class="ramp">
+            <li class="ramp-step">
+              <div class="ramp-head"><span class="ramp-pct">0%</span><h3>Shadow-only</h3></div>
+              <p class="ramp-desc">DNA configs generate variants but nothing ships. Scores are logged for calibration. Duration: 1&ndash;2 weeks.</p>
+              <div class="ramp-gate"><strong>Promote when:</strong> compliance median &ge; 0.75 across 3 categories, voice composite &ge; 0.88 on 100% of chunks.</div>
+            </li>
+            <li class="ramp-step">
+              <div class="ramp-head"><span class="ramp-pct">10%</span><h3>Canary</h3></div>
+              <p class="ramp-desc">10% of new jobs routed to DNA. Standards still receive 90%. Canary side-by-side with a matched control cohort.</p>
+              <div class="ramp-gate"><strong>Promote when:</strong> 2-week canary shows DNA GMV &ge; standard GMV with p &lt; 0.2, no rubric regression.</div>
+            </li>
+            <li class="ramp-step">
+              <div class="ramp-head"><span class="ramp-pct">33%</span><h3>Split test</h3></div>
+              <p class="ramp-desc">One-third routed to DNA. A/B harness active. Per-category lift tracked separately.</p>
+              <div class="ramp-gate"><strong>Promote when:</strong> DNA beats standard on GMV-per-product by &ge; +10% in majority of categories at p &lt; 0.1.</div>
+            </li>
+            <li class="ramp-step">
+              <div class="ramp-head"><span class="ramp-pct">66%</span><h3>Default + opt-out</h3></div>
+              <p class="ramp-desc">DNA becomes default; manual override preserves standards. 1-week bake.</p>
+              <div class="ramp-gate"><strong>Promote when:</strong> zero client escalations, GMV lift sustained, drift alerts clear.</div>
+            </li>
+            <li class="ramp-step">
+              <div class="ramp-head"><span class="ramp-pct">100%</span><h3>Steady-state</h3></div>
+              <p class="ramp-desc">All new jobs go through DNA. Standards kept as emergency rollback target for 90 days.</p>
+              <div class="ramp-gate"><strong>Rollback trigger:</strong> GMV lift &lt; 0% for 2 consecutive weeks, or P0 additive-guard violation.</div>
+            </li>
+          </ol>
+
+          <div class="rollback-panel">
+            <h3>One-command rollback</h3>
+            <p>Every ramp step is reversible via feature flag. DNA rollout is fully additive, so rollback is a traffic-routing change &mdash; not a data migration.</p>
+            <pre class="code"><code># Immediately route 100% of new jobs back to standards
+FF dna_pipeline_share = 0
+
+# Freeze bandit updates (preserves posteriors for post-mortem)
+FF dna_bandit_writes = false
+
+# Drain in-flight DNA jobs (they complete normally; no new ones)
+FF dna_accept_new = false</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- GLOSSARY -->
+
 
 </main>
 <footer class="site-footer">

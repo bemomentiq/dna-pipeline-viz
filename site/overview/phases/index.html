@@ -34,7 +34,305 @@
 <span class="kicker">Overview</span>
 <h1>Phase walkthrough</h1>
 <p>What actually happens at each node.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="phases" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">03 · Phase detail</p>
+            <h2>What actually happens at each node</h2>
+          </div>
+
+          <div class="phases-grid">
+            <!-- 01 -->
+            <article class="phase" id="phase-1">
+              <header>
+                <span class="phase-num">01</span>
+                <h3>Kalodata Export</h3>
+                <span class="phase-tag tag-source">source</span>
+              </header>
+              <ul class="phase-steps">
+                <li>Login at kalodata.com (enterprise browser account)</li>
+                <li>Filter: US · Last 30 days · sort by Revenue desc · min GMV $10,000 · limit 200</li>
+                <li>Export fields: <code>video_url</code>, <code>revenue_usd</code>, <code>orders</code>, <code>views</code>, <code>gpm</code>, <code>category_l1/l2</code>, <code>seller_id</code>, <code>video_created_at</code></li>
+                <li>Category-specific runs apply <code>category_l1</code> filter with ≥50 videos minimum</li>
+                <li>Refresh listing between exports — the export dropdown breaks after first download</li>
+              </ul>
+              <pre class="code"><code>kalodata_export_2026-04-17.csv    # 200 rows</code></pre>
+            </article>
+
+            <!-- 02 -->
+            <article class="phase" id="phase-2">
+              <header>
+                <span class="phase-num">02</span>
+                <h3>Video Download</h3>
+                <span class="phase-tag tag-proc">processing</span>
+              </header>
+              <ul class="phase-steps">
+                <li><code>yt-dlp</code> with <code>--cookies-from-browser chrome</code> for authenticated access</li>
+                <li>4 parallel workers (TikTok rate-limit safe) via <code>ThreadPoolExecutor</code></li>
+                <li>Format: <code>bestvideo[height&lt;=720]+bestaudio</code>, merged to mp4</li>
+                <li>Expected failure rate 5–12% (deleted, geo-blocked, private) — do not retry &gt;1x</li>
+                <li>Archive run folder to S3 after analysis; ~15 MB × 200 ≈ 3 GB</li>
+              </ul>
+              <pre class="code"><code>videos/
+  7341288...mp4
+  7341291...mp4
+  ...</code></pre>
+            </article>
+
+            <!-- 03 -->
+            <article class="phase" id="phase-3">
+              <header>
+                <span class="phase-num">03</span>
+                <h3>Gemini Vision Analysis</h3>
+                <span class="phase-tag tag-proc">processing</span>
+              </header>
+              <ul class="phase-steps">
+                <li>Model: <code>gemini-2.0-flash</code> (~$0.05/video, weekly) or <code>gemini-2.5-pro</code> (~$0.15, quarterly)</li>
+                <li>Single prompt returns strict JSON with exactly 42 attributes, no prose</li>
+                <li>Rate-limit buffer: 0.5s sleep between calls, idempotent by <code>analysis/{video_id}.json</code></li>
+                <li>Auth via <code>GEMINI_API_KEY</code> from GCP project <code>momentiq-prod</code></li>
+              </ul>
+
+              <p class="pill-row-label">Attribute families (42 total):</p>
+              <div class="pill-row">
+                <span class="pill">Temporal · 5</span>
+                <span class="pill">Presenter · 5</span>
+                <span class="pill">Setting/Production · 5</span>
+                <span class="pill">Hook · 3</span>
+                <span class="pill">Audio · 4</span>
+                <span class="pill">Captions/Text · 5</span>
+                <span class="pill">Product Demo · 4</span>
+                <span class="pill">Emotion/Narrative · 4</span>
+                <span class="pill">CTA · 4</span>
+                <span class="pill">Ad Signal · 2</span>
+              </div>
+            </article>
+
+            <!-- 04 -->
+            <article class="phase" id="phase-4">
+              <header>
+                <span class="phase-num">04</span>
+                <h3>Synthesis</h3>
+                <span class="phase-tag tag-proc">processing</span>
+              </header>
+              <ul class="phase-steps">
+                <li>Join per-video JSON with Kalodata metrics on <code>video_id</code></li>
+                <li>Per-attribute synthesis: mode + distribution for categorical, median/p25/p75 for numeric, pct_true for boolean</li>
+                <li>Revenue correlation (Pearson) for every numeric attribute</li>
+                <li>Emit per-category sub-profiles when N ≥ 50</li>
+                <li>Drift detection vs baseline → JS-divergence threshold 0.10</li>
+              </ul>
+              <pre class="code"><code>dna_profile_output.json
+attribute_matrix.csv
+category_profiles/vacuums.json
+category_profiles/skincare.json</code></pre>
+            </article>
+
+            <!-- 05 -->
+            <article class="phase feature-phase" id="phase-5">
+              <header>
+                <span class="phase-num">05</span>
+                <h3>Content-Type Config Generation</h3>
+                <span class="phase-tag tag-config">config</span>
+              </header>
+              <p class="phase-intro">
+                This is the heart of the training step — DNA findings get translated into per-engine JSON configs that
+                drive every downstream generation. ADDITIVE ONLY: <code>vertex_standard</code>,
+                <code>pollo_standard</code>, <code>seedance_standard</code> are untouched; <code>dna_*</code> siblings
+                are new.
+              </p>
+
+              <div class="config-grid">
+                <div class="config-card">
+                  <div class="config-name">dna_vertex.json</div>
+                  <div class="config-sub">Vertex AI / Veo · premium</div>
+                  <ul>
+                    <li>duration 45–75s · presenter: human_single</li>
+                    <li>setting: home_lifestyle · ugc_polished</li>
+                    <li>50 variants · compliance scoring on</li>
+                  </ul>
+                </div>
+                <div class="config-card">
+                  <div class="config-name">dna_pollo.json</div>
+                  <div class="config-sub">Pollo.ai · resilient mid-tier</div>
+                  <ul>
+                    <li>style: ugc_authentic</li>
+                    <li>25 variants</li>
+                    <li>music bed off · burned-in captions</li>
+                  </ul>
+                </div>
+                <div class="config-card">
+                  <div class="config-name">dna_seedance.json</div>
+                  <div class="config-sub">Seedance · budget lane</div>
+                  <ul>
+                    <li>motion_intensity: low_medium</li>
+                    <li>broll max 15%</li>
+                    <li>25 variants</li>
+                  </ul>
+                </div>
+              </div>
+
+              <p class="pill-row-label">Knobs written from DNA into every config:</p>
+              <div class="pill-row">
+                <span class="pill pill-accent">hook_type_weights</span>
+                <span class="pill pill-accent">cta_placement_pct_target = 0.77</span>
+                <span class="pill pill-accent">cta_type_weights</span>
+                <span class="pill pill-accent">duration_range_seconds [45, 75]</span>
+                <span class="pill pill-accent">broll_percentage_max</span>
+                <span class="pill pill-accent">emotion_arc_preference</span>
+                <span class="pill pill-accent">music_bed = false</span>
+                <span class="pill pill-accent">caption_style = burned_in_large</span>
+              </div>
+
+              <details class="code-details">
+                <summary>Show dna_vertex.json excerpt</summary>
+                <pre class="code"><code>{
+  "config_id": "dna_vertex",
+  "base_config": "vertex_standard",
+  "dna_version": "2026-04",
+  "generation_params": {
+    "duration_range_seconds": [45, 75],
+    "presenter_type": "human_single",
+    "setting_preference": "home_lifestyle"
+  },
+  "post_processing": {
+    "music_bed": false,
+    "caption_style": "burned_in_large",
+    "caption_words_per_line_min": 3
+  },
+  "script_generation": {
+    "hook_type_weights": {
+      "problem_pain": 0.61,
+      "question":     0.14,
+      "bold_claim":   0.10,
+      "demonstration":0.08,
+      "social_proof": 0.05,
+      "curiosity_gap":0.02
+    },
+    "cta_placement_pct_target": 0.77,
+    "emotion_arc_preference": "problem_to_relief",
+    "broll_percentage_max": 0.20
+  },
+  "dna_compliance_scoring": true,
+  "multi_variant_count": 50
+}</code></pre>
+              </details>
+            </article>
+
+            <!-- 06 -->
+            <article class="phase" id="phase-6">
+              <header>
+                <span class="phase-num">06</span>
+                <h3>Multi-Variant Generation</h3>
+                <span class="phase-tag tag-gen">generation</span>
+              </header>
+              <ul class="phase-steps">
+                <li>Orchestrator: ScriptSage → queue-app → { vidgen-engine · imagegen-engine }</li>
+                <li>Thompson Sampling selects each attribute arm at generation time</li>
+                <li>Low-data categories (&lt;50 videos) bootstrap from blended Bayesian priors — 60% own + 40% related</li>
+                <li>Diversity constraint: &lt;30% variants share a hook type; 10+ variants per duration bucket</li>
+                <li>SHA-256 script-text dedup prevents near-duplicate variants</li>
+              </ul>
+
+              <p class="pill-row-label">8 primary bandit attributes:</p>
+              <div class="pill-row">
+                <span class="pill">hook_type · 8 arms</span>
+                <span class="pill">duration_bucket · 5</span>
+                <span class="pill">cta_placement · 3</span>
+                <span class="pill">cta_type · 5</span>
+                <span class="pill">audio_type · 4</span>
+                <span class="pill">demo_type · 5</span>
+                <span class="pill">emotion_arc · 5</span>
+                <span class="pill">caption_style · 3</span>
+              </div>
+            </article>
+
+            <!-- 07 -->
+            <article class="phase" id="phase-7">
+              <header>
+                <span class="phase-num">07</span>
+                <h3>DNA Compliance Gate</h3>
+                <span class="phase-tag tag-gate">gate</span>
+              </header>
+              <p class="phase-intro">
+                Post-generation Gemini re-analysis across 7 weighted dimensions. Composite ≥ 0.70 is required before
+                distribution. Longer videos are scored in 15-second chunks to surface weak segments.
+              </p>
+
+              <table class="score-table">
+                <thead>
+                  <tr>
+                    <th>Dimension</th>
+                    <th>Weight</th>
+                    <th>Measure</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Duration in 45–75s</td><td>15%</td><td>Fixed scoring curve</td></tr>
+                  <tr><td>Hook matches DNA mode</td><td>20%</td><td>Gemini re-analysis</td></tr>
+                  <tr><td>Captions: burned-in large</td><td>15%</td><td>OCR + style detection</td></tr>
+                  <tr><td>No music bed</td><td>10%</td><td>Speech:music ratio</td></tr>
+                  <tr><td>CTA at 70–85% mark</td><td>15%</td><td>Scene + CTA timestamp</td></tr>
+                  <tr><td>Demo present</td><td>15%</td><td>Gemini vision</td></tr>
+                  <tr><td>B-roll ≤ 20%</td><td>10%</td><td>Scene classification</td></tr>
+                </tbody>
+              </table>
+            </article>
+
+            <!-- 08 -->
+            <article class="phase" id="phase-8">
+              <header>
+                <span class="phase-num">08</span>
+                <h3>Distribution</h3>
+                <span class="phase-tag tag-dist">distribution</span>
+              </header>
+              <ul class="phase-steps">
+                <li>Approved variants posted to TikTok Shop via Partner Center / Spark Ads</li>
+                <li>GMV Max takes the portfolio for paid amplification</li>
+                <li>Generation metadata persisted in <code>dna_generation_configs</code> to join back to feedback</li>
+              </ul>
+            </article>
+
+            <!-- 09 -->
+            <article class="phase" id="phase-9">
+              <header>
+                <span class="phase-num">09</span>
+                <h3>Performance Ingestion</h3>
+                <span class="phase-tag tag-learn">learning</span>
+              </header>
+              <ul class="phase-steps">
+                <li>TikTok Business API pull every 6 hours: impressions, plays, revenue, conversions, spend</li>
+                <li>Derive <code>gpm = revenue / plays × 1000</code></li>
+                <li>Minimum signal floor: 1,000 views per video before update eligibility</li>
+                <li>Append-only writes to <code>dna_performance_feedback</code> with <code>bandit_updated=false</code></li>
+              </ul>
+            </article>
+
+            <!-- 10 -->
+            <article class="phase" id="phase-10">
+              <header>
+                <span class="phase-num">10</span>
+                <h3>Bandit Update + Drift Detection</h3>
+                <span class="phase-tag tag-learn">learning</span>
+              </header>
+              <ul class="phase-steps">
+                <li>Reward = 1 if video <code>gpm ≥ P50 baseline</code> for its category, else 0</li>
+                <li>Per attribute value, update Beta: <code>α += reward</code>, <code>β += (1 − reward)</code></li>
+                <li>Persist <code>dna_bandits(attribute, category, arm_value, α, β)</code></li>
+                <li>Weekly drift: Jensen-Shannon divergence vs baseline; alert to Slack <code>#dna-alerts</code> if ≥ 0.10</li>
+                <li>Auto-reset baseline after 3 consecutive weeks of same-direction drift — priors rebuild from fresh profile</li>
+              </ul>
+              <pre class="code"><code>🚨 DNA DRIFT ALERT — hook_type shifted 14.2%
+  Baseline mode: problem_pain (61%)
+  Current mode:  problem_pain (47%)
+  Action: Review current extraction</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARCHITECTURE -->
+
 
 </main>
 <footer class="site-footer">

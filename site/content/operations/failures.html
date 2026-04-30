@@ -1,0 +1,110 @@
+      <section id="failures" class="section section-quiet">
+        <div class="section-head">
+          <div class="section-eyebrow">16 · Failure modes & safety rails</div>
+          <h2 class="section-title">Seven failure classes, twelve <span class="grad-gate">circuit breakers</span>, three kill switches</h2>
+          <p class="section-sub">An autonomous pipeline that can spend a brand's budget without human approval must assume every component will fail in an adversarial direction. Goodhart's law, reward hacking, mode collapse, data gaming, drift, compliance drift, cascade failures — we catalog 30 failure modes across 7 classes, define formulas for each detection signal, and wire autonomous recoveries. Humans only at severity S1 or repeated S2.</p>
+        </div>
+
+        <div class="failure-grid">
+          <div class="fclass fclass-f1">
+            <div class="fclass-head"><span class="fclass-tag">F1</span><h4>Reward hacking</h4></div>
+            <p class="fclass-sub">Goodhart's law: the judge becomes the objective.</p>
+            <ul>
+              <li><strong>Judge/GMV divergence:</strong> |R<sub>judge</sub> − R<sub>GMV</sub>| &gt; 2σ over 7-day window</li>
+              <li><strong>Sycophantic judge:</strong> corr(judge_score, brand_prior) &gt; 0.8</li>
+              <li><strong>Spec gaming:</strong> reward ↑ while GMV-attribution ↓</li>
+              <li><strong>Adversarial prompt exploits:</strong> monthly red-team tournament</li>
+              <li class="remedy">Remedy: ORPO χ² regularization + RLAIF cross-check + shadow reward model</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f2">
+            <div class="fclass-head"><span class="fclass-tag">F2</span><h4>Distribution shift</h4></div>
+            <p class="fclass-sub">Seasonal, category-migration, concept drift.</p>
+            <ul>
+              <li><strong>PSI &gt; 0.25 warn, &gt; 0.5 alert</strong></li>
+              <li><strong>KS test on reward dist:</strong> p &lt; 0.01 over 24h</li>
+              <li><strong>MMD on embeddings:</strong> &gt; threshold per-category</li>
+              <li><strong>Conformal p-values trending low</strong></li>
+              <li class="remedy">Remedy: auto-retrain hyperpriors + canary freeze + escalate if persistent</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f3">
+            <div class="fclass-head"><span class="fclass-tag">F3</span><h4>Model collapse</h4></div>
+            <p class="fclass-sub">Generator or discriminator degenerates.</p>
+            <ul>
+              <li><strong>Effective arm count:</strong> 1/Σp<sub>i</sub>² &lt; 3 for 72h</li>
+              <li><strong>Discriminator trivial:</strong> AUC → 1.0 (generator too weak)</li>
+              <li><strong>DPO overfit:</strong> train↔eval KL &gt; 0.5</li>
+              <li><strong>Catastrophic forgetting:</strong> baseline regression on held-out set</li>
+              <li class="remedy">Remedy: DPP diversity penalty + ref-policy rollback + 10% replay buffer</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f4">
+            <div class="fclass-head"><span class="fclass-tag">F4</span><h4>Data poisoning / gaming</h4></div>
+            <p class="fclass-sub">Adversarial creators attack Kalodata feed.</p>
+            <ul>
+              <li><strong>GMV velocity spike</strong> 10× baseline, no paid push</li>
+              <li><strong>Unverified seller</strong> (age &lt;180d, return-rate ≥5%)</li>
+              <li><strong>Kalodata↔Fastmoss disagreement</strong> on same video</li>
+              <li><strong>Click-farm fingerprint</strong> in watch-time distribution</li>
+              <li class="remedy">Remedy: multi-source cross-check + velocity filter + hard-negative mining</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f5">
+            <div class="fclass-head"><span class="fclass-tag">F5</span><h4>Cold-start catastrophe</h4></div>
+            <p class="fclass-sub">New brands/categories misrouted.</p>
+            <ul>
+              <li><strong>Flat Beta(1,1)</strong> prior detected on any arm</li>
+              <li><strong>Brand has &lt;5 similar neighbors</strong> in prior index</li>
+              <li><strong>L3 category new &amp; unsupervised</strong></li>
+              <li class="remedy">Remedy: fallback chain brand→nearest-neighbor→L3→L2→L1→platform; never flat</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f6">
+            <div class="fclass-head"><span class="fclass-tag">F6</span><h4>Infra / pipeline</h4></div>
+            <p class="fclass-sub">Backpressure, staleness, DDoS, cascades.</p>
+            <ul>
+              <li><strong>Kafka consumer lag &gt; 10 min</strong></li>
+              <li><strong>OPE estimate staleness &gt; 6h</strong></li>
+              <li><strong>Neon replica lag &gt; 90s</strong></li>
+              <li><strong>Rate-limit cascade signal</strong> across &gt;2 services</li>
+              <li class="remedy">Remedy: circuit breakers + KEDA scale-out + graceful degradation to baseline</li>
+            </ul>
+          </div>
+          <div class="fclass fclass-f7">
+            <div class="fclass-head"><span class="fclass-tag">F7</span><h4>Governance / compliance</h4></div>
+            <p class="fclass-sub">FTC, TikTok policy, brand safety, PII.</p>
+            <ul>
+              <li><strong>FTC disclosure missing</strong> in any promoted variant</li>
+              <li><strong>TikTok policy update</strong> → constitution diff &gt; 0</li>
+              <li><strong>Brand-safety classifier flag</strong></li>
+              <li><strong>PII/copyright fingerprint</strong> in prompt or output</li>
+              <li class="remedy">Remedy: constitutional AI gate + human-in-loop on any red-flag + instant rollback</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Twelve circuit breakers</h3>
+        <div class="cb-grid">
+          <div class="cb-card"><code>cb_roas_floor</code><p>Brand ROAS &gt;30% below 7-day trailing → halt DPO for brand</p></div>
+          <div class="cb-card"><code>cb_judge_disagreement</code><p>Ensemble cos-sim &lt; 0.7 → route to human review</p></div>
+          <div class="cb-card"><code>cb_cost_ceiling</code><p>Weekly DNA cost &gt; 1.2× budget → pause DPO/GAD</p></div>
+          <div class="cb-card"><code>cb_msprt_unstable</code><p>&gt;3 decision flips → extend canary</p></div>
+          <div class="cb-card"><code>cb_drift_severe</code><p>PSI &gt; 0.5 → freeze promotions + retrain</p></div>
+          <div class="cb-card"><code>cb_ope_online_div</code><p>|OPE − online| &gt; 3σ → OPE model recalibration</p></div>
+          <div class="cb-card"><code>cb_mode_collapse</code><p>Effective arm &lt; 3 → force DPP diversity</p></div>
+          <div class="cb-card"><code>cb_brand_safety</code><p>Any classifier flag → instant rollback + notify</p></div>
+          <div class="cb-card"><code>cb_cold_start_flat</code><p>Flat prior detected → enforce fallback chain</p></div>
+          <div class="cb-card"><code>cb_gpu_budget</code><p>Weekly GPU-hours &gt; 1.2× cap → throttle scheduler</p></div>
+          <div class="cb-card"><code>cb_kafka_backpressure</code><p>Lag &gt; 10 min sustained → scale consumers + degrade</p></div>
+          <div class="cb-card"><code>cb_ledger_durability</code><p>Write-success &lt; 99.99% / 5min → failover + alert</p></div>
+        </div>
+
+        <h3 class="sub-h">Three-tier kill switches</h3>
+        <div class="ks-row">
+          <div class="ks-card ks-amber"><h4>AMBER · pause new promotions</h4><p>Owner: Eng Lead · Approval: on-call · MTTR &lt; 2 min · Keeps serving current variants, stops rollout of new ones.</p></div>
+          <div class="ks-card ks-red"><h4>RED · rollback since T</h4><p>Owner: CTO · Approval: Eng Lead + CTO · MTTR &lt; 15 min · Rolls every promotion post-timestamp back to prior MLflow champion.</p></div>
+          <div class="ks-card ks-black"><h4>BLACK · DNA fully off</h4><p>Owner: CEO · Approval: CEO · MTTR &lt; 5 min · Baseline-only serving resumes. DNA layer dark until root cause signed off.</p></div>
+        </div>
+      </section>
+

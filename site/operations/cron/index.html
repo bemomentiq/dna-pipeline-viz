@@ -34,7 +34,52 @@
 <span class="kicker">Operations</span>
 <h1>Scheduled jobs</h1>
 <p>Crons that keep the loop alive.</p>
-<div class="empty">Drilldown content lands here. The fleet is filling this in from the legacy walkthrough.</div>
+      <section id="cron" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="section-eyebrow">19 · Cadence</p>
+            <h2>Scheduled jobs that keep the loop alive</h2>
+          </div>
+
+          <div class="cron-grid">
+            <div class="cron-card">
+              <div class="cron-time">Mon · 02:00 PT</div>
+              <div class="cron-name">Full DNA extraction</div>
+              <div class="cron-expr"><code>0 2 * * 1</code></div>
+              <div class="cron-steps">
+                export → download → analyze → synthesize → drift → push
+              </div>
+            </div>
+            <div class="cron-card">
+              <div class="cron-time">Every 6h</div>
+              <div class="cron-name">Feedback ingestion</div>
+              <div class="cron-expr"><code>0 */6 * * *</code></div>
+              <div class="cron-steps">TikTok Business API → <code>dna_performance_feedback</code></div>
+            </div>
+            <div class="cron-card">
+              <div class="cron-time">Chained</div>
+              <div class="cron-name">Bandit update</div>
+              <div class="cron-expr"><code>post-ingest</code></div>
+              <div class="cron-steps">unprocessed rows → reward → α/β → upsert</div>
+            </div>
+            <div class="cron-card">
+              <div class="cron-time">Mon · 03:00 PT</div>
+              <div class="cron-name">Drift detection</div>
+              <div class="cron-expr"><code>0 3 * * 1</code></div>
+              <div class="cron-steps">JS divergence vs baseline → Slack alerts</div>
+            </div>
+            <div class="cron-card">
+              <div class="cron-time">Monthly · 1st</div>
+              <div class="cron-name">Cross-category prior recompute</div>
+              <div class="cron-expr"><code>0 4 1 * *</code></div>
+              <div class="cron-steps">Rebuild blended priors for low-data categories</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INVARIANTS -->
+
 
 </main>
 <footer class="site-footer">
