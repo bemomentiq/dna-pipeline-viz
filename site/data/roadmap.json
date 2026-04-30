@@ -1,0 +1,36 @@
+{
+  "capturedAt": "2026-04-30",
+  "totals": { "shipped": 33, "wiring": 9, "notstarted": 9, "total": 51 },
+  "source": {
+    "repo": "bemomentiq/momentiq-dna",
+    "pr": "#255",
+    "doc": "docs/codebase-vs-roadmap-2026-04-30.md"
+  },
+  "phases": [
+    { "id": "p1-extraction", "title": "Phase 1 — Kalodata extraction", "status": "shipped", "meta": "Live · Neon `dna_*` tables", "items": ["Native Kalodata harvester", "Per-category bus + repo", "Schema-validated ingest"] },
+    { "id": "p2-config", "title": "Phase 2 — DNA config surface", "status": "shipped", "meta": "Live · `/api/v1/dna/config/*`", "items": ["Configs CRUD", "Active config promote/rollback", "Per-category config inheritance"] },
+    { "id": "p3-bandits", "title": "Phase 3 — Thompson sampling bandits", "status": "shipped", "meta": "Live", "items": ["Per attribute × category arms", "Bandit posterior store", "Bandit health endpoint"] },
+    { "id": "p4-rerun", "title": "Phase 4 — Generation rerun loop", "status": "wiring", "meta": "Service shipped · UI wiring partial", "items": ["Rerun queue + status route", "Compare experiments", "Drift overlay"] },
+    { "id": "p5-scoring", "title": "Phase 5 — Scoring & feedback", "status": "shipped", "meta": "Live", "items": ["Per-attribute scorer", "Pass/fail trend", "Feedback ledger"] },
+    { "id": "p6-reward", "title": "Phase 6 — Reward → bandit reweighting", "status": "wiring", "meta": "Reward shape live · Reweighting cron pending", "items": ["Reward formula audited", "Cron `dna_reward_aggregate`", "Bandit posterior update job"] },
+    { "id": "p7-monitoring", "title": "Phase 7 — Monitoring & gates", "status": "wiring", "meta": "12 signals defined · 4 wired", "items": ["Drift alerts", "Compliance trend", "Learning status board"] },
+    { "id": "p8-rollout", "title": "Phase 8 — Canary → steady state", "status": "notstarted", "meta": "Spec only", "items": ["5 promotion ramps", "Auto-rollback on KPI breach", "Steady-state guards"] },
+    { "id": "p9-governance", "title": "Phase 9 — Governance & change control", "status": "notstarted", "meta": "Spec only", "items": ["Owner + on-call registry", "Change-log enforcement", "RFC template"] },
+    { "id": "sota-1", "title": "SOTA Phase 1 — Compounder loop", "status": "wiring", "meta": "Generator self-improvement", "items": ["Weekly compounder run", "Generator weights snapshot", "Compounder eval gate"] },
+    { "id": "sota-2", "title": "SOTA Phase 2 — Portfolio ROAS", "status": "notstarted", "meta": "Brand → L3 → L2 → L1", "items": ["Portfolio attribution", "Cross-brand ROAS rollup", "Ecosystem signal feed"] },
+    { "id": "sota-3", "title": "SOTA Phase 3 — Convergence", "status": "notstarted", "meta": "Indistinguishability target", "items": ["End-to-end convergence loop", "Human eval double-blind", "Promotion guardrails"] },
+    { "id": "sota-4", "title": "SOTA Phase 4 — 27-capability gap", "status": "wiring", "meta": "Backlog tracked", "items": ["Capability ledger", "Per-capability scorer", "Quarterly delta review"] }
+  ],
+  "topGaps": [
+    { "title": "Reward → bandit posterior update cron", "detail": "Reward shape lives in code, but the scheduled job that flushes reward into Thompson posteriors is not yet running on prod." },
+    { "title": "Drift alerts pipeline", "detail": "Drift is computed; alert fanout to Slack/PagerDuty stub-only." },
+    { "title": "Canary promotion automation", "detail": "5 ramps documented; no orchestrator yet — promotions are manual." },
+    { "title": "Auto-rollback on KPI breach", "detail": "Need KPI watchers + revert hook; depends on canary orchestrator." },
+    { "title": "Governance registry", "detail": "Owner / on-call / change-control roles defined in doc only — no system of record." },
+    { "title": "Portfolio ROAS rollup", "detail": "Per-brand attribution lands; cross-brand portfolio rollup not started." },
+    { "title": "Convergence loop", "detail": "Indistinguishability eval gate spec exists; double-blind harness not built." },
+    { "title": "Compounder eval gate", "detail": "Weekly compounder run wired; the eval gate that decides promote-vs-hold not yet enforced." },
+    { "title": "Capability ledger UX", "detail": "27-capability tracker exists as a spreadsheet; needs a first-class page in the dashboard." },
+    { "title": "RFC + change-log enforcement", "detail": "No CI hook validating RFC presence on `dna_*` schema changes." }
+  ]
+}

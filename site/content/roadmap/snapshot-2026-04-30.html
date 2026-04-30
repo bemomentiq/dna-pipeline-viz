@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DNA Pipeline Roadmap — 2026-04-30</title>
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #14181d;
+    --panel-2: #1a1f26;
+    --border: #232a33;
+    --text: #e6e9ee;
+    --text-dim: #98a2b1;
+    --accent: #4fd1c5;
+    --shipped: #34d399;
+    --wiring: #fbbf24;
+    --notstarted: #f87171;
+    --link: #7dd3fc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #14181d 0%, #0b0d10 100%);
+  }
+  h1 { margin: 0 0 4px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .sub { color: var(--text-dim); font-size: 13px; }
+  main { padding: 24px 32px 80px; max-width: 1280px; margin: 0 auto; }
+  h2 { margin: 32px 0 12px; font-size: 16px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: var(--text-dim); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
+  .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .stat .num { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .stat .label { font-size: 12px; color: var(--text-dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat.shipped .num { color: var(--shipped); }
+  .stat.wiring .num { color: var(--wiring); }
+  .stat.notstarted .num { color: var(--notstarted); }
+  .stat.total .num { color: var(--accent); }
+  .bar { height: 8px; background: var(--panel-2); border-radius: 4px; overflow: hidden; display: flex; margin: 16px 0 24px; }
+  .bar-shipped { background: var(--shipped); }
+  .bar-wiring { background: var(--wiring); }
+  .bar-notstarted { background: var(--notstarted); }
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .legend .l-shipped::before { background: var(--shipped); }
+  .legend .l-wiring::before { background: var(--wiring); }
+  .legend .l-notstarted::before { background: var(--notstarted); }
+  .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+  .phase { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin-bottom: 12px; }
+  .phase-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .phase-title { font-size: 15px; font-weight: 600; }
+  .phase-meta { font-size: 12px; color: var(--text-dim); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: middle; margin-left: 8px; }
+  .badge.shipped { background: rgba(52, 211, 153, 0.12); color: var(--shipped); border: 1px solid rgba(52, 211, 153, 0.3); }
+  .badge.wiring { background: rgba(251, 191, 36, 0.12); color: var(--wiring); border: 1px solid rgba(251, 191, 36, 0.3); }
+  .badge.notstarted { background: rgba(248, 113, 113, 0.12); color: var(--notstarted); border: 1px solid rgba(248, 113, 113, 0.3); }
+  .badge.inprog { background: rgba(125, 211, 252, 0.12); color: var(--link); border: 1px solid rgba(125, 211, 252, 0.3); }
+  .phase ul { margin: 10px 0 0; padding-left: 18px; }
+  .phase li { margin: 4px 0; color: var(--text-dim); }
+  .phase li code, code { background: var(--panel-2); padding: 1px 6px; border-radius: 3px; color: var(--text); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; }
+  .gap-list { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+  .gap-list ol { margin: 6px 0 0; padding-left: 24px; }
+  .gap-list li { margin: 8px 0; color: var(--text-dim); font-size: 13px; }
+  .gap-list li b { color: var(--text); display: block; font-weight: 600; }
+  footer { color: var(--text-dim); font-size: 12px; margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>MomentIQ DNA Pipeline — Roadmap</h1>
+  <div class="sub">Audit refresh 2026-04-30 · Source: <code>docs/codebase-vs-roadmap-2026-04-30.md</code> on <code>main</code> · PR <a href="https://github.com/bemomentiq/momentiq-dna/pull/255">#255</a> merged</div>
+</header>
+<main>
+
+<section>
+  <h2>Status snapshot · 51 audited claims</h2>
+  <div class="stats">
+    <div class="stat shipped"><div class="num">~64%</div><div class="label">Shipped (33)</div></div>
+    <div class="stat wiring"><div class="num">~18%</div><div class="label">Wiring incomplete (9)</div></div>
+    <div class="stat notstarted"><div class="num">~18%</div><div class="label">Not started (9)</div></div>
+    <div class="stat total"><div class="num">51</div><div class="label">Total claims</div></div>
+  </div>
+  <div class="legend" style="margin-top:20px">
+    <span class="l-shipped">Shipped</span>
+    <span class="l-wiring">Wiring incomplete</span>
+    <span class="l-notstarted">Not started</span>
+  </div>
+  <div class="bar" aria-label="status distribution">
+    <div class="bar-shipped" style="width:64.7%"></div>
+    <div class="bar-wiring" style="width:17.6%"></div>
+    <div class="bar-notstarted" style="width:17.6%"></div>
+  </div>
+</section>
+
+<div class="grid">
+<section>
+  <h2>Phases</h2>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Sprints 1–5 · Foundation<span class="badge shipped">Complete</span></div><div class="phase-meta">10 weeks</div></div>
+    <ul>
+      <li>DNA concept + 5-dimension scoring rubric · Gemini extraction templates · Neon schema (<code>generation_scores</code>, <code>thompson_weights</code>, <code>thompson_priors</code>)</li>
+      <li>Thompson Sampling (8 hook arms + 5 framework arms) · <code>POST /api/dna/generate</code> · queue-app routing · DNAFeedbackAggregator (7-day window, 3 AM)</li>
+      <li>3 DNA pipeline configs · GeminiDNAScorer · 88 category overrides · webhooks · rate limiting</li>
+      <li>Modularized packages · ≥85% test coverage · Next.js 15 control panel (7 pages)</li>
+      <li>Foundational docs (architecture, env vars, runbook, API reference, gap-analysis, roadmap)</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 5 · Performance Feedback Loop<span class="badge shipped">Shipped</span></div><div class="phase-meta">~6 weeks</div></div>
+    <ul>
+      <li>TikTok Shop perf ingestion → <code>services/dna-tiktok-performance/src/ingester.ts</code> (1,440 LOC)</li>
+      <li><code>dna.performance_feedback</code> writes → <code>services/dna-tiktok-performance/src/repo.ts</code></li>
+      <li>GMV-tied bandit reward stream → <code>services/dna-bandit-router/src/reward/kalodata_gmv_live.ts</code></li>
+      <li>Bake-window guard inside the tiktok-performance ingester</li>
+      <li>Kalodata weekly extraction cron → <code>services/dna-kalodata-harvester/</code>, registered in <code>services/dna-cron-registry/</code></li>
+      <li>Multi-candidate per chunk → <code>services/dna-candidate-selector/src/selector.ts</code></li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 6 · Self-Optimization<span class="badge shipped">Shipped</span></div><div class="phase-meta">~6 weeks</div></div>
+    <ul>
+      <li>Multi-variant orchestrator + credit assignment → <code>services/dna-genco/src/credit-assigner.ts</code></li>
+      <li>Off-policy evaluation (DR-IPS) → <code>services/dna-ope-estimator/src/dripss.ts</code></li>
+      <li>Vision reward scaffold → <code>services/dna-vision-reward/src/scorer.ts</code> (interface + in-memory; HTTP scorer is a TODO placeholder — see Phase 7)</li>
+      <li>SaleNet GMV prediction → <code>services/dna-salenet/src/predictor.ts</code></li>
+      <li>Cross-category transfer → <code>services/dna-arm-embedder/</code>, <code>services/dna-brand-priors/</code>, <code>services/dna-category-promotion/</code></li>
+      <li>Variant batch orchestration → <code>services/dna-variant-batch/</code></li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 7 · Autonomous Operation<span class="badge inprog">In progress · ~3–4 weeks</span></div><div class="phase-meta">~24 days</div></div>
+    <ul>
+      <li>Vision reward HTTP scorer wiring (Gemini-backed) — replace <code>InMemoryVisionRewardScorer</code> default</li>
+      <li>Live rewards UI page in <code>services/dna-canary-ui/</code> streaming <code>dna.performance_feedback</code></li>
+      <li>GMV reward HTTP scorer on by default in <code>dna-bandit-router</code></li>
+      <li>Cross-shop priors persisted in Neon (<code>dna.arm_priors</code>)</li>
+      <li>OPE → <code>dna-rollout-controller</code> auto-promote/demote</li>
+      <li>GenCO credit-assignment dashboard · Cron registry observability · Brand-priors scheduled refresh · Vision reward backfill</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 8 · Cross-Platform Expansion<span class="badge notstarted">Not started</span></div><div class="phase-meta">Timeline TBD</div></div>
+    <ul>
+      <li>Meta Reels extraction (adapted prompts, Reels metrics)</li>
+      <li>YouTube Shorts extraction (different audience dynamics)</li>
+      <li>Platform-specific DNA profiles + unified comparative dashboard</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><div class="phase-title">Phase 9 · Monthly Retraining &amp; RLHF<span class="badge notstarted">Not started</span></div><div class="phase-meta">Timeline TBD</div></div>
+    <ul>
+      <li>Automated fine-tune pipeline for ScriptSage on latest DNA data</li>
+      <li>RLHF on top of <code>dna-vision-reward</code> once HTTP scorer is wired</li>
+      <li>Monthly retraining triggered from <code>dna-cron-registry</code></li>
+    </ul>
+  </div>
+</section>
+
+<aside>
+  <h2>Top 10 remaining wiring gaps</h2>
+  <div class="gap-list">
+    <ol>
+      <li><b>Vision reward HTTP scorer wiring <span class="badge wiring">Wiring</span></b>Replace <code>InMemoryVisionRewardScorer</code> default with Gemini-backed <code>HttpVisionRewardScorer</code> in <code>services/dna-vision-reward/</code>.</li>
+      <li><b>GMV reward on by default in bandit-router <span class="badge wiring">Wiring</span></b>Flip default in <code>services/dna-bandit-router/src/reward/index.ts</code>.</li>
+      <li><b>Live rewards UI page <span class="badge notstarted">Not started</span></b>Stream <code>dna.performance_feedback</code> in <code>services/dna-canary-ui/</code>.</li>
+      <li><b>Cross-shop priors persisted in Neon <span class="badge wiring">Wiring</span></b>Persist <code>prior-transfer.ts</code> outputs to <code>dna.arm_priors</code>.</li>
+      <li><b>OPE → rollout-controller automation <span class="badge wiring">Wiring</span></b><code>dna-rollout-controller</code> consumes OPE outputs to promote/demote.</li>
+      <li><b>GenCO credit-assignment dashboard <span class="badge notstarted">Not started</span></b>Operator-facing page reading from <code>dna-genco</code>.</li>
+      <li><b>Cron registry observability surface <span class="badge notstarted">Not started</span></b>Last-run / next-run / error per job in the control panel.</li>
+      <li><b>Brand-priors → bandit-router scheduled refresh <span class="badge wiring">Wiring</span></b>Periodic refresh job; new cron in <code>dna-cron-registry</code>.</li>
+      <li><b>Vision reward historical backfill <span class="badge notstarted">Not started</span></b>One-shot backfill once HTTP scorer lands.</li>
+      <li><b>GMV Max deployment write-back <span class="badge notstarted">Not started</span></b>Auto-deploy multi-variant outputs back to GMV Max.</li>
+    </ol>
+  </div>
+</aside>
+</div>
+
+<footer>
+  Last refresh 2026-04-30 from <a href="https://github.com/bemomentiq/momentiq-dna/blob/main/docs/codebase-vs-roadmap-2026-04-30.md"><code>docs/codebase-vs-roadmap-2026-04-30.md</code></a> ·
+  <a href="https://github.com/bemomentiq/momentiq-dna/blob/main/docs/implementation-roadmap.md"><code>implementation-roadmap.md</code></a> ·
+  <a href="https://github.com/bemomentiq/momentiq-dna/blob/main/docs/gap-analysis.md"><code>gap-analysis.md</code></a>
+</footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+name: Refresh roadmap snapshot
+on:
+  schedule:
+    # Every day at 13:00 UTC (06:00 PT)
+    - cron: '0 13 * * *'
+  workflow_dispatch: {}
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - working-directory: site
+        run: npm install --no-audit --no-fund
+      - working-directory: site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/snapshot-roadmap.mjs
+      - name: Commit refresh
+        run: |
+          if [[ -n "$(git status --porcelain site/data/roadmap.json)" ]]; then
+            git config user.email "actions@github.com"
+            git config user.name "github-actions[bot]"
+            git add site/data/roadmap.json
+            git commit -m "chore(site): refresh roadmap snapshot"
+            git push
+          else
+            echo "No roadmap changes."
+          fi
